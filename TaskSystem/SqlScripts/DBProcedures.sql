@@ -1,6 +1,6 @@
 use intership
 GO
-/*Получение всех заданий и их версий*/
+/*РџРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… Р·Р°РґР°РЅРёР№ Рё РёС… РІРµСЂСЃРёР№*/
 CREATE FUNCTION TaskFunctionGetAllTasksAndVersions ()
     RETURNS TABLE
     AS RETURN (SELECT TaskTaskVersion.ID AS TaskVersionID, TaskTaskVersion.MoneyAward, TaskTaskVersion.Version, 
@@ -17,19 +17,19 @@ CREATE FUNCTION TaskFunctionGetAllTasksAndVersions ()
 		INNER JOIN TaskTheme ON TaskTask.ThemeID = TaskTheme.ID
 		WHERE TaskEmployee.ID = TaskTask.CreatorID AND TaskTaskVersion.TaskID = TaskTask.ID)
 GO
-/*Добавление работника */
+/*Р”РѕР±Р°РІР»РµРЅРёРµ СЂР°Р±РѕС‚РЅРёРєР° */
 CREATE PROCEDURE [TaskProcedureAddEmployee]
 	@Name NVARCHAR(100)
 AS
 	 INSERT INTO TaskEmployee(Name) VALUES(@Name)
 GO
-/*Добавление темы */
+/*Р”РѕР±Р°РІР»РµРЅРёРµ С‚РµРјС‹ */
 CREATE PROCEDURE [TaskProcedureAddTheme]
 	@Name NVARCHAR(100)
 AS
 	 INSERT INTO TaskTheme(Name) VALUES(@Name)
 GO
-/*Добавление комментария */
+/*Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ */
 CREATE PROCEDURE [TaskProcedureAddComment]
 	@TaskID INT,
 	@EmployeeID INT,
@@ -37,7 +37,7 @@ CREATE PROCEDURE [TaskProcedureAddComment]
 AS
 	 INSERT INTO TaskComment(Message, TaskID, EmployeeID) VALUES(@Message, @TaskID, @EmployeeID)
 GO
-/*Добавление новой версии задания */
+/*Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ РІРµСЂСЃРёРё Р·Р°РґР°РЅРёСЏ */
 CREATE PROCEDURE [TaskProcedureAddTaskVersion] 
 	@MoneyAward MONEY,
 	@StatusID TINYINT,
@@ -48,7 +48,7 @@ AS
 	SET @Version = (SELECT COUNT(*) AS Count FROM TaskTaskVersion WHERE TaskTaskVersion.TaskID = @TaskID)
 	 INSERT INTO TaskTaskVersion(MoneyAward, StatusID, TaskID, PerformerID, Version) VALUES(@MoneyAward, @StatusID, @TaskID, @PerformerID, @Version)
 GO
-/*Добавление нового задания*/
+/*Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ Р·Р°РґР°РЅРёСЏ*/
 CREATE PROCEDURE [TaskProcedureAddTask]
 	@Name NVARCHAR(100),
 	@Description NVARCHAR(500),
@@ -59,31 +59,31 @@ AS
 	 INSERT INTO TaskTask(Name, Description, ThemeID, CreatorID, CreateDate, ExpireDate) VALUES(@Name, @Description, @ThemeID, @CreatorID, GETDATE(), @ExpireDate)
 	 EXEC TaskProcedureAddTaskVersion NULL, 1, @@IDENTITY, NULL
 GO
-/*Получение всех комментариев к заданию */
+/*РџРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ Рє Р·Р°РґР°РЅРёСЋ */
 CREATE PROCEDURE [TaskProcedureGetCommentsOfTask]
 	@TaskID INT
 AS
 	 SELECT * FROM TaskComment INNER JOIN TaskEmployee ON (TaskEmployee.ID = TaskComment.EmployeeID AND TaskComment.TaskID = @TaskID)
 GO
-/* Получение определенной версии задания */
+/* РџРѕР»СѓС‡РµРЅРёРµ РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ РІРµСЂСЃРёРё Р·Р°РґР°РЅРёСЏ */
 CREATE PROCEDURE [TaskProcedureGetVersionOfTask]
 	@TaskID INT,
 	@Version TINYINT
 AS
 	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskVersionID = @TaskID AND Version = @Version
 GO
-/*Получение всех заданий и их версий*/
+/*РџРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… Р·Р°РґР°РЅРёР№ Рё РёС… РІРµСЂСЃРёР№*/
 CREATE PROCEDURE [TaskProcedureGetAllTasks]
 AS
 	 SELECT * FROM TaskFunctionGetAllTasksAndVersions()
 GO
-/*Получение всех заданий по статусу*/
+/*РџРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… Р·Р°РґР°РЅРёР№ РїРѕ СЃС‚Р°С‚СѓСЃСѓ*/
 CREATE PROCEDURE [TaskProcedureGetTasksByStatus]
 	@StatusID TINYINT
 AS
 	 SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE StatusID = @StatusID
 GO
-/*Изменить статус задания */
+/*РР·РјРµРЅРёС‚СЊ СЃС‚Р°С‚СѓСЃ Р·Р°РґР°РЅРёСЏ */
 CREATE PROCEDURE [TaskProcedureUpdateStatusOfTask]
 	@TaskID INT,
 	@Version TINYINT,
@@ -91,19 +91,19 @@ CREATE PROCEDURE [TaskProcedureUpdateStatusOfTask]
 AS
 	 UPDATE TaskTaskVersion SET StatusID = @StatusID WHERE TaskTaskVersion.TaskID = @TaskID AND TaskTaskVersion.Version = @Version
 GO
-/*Получение заданий, которые выполняет пользователь*/
+/*РџРѕР»СѓС‡РµРЅРёРµ Р·Р°РґР°РЅРёР№, РєРѕС‚РѕСЂС‹Рµ РІС‹РїРѕР»РЅСЏРµС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ*/
 CREATE PROCEDURE [TaskProcedureGetPerformerTasks]
 	@PerformerID INT
 AS
 	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE PerformerID = @PerformerID
 GO
-/*Получение заданий, которые создал пользователь */
+/*РџРѕР»СѓС‡РµРЅРёРµ Р·Р°РґР°РЅРёР№, РєРѕС‚РѕСЂС‹Рµ СЃРѕР·РґР°Р» РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ */
 CREATE PROCEDURE [TaskProcedureGetCreatorTasks]
 	@CreatorID INT
 AS
 	SELECT * FROM TaskFunctionGetAllTasksAndVersions()  WHERE CreatorID = @CreatorID
 GO
-/*Изменить выполняющего у версии задания*/
+/*РР·РјРµРЅРёС‚СЊ РІС‹РїРѕР»РЅСЏСЋС‰РµРіРѕ Сѓ РІРµСЂСЃРёРё Р·Р°РґР°РЅРёСЏ*/
 CREATE PROCEDURE [TaskProcedureUpdatePerformerOfTask] 
 	@TaskID INT,
 	@Version TINYINT,
@@ -111,7 +111,7 @@ CREATE PROCEDURE [TaskProcedureUpdatePerformerOfTask]
 AS
 	 UPDATE TaskTaskVersion SET PerformerID = @EmployeeID WHERE TaskTaskVersion.TaskID = @TaskID AND TaskTaskVersion.Version = @Version
 GO
-/*Получение последней версии задания*/
+/*РџРѕР»СѓС‡РµРЅРёРµ РїРѕСЃР»РµРґРЅРµР№ РІРµСЂСЃРёРё Р·Р°РґР°РЅРёСЏ*/
 CREATE PROCEDURE [TaskProcedureGetLastVersionOfTask]
 	@TaskID INT
 AS

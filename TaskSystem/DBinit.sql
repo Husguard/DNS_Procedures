@@ -1,36 +1,31 @@
 USE intership
-SET ANSI_NULLS ON
-GO
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [TASK_Theme] 
+CREATE TABLE [TaskTheme] 
 (
-    [ID]   INT        IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (50) NOT NULL,
+    [ID]   INT        IDENTITY NOT NULL,
+    [Name] NVARCHAR (100) NOT NULL,
 	CONSTRAINT [PK_Theme] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 GO
-CREATE TABLE [TASK_Status] 
+CREATE TABLE [TaskStatus] 
 (
-    [ID]   tinyint        IDENTITY (1, 1) NOT NULL,
+    [ID]   tinyint        IDENTITY NOT NULL,
     [Name] NVARCHAR (50) NOT NULL,
 	CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 GO
-CREATE TABLE [TASK_Employee] 
+CREATE TABLE [TaskEmployee] 
 (
-    [ID]   INT        IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (50) NOT NULL,
+    [ID]   INT        IDENTITY NOT NULL,
+    [Name] NVARCHAR (100) NOT NULL,
 	CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 GO
-CREATE TABLE [TASK_Task]
+CREATE TABLE [TaskTask]
 (
- [ID]          INT IDENTITY (1, 1) NOT NULL ,
- [Name]        NVARCHAR(50) NOT NULL ,
- [Description] NVARCHAR(50) NOT NULL ,
+ [ID]          INT IDENTITY  NOT NULL ,
+ [Name]        NVARCHAR(100) NOT NULL ,
+ [Description] NVARCHAR(500) NOT NULL ,
  [ThemeID]    int NOT NULL ,
  [CreatorID]  int NOT NULL ,
  [CreateDate]  date NOT NULL ,
@@ -38,12 +33,12 @@ CREATE TABLE [TASK_Task]
 
 
  CONSTRAINT [PK_Task] PRIMARY KEY CLUSTERED ([ID] ASC),
- CONSTRAINT [FK_ThemeID] FOREIGN KEY ([ThemeID])  REFERENCES [TASK_Theme]([ID]),
- CONSTRAINT [FK_CreatorID] FOREIGN KEY ([CreatorID])  REFERENCES [TASK_Employee]([ID])
+ CONSTRAINT [FK_TaskToTheme] FOREIGN KEY ([ThemeID])  REFERENCES [TaskTheme]([ID]),
+ CONSTRAINT [FK_TaskToEmployee] FOREIGN KEY ([CreatorID])  REFERENCES [TaskEmployee]([ID])
 );
 GO
 
-CREATE TABLE [TASK_TaskVersion]
+CREATE TABLE [TaskTaskVersion]
 (
  [ID]           INT NOT NULL ,
  [MoneyAward]   money NULL ,
@@ -54,20 +49,19 @@ CREATE TABLE [TASK_TaskVersion]
 
 
  CONSTRAINT [PK_TaskVersion] PRIMARY KEY CLUSTERED ([ID] ASC),
- CONSTRAINT [FK_StatusID] FOREIGN KEY ([StatusID])  REFERENCES [TASK_Status]([ID]),
- CONSTRAINT [FK_TaskID] FOREIGN KEY ([TaskID])  REFERENCES [TASK_Task]([ID]),
- CONSTRAINT [FK_PerformerID] FOREIGN KEY ([PerformerID])  REFERENCES [TASK_Employee]([ID])
+ CONSTRAINT [FK_TaskVersionToStatus] FOREIGN KEY ([StatusID])  REFERENCES [TaskStatus]([ID]),
+ CONSTRAINT [FK_TaskVersionToTask] FOREIGN KEY ([TaskID])  REFERENCES [TaskTask]([ID]),
+ CONSTRAINT [FK_TaskVersionToEmployee] FOREIGN KEY ([PerformerID])  REFERENCES [TaskEmployee]([ID])
 );
 GO
-CREATE TABLE [TASK_Comment]
+CREATE TABLE [TaskComment]
 (
- [Message]     nvarchar(50) NOT NULL ,
+ [Message]     nvarchar(300) NOT NULL ,
  [TaskID]     int NOT NULL ,
  [EmployeeID] int NOT NULL ,
-
-
- CONSTRAINT [FK_TaskID] FOREIGN KEY ([TaskID])  REFERENCES [TASK_Task]([ID]),
- CONSTRAINT [FK_EmployeeID] FOREIGN KEY ([EmployeeID])  REFERENCES [TASK_Employee]([ID])
+ 
+ CONSTRAINT [FK_TaskID] FOREIGN KEY ([TaskID])  REFERENCES [TaskTask]([ID]),
+ CONSTRAINT [FK_EmployeeID] FOREIGN KEY ([EmployeeID])  REFERENCES [TaskEmployee]([ID])
 );
 GO
 

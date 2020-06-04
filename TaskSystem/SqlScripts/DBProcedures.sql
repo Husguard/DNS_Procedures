@@ -1,6 +1,8 @@
+use intership
+GO
 CREATE FUNCTION TaskFunctionGetAllTasksAndVersions ()
     RETURNS TABLE
-    AS RETURN (SELECT TaskTaskVersion.ID, TaskTaskVersion.MoneyAward, TaskTaskVersion.Version, 
+    AS RETURN (SELECT TaskTaskVersion.ID AS TaskVersionID, TaskTaskVersion.MoneyAward, TaskTaskVersion.Version, 
 	TaskTaskVersion.StatusID, TaskStatus.Name AS StatusName, 
 	TaskTaskVersion.TaskID, TaskTask.Name AS TaskName, TaskTask.Description,
 	TaskTask.CreatorID, TaskEmployee.Name AS Creator,
@@ -39,7 +41,7 @@ CREATE PROCEDURE [TaskProcedureAddTask]
 	@ExpireDate DATE
 AS
 	 INSERT INTO TaskTask(Name, Description, ThemeID, CreatorID, CreateDate, ExpireDate) VALUES(@Name, @Description, @ThemeID, @CreatorID, GETDATE(), @ExpireDate)
-	 EXEC ProcedureAddTaskVersion NULL, 1, SCOPE_IDENTITY, NULL
+	 EXEC TaskProcedureAddTaskVersion NULL, 1, @@IDENTITY, NULL
 GO
 CREATE PROCEDURE [TaskProcedureAddTaskVersion] 
 	@MoneyAward MONEY,
@@ -61,7 +63,7 @@ CREATE PROCEDURE [TaskProcedureGetVersionOfTask]
 	@TaskID INT,
 	@Version TINYINT
 AS
-	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskTask.ID = @TaskID AND TaskTaskVersion.Version = @Version
+	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskVersionID = @TaskID AND Version = @Version
 GO
 CREATE PROCEDURE [TaskProcedureGetAllTasks]
 AS
@@ -70,7 +72,7 @@ GO
 CREATE PROCEDURE [TaskProcedureGetTasksByStatus]
 	@StatusID TINYINT
 AS
-	 SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskTaskVersion.StatusID = @StatusID
+	 SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE StatusID = @StatusID
 GO
 CREATE PROCEDURE [TaskProcedureUpdateStatusOfTask]
 	@TaskID INT,
@@ -82,12 +84,12 @@ GO
 CREATE PROCEDURE [TaskProcedureGetPerformerTasks]
 	@PerformerID INT
 AS
-	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskTaskVersion.PerformerID = @PerformerID
+	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE PerformerID = @PerformerID
 GO
 CREATE PROCEDURE [TaskProcedureGetCreatorTasks]
 	@CreatorID INT
 AS
-	SELECT * FROM TaskFunctionGetAllTasksAndVersions()  WHERE TaskTask.CreatorID = @CreatorID
+	SELECT * FROM TaskFunctionGetAllTasksAndVersions()  WHERE CreatorID = @CreatorID
 GO
 /*сомнительные*/
 CREATE PROCEDURE [TaskProcedureUpdatePerformerOfTask] 
@@ -100,5 +102,8 @@ GO
 CREATE PROCEDURE [TaskProcedureGetLastVersionOfTask]
 	@TaskID INT
 AS
-	SELECT * FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskTask.ID = @TaskID HAVING TaskTaskVersion.Version = MAX(TaskTaskVersion.Version)
+	SELECT * FROM 
+	(SELECT TaskID, MAX(Version) AS LastVersion FROM TaskFunctionGetAllTasksAndVersions() WHERE TaskID = @TaskID GROUP BY TaskID) AS LastResult
+	INNER JOIN TaskFunctionGetAllTasksAndVersions()
+	ON LastVersion = LastResult.LastVersion
 GO

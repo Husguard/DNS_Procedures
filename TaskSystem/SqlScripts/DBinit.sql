@@ -1,5 +1,7 @@
 USE intership
-
+ALTER DATABASE intership
+COLLATE Cyrillic_General_CI_AS
+GO
 CREATE TABLE [TaskTheme] 
 (
     [ID]   INT        IDENTITY NOT NULL,
@@ -17,6 +19,7 @@ GO
 CREATE TABLE [TaskEmployee] 
 (
     [ID]   INT        IDENTITY NOT NULL,
+	[Login] NVARCHAR (100) UNIQUE NOT NULL,
     [Name] NVARCHAR (100) COLLATE Cyrillic_General_CI_AS NOT NULL,
 	CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
@@ -34,7 +37,10 @@ CREATE TABLE [TaskTask]
 
  CONSTRAINT [PK_Task] PRIMARY KEY CLUSTERED ([ID] ASC),
  CONSTRAINT [FK_TaskToTheme] FOREIGN KEY ([ThemeID])  REFERENCES [TaskTheme]([ID]),
- CONSTRAINT [FK_TaskToEmployee] FOREIGN KEY ([CreatorID])  REFERENCES [TaskEmployee]([ID])
+ CONSTRAINT [FK_TaskToEmployee] FOREIGN KEY ([CreatorID])  REFERENCES [TaskEmployee]([ID]),
+
+ INDEX [IX_TaskTaskThemeID] NONCLUSTERED ([ThemeID]),
+ INDEX [IX_TaskTaskCreatorID] NONCLUSTERED ([ThemeID])
 );
 GO
 
@@ -47,11 +53,14 @@ CREATE TABLE [TaskTaskVersion]
  [TaskID]      int NOT NULL ,
  [PerformerID] int NULL ,
 
-
+ UNIQUE([TaskID],[Version]),
  CONSTRAINT [PK_TaskVersion] PRIMARY KEY CLUSTERED ([ID] ASC),
- CONSTRAINT [FK_TaskVersionToStatus] FOREIGN KEY ([StatusID])  REFERENCES [TaskStatus]([ID]),
+ CONSTRAINT [FK_TaskVersionToStatus] FOREIGN KEY ([StatusID]) REFERENCES  [TaskStatus]([ID]),
  CONSTRAINT [FK_TaskVersionToTask] FOREIGN KEY ([TaskID])  REFERENCES [TaskTask]([ID]),
- CONSTRAINT [FK_TaskVersionToEmployee] FOREIGN KEY ([PerformerID])  REFERENCES [TaskEmployee]([ID])
+ CONSTRAINT [FK_TaskVersionToEmployee] FOREIGN KEY ([PerformerID])  REFERENCES [TaskEmployee]([ID]),
+
+ INDEX [IX_TaskTaskVersionStatusID] NONCLUSTERED ([StatusID]),
+ INDEX [IX_TaskTaskVersionPerformerID] NONCLUSTERED ([PerformerID])
 );
 GO
 CREATE TABLE [TaskComment]
@@ -61,14 +70,7 @@ CREATE TABLE [TaskComment]
  [EmployeeID] int NOT NULL ,
  
  CONSTRAINT [FK_TaskID] FOREIGN KEY ([TaskID])  REFERENCES [TaskTask]([ID]),
- CONSTRAINT [FK_EmployeeID] FOREIGN KEY ([EmployeeID])  REFERENCES [TaskEmployee]([ID])
+ CONSTRAINT [FK_EmployeeID] FOREIGN KEY ([EmployeeID])  REFERENCES [TaskEmployee]([ID]),
+ INDEX [IX_TaskCommentTaskID] NONCLUSTERED ([TaskID])
 );
 GO
-
-
-
-
-
-
-
-

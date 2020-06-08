@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace TaskSystem.Models.Objects
 {
-    // enum?
-    public class Status
+    public enum Status
     {
-        public byte ID { get; set; }
-        public string Name { get; set; }
+        New = 1,
+        InWork,
+        Paused,
+        Completed,
+        Canceled
     }
 }

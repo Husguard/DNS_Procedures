@@ -7,11 +7,11 @@ namespace TaskSystem.Models.Interfaces
 {
     public interface ITaskStatus
     {
-        public void AcceptTaskByEmployee(Task task, Employee employee);
-        public void CancelTask(Task task);
-        public void CompleteTask(Task task);
-        public void PauseTask(Task task);
-        public void ExpireTask(Task task);
-        // в методы класса мб?
+        public void AcceptTaskByEmployee(Employee employee, decimal award);
+        public void CancelTask();
+        public void CompleteTask();
+        public void PauseTask();
+        public bool IsTaskExpire();
+        public void UpdateStatusOfTask(Status status);
     }
 }

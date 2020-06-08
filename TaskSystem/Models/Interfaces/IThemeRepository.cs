@@ -6,10 +6,10 @@ using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Interfaces
 {
-    public interface ITheme
+    public interface IThemeRepository
     {
         public void AddTheme(string name);
-        public List<Theme> GetAllThemes();
-        public List<Theme> GetThemesByName(string name);
+        public IEnumerable<Theme> GetAllThemes();
+        public IEnumerable<Theme> GetThemesByName(string name);
     }
 }

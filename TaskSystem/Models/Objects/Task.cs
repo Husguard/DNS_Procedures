@@ -18,15 +18,8 @@ namespace TaskSystem.Models.Objects
         public List<TaskVersion> TaskVersions { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ExpireDate { get; set; }
-        public Task(string name, string description, Theme theme, Employee creator, DateTime expireDate)
+        public Task()
         {
-            // ID нового где брать?
-            Name = name;
-            Description = description;
-            Theme = theme;
-            Creator = creator;
-            CreateDate = DateTime.Now;
-            ExpireDate = expireDate;
             TaskVersions = new List<TaskVersion>();
             TaskVersions.Add(
                 new TaskVersion()
@@ -34,7 +27,6 @@ namespace TaskSystem.Models.Objects
                     PerformerID = null,
                     Performer = null,
                     MoneyAward = null,
-                    Task = this,
                     Version = 0,
                     Status = Status.New
                 });
@@ -47,7 +39,6 @@ namespace TaskSystem.Models.Objects
                     PerformerID = employee.ID,
                     Performer = employee,
                     MoneyAward = award,
-                    Task = this,
                     Version = (byte)TaskVersions.Count(),
                     Status = Status.InWork
                 });

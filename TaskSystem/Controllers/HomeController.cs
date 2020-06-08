@@ -12,10 +12,12 @@ namespace TaskSystem.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ConnectionRepository _connection;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ConnectionRepository connectionRepository)
         {
             _logger = logger;
+            _connection = connectionRepository;
         }
 
         public IActionResult Index()

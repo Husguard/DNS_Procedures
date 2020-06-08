@@ -11,7 +11,6 @@ namespace TaskSystem.Models.Objects
     {
         
         public int ID { get; set; }
-        public Task Task { get; set; }
         public byte Version { get; set; }
         public Status Status { get; set; }
         public int? PerformerID { get; set; }

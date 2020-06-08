@@ -1,5 +1,5 @@
-USE intership
-ALTER DATABASE intership
+USE Shevelev
+ALTER DATABASE Shevelev
 COLLATE Cyrillic_General_CI_AS
 GO
 CREATE TABLE [TaskTheme] 
@@ -40,7 +40,7 @@ CREATE TABLE [TaskTask]
  CONSTRAINT [FK_TaskToEmployee] FOREIGN KEY ([CreatorID])  REFERENCES [TaskEmployee]([ID]),
 
  INDEX [IX_TaskTaskThemeID] NONCLUSTERED ([ThemeID]),
- INDEX [IX_TaskTaskCreatorID] NONCLUSTERED ([ThemeID])
+ INDEX [IX_TaskTaskCreatorID] NONCLUSTERED ([CreatorID])
 );
 GO
 
@@ -68,6 +68,7 @@ CREATE TABLE [TaskComment]
  [Message]     nvarchar(300) COLLATE Cyrillic_General_CI_AS NOT NULL ,
  [TaskID]     int NOT NULL ,
  [EmployeeID] int NOT NULL ,
+ [CreateDate] Datetime NOT NULL
  
  CONSTRAINT [FK_TaskID] FOREIGN KEY ([TaskID])  REFERENCES [TaskTask]([ID]),
  CONSTRAINT [FK_EmployeeID] FOREIGN KEY ([EmployeeID])  REFERENCES [TaskEmployee]([ID]),

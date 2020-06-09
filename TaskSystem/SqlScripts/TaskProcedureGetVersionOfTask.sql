@@ -5,7 +5,7 @@ CREATE PROCEDURE [dbo].[TaskProcedureGetVersionOfTask]
 	@TaskID INT,
 	@Version TINYINT
 AS
-	SELECT * FROM TaskFunctionGetAllTasksAndVersions()
+	SELECT TaskVersionID, MoneyAward, Version, StatusID, TaskID, CreatorID, PerformerID, CreateDate, ThemeID FROM TaskFunctionGetAllTasksAndVersions()
 		WHERE TaskID = @TaskID AND Version = @Version
 GO
 

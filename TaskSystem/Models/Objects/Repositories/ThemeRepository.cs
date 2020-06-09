@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskSystem.Models.Interfaces;
@@ -8,19 +10,39 @@ namespace TaskSystem.Models.Objects
 {
     public class ThemeRepository : IThemeRepository
     {
-        public List<Theme> Themes { get; set; }
+        private readonly IConnectionDb _db;
+
+        public ThemeRepository(IConnectionDb db)
+        {
+            _db = db;
+        }
         public void AddTheme(string name)
         {
-            Themes.Add(new Theme() { Name = name }); // нужно исправить способ получения ID
+            _db.ExecuteNonQuery(
+               "TaskProcedureAddTheme",
+               new SqlParameter("@Name", name)
+               );
         }
         public IEnumerable<Theme> GetAllThemes()
         {
-            return Themes;
+            return _db.ExecuteReader<Theme>(
+                "TaskProcedureGetTaskByID",
+                (reader) => CreateTheme(reader));
         }
         public IEnumerable<Theme> GetThemesByName(string name)
         {
-            return Themes.Where((theme) => theme.Name.StartsWith(name));
+            return _db.ExecuteReader<Theme>(
+                "TaskProcedureGetTaskByID",
+                (reader) => CreateTheme(reader),
+                new SqlParameter("@Name", name));
         }
-       
+        private Theme CreateTheme(IDataReader reader)
+        {
+            return new Theme()
+            {
+                ID = (int)reader["ID"],
+                Name = (string)reader["Name"]
+            };
+        }
     }
 }

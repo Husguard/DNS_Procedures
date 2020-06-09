@@ -1,4 +1,3 @@
-USE Shevelev
 INSERT INTO TaskStatus(Name) VALUES('Новое');
 INSERT INTO TaskStatus(Name) VALUES('В работе');
 INSERT INTO TaskStatus(Name) VALUES('Приостановлено');

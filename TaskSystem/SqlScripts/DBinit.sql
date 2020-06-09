@@ -1,5 +1,5 @@
-USE Shevelev
-ALTER DATABASE Shevelev
+USE TaskManager
+ALTER DATABASE TaskManager
 COLLATE Cyrillic_General_CI_AS
 GO
 CREATE TABLE [TaskTheme] 

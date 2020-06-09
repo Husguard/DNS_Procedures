@@ -10,7 +10,5 @@ namespace TaskSystem.Models.Objects
         public int ID { get; set; }
         public string Name { get; set; }
         public string Login { get; set; }
-        public IEnumerable<Task> CreatedTasks { get; set; }
-        public IEnumerable<TaskVersion> AcceptedTasks { get; set; }
     }
 }

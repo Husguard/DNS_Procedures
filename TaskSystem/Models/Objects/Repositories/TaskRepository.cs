@@ -1,41 +1,114 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 using TaskSystem.Models.Interfaces;
+using System.Threading.Tasks;
 
 namespace TaskSystem.Models.Objects.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        public List<Task> Tasks { get; set; }
-        public TaskRepository()
+        private readonly IConnectionDb _db;
+
+        public TaskRepository(IConnectionDb db)
         {
-            Tasks = new List<Task>();
+            _db = db;
         }
-        public Task GetTaskByID(int taskid)
+        public IEnumerable<WorkTask> GetTaskByID(int taskid)
         {
-            return Tasks.Find((task) => task.ID == taskid);
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetTaskByID", 
+                (reader) => CreateTask(reader), 
+                new SqlParameter("@TaskID", taskid));
         }
-        public IEnumerable<Task> GetAllTasks()
+        public IEnumerable<WorkTask> GetAllTasks()
         {
-            return Tasks;
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetAllTasks",
+                (reader) => CreateTask(reader));
         }
-        public IEnumerable<Task> GetTasksByStatus(Status status)
+        public IEnumerable<WorkTask> GetTasksByStatus(Status status)
         {
-            return Tasks.Where((task) => task.TaskVersions.Last().Status == status);
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetTaskByID", 
+                (reader) => CreateTask(reader), 
+                new SqlParameter("@StatusID", status));
         }
-        public IEnumerable<Task> GetTaskByVersion(int version)
+        public WorkTask GetTaskByVersion(int taskid, byte version)
         {
-            return Tasks.Where((task) => task.TaskVersions.Last().Version == version);
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetVersionOfTask", 
+                (reader) => CreateTask(reader), 
+                new SqlParameter("@TaskID", taskid), 
+                new SqlParameter("@Version", version)
+                ).First();
         }
-        public IEnumerable<Task> GetTaskByEmployee(Employee employee)
+        public IEnumerable<WorkTask> GetTasksByCreator(int creatorId)
         {
-            return Tasks.Where((task) => task.TaskVersions.Last().Performer == employee);
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetCreatorTasks",
+                (reader) => CreateTask(reader), 
+                new SqlParameter("@CreatorID", creatorId));
         }
-        public void AddNewTask(Task task)
+        public IEnumerable<WorkTask> GetTasksByPerformer(int performerId)
         {
-            Tasks.Add(task);
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetPerformerTasks",
+                (reader) => CreateTask(reader), 
+                new SqlParameter("@PerformerID", performerId));
+        }
+        public WorkTask GetLastVersionOfTask(int taskid)
+        {
+            return _db.ExecuteReader<WorkTask>(
+                "TaskProcedureGetLastVersionOfTask",
+                (reader) => CreateTask(reader),
+                new SqlParameter("@TaskID", taskid)
+                ).First();
+        }
+        public void AddNewTask(WorkTask task)
+        {
+            _db.ExecuteNonQuery(
+                "TaskProcedureAddTask",
+                new SqlParameter("@Name", task.Name),
+                new SqlParameter("@Description", task.Description),
+                new SqlParameter("@ThemeID", task.ThemeID),
+                new SqlParameter("@CreatorID", task.CreatorID),
+                new SqlParameter("@ExpireDate", task.ExpireDate));
+        }
+        public void AddTaskVersion(int moneyAward, Status statusId, int taskId, int performerID)
+        {
+            _db.ExecuteNonQuery(
+                "TaskProcedureAddTaskVersion",
+                new SqlParameter("@MoneyAward", moneyAward),
+                new SqlParameter("@StatusID", statusId),
+                new SqlParameter("@TaskID", taskId),
+                new SqlParameter("@PerformerID", performerID)
+                );
+        }
+        public void UpdatePerformerOfTask(int taskId, Status statusId, byte version)
+        {
+            _db.ExecuteNonQuery(
+                "TaskProcedureUpdateStatusOfTask",
+                new SqlParameter("@Version", version),
+                new SqlParameter("@StatusID", statusId),
+                new SqlParameter("@TaskID", taskId)
+                );
+        }
+        private WorkTask CreateTask(IDataReader reader)
+        {
+            return new WorkTask()
+            {
+                ID = (int)reader["TaskID"],
+                Name = (string)reader["Name"],
+                Description = (string)reader["Description"],
+                CreatorID = (int)reader["CreatorID"],
+        //        PerformerID = (int?)reader["PerformerID"], NULL
+                ThemeID = (int)reader["ThemeID"],
+                CreateDate = (DateTime)reader["CreateDate"],
+                ExpireDate = (DateTime)reader["ExpireDate"]
+            };
         }
     }
 }

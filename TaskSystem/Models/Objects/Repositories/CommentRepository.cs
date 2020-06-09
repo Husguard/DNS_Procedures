@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using TaskSystem.Models.Interfaces;
 
@@ -7,18 +9,41 @@ namespace TaskSystem.Models.Objects
 {
     public class CommentRepository : ICommentRepository
     {
-        public List<Comment> Comments { get; set; }
-        public IEnumerable<Comment> GetCommentsOfTask(Task task)
+        private readonly IConnectionDb _db;
+
+        public CommentRepository(IConnectionDb db)
         {
-            return Comments.Where((comment) => comment.Task == task);
+            _db = db;
         }
-        public IEnumerable<Comment> GetCommentsOfEmployee(Employee employee)
+        public IEnumerable<Comment> GetCommentsOfTask(int taskId)
         {
-            return Comments.Where((comment) => comment.Employee == employee);
+            return _db.ExecuteReader(
+               "TaskProcedureGetCommentsOfTask",
+               (reader) => CreateComment(reader),
+               new SqlParameter("@TaskID", taskId));
         }
-        public void AddCommentToTask(string message, Task task, Employee employee)
+        public IEnumerable<Comment> GetCommentsOfEmployee(int employeeId)
         {
-            Comments.Add(new Comment() { Message = message, Task = task, Employee = employee }); // стоит ли так делать?
+            return _db.ExecuteReader(
+              "TaskProcedureGetCommentsOfEmployee",
+              (reader) => CreateComment(reader),
+              new SqlParameter("@TaskID", employeeId));
+        }
+        public void AddCommentToTask(string message, int taskId, int employeeId)
+        {
+            _db.ExecuteNonQuery(
+                "TaskProcedureAddCommentToTask",
+                new SqlParameter("@TaskID", employeeId),
+                new SqlParameter("@EmployeeID", employeeId));
+        }
+        private Comment CreateComment(IDataReader reader)
+        {
+            return new Comment()
+            {
+                TaskID = (int)reader["TaskID"],
+                EmployeeID = (int)reader["CreatorID"],
+                Message = (string)reader["Message"]
+            };
         }
     }
 }

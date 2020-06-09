@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace TaskSystem.Models.Objects
 {
+    /// <summary>
+    /// Перечисление статусов
+    /// </summary>
     public enum Status
     {
         New = 1,

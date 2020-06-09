@@ -7,6 +7,9 @@ using TaskSystem.Models.Interfaces;
 
 namespace TaskSystem.Models.Objects
 {
+    /// <summary>
+    /// Репозиторий для получения и добавления комментариев
+    /// </summary>
     public class CommentRepository : ICommentRepository
     {
         private readonly IConnectionDb _db;
@@ -15,6 +18,11 @@ namespace TaskSystem.Models.Objects
         {
             _db = db;
         }
+        /// <summary>
+        /// Метод получения всех комментариев к определенному заданию
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
         public IEnumerable<Comment> GetCommentsOfTask(int taskId)
         {
             return _db.ExecuteReader(
@@ -22,6 +30,11 @@ namespace TaskSystem.Models.Objects
                (reader) => CreateComment(reader),
                new SqlParameter("@TaskID", taskId));
         }
+        /// <summary>
+        /// Метод получения всех комментариев от определенного работника
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
         public IEnumerable<Comment> GetCommentsOfEmployee(int employeeId)
         {
             return _db.ExecuteReader(
@@ -29,6 +42,12 @@ namespace TaskSystem.Models.Objects
               (reader) => CreateComment(reader),
               new SqlParameter("@TaskID", employeeId));
         }
+        /// <summary>
+        /// Добавление комментария к заданию от работника
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="taskId"></param>
+        /// <param name="employeeId"></param>
         public void AddCommentToTask(string message, int taskId, int employeeId)
         {
             _db.ExecuteNonQuery(
@@ -36,6 +55,11 @@ namespace TaskSystem.Models.Objects
                 new SqlParameter("@TaskID", employeeId),
                 new SqlParameter("@EmployeeID", employeeId));
         }
+        /// <summary>
+        /// Метод создания объекта из данных от БД
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private Comment CreateComment(IDataReader reader)
         {
             return new Comment()

@@ -52,6 +52,20 @@ namespace TaskSystem.Models.Interfaces
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
-        public void AddNewTask(WorkTask task);
+        void AddNewTask(WorkTask task);
+        /// <summary>
+        /// Изменение исполнителя у определенной версии определенного задания
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="statusId"></param>
+        /// <param name="version"></param>
+        void UpdatePerformerOfTask(int taskId, int employeeId, byte version);
+        /// <summary>
+        /// Изменение статуса у определенной версии определенного задания
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="statusId"></param>
+        /// <param name="version"></param>
+        void UpdateStatusOfTask(int taskId, Status statusId, byte version)
     }
 }

@@ -18,11 +18,5 @@ namespace TaskSystem.Models.Interfaces
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Theme> GetAllThemes();
-        /// <summary>
-        /// Получение всех тем по имени
-        /// </summary>
-        /// <param name="name">Название темы</param>
-        /// <returns></returns>
-        public IEnumerable<Theme> GetThemesByName(string name);
     }
 }

@@ -3,14 +3,7 @@
 -- Получение всех заданий и их версий
 CREATE PROCEDURE [dbo].[TaskProcedureGetAllTasks]
 AS
-	 SELECT TaskVersionID, 
-	 MoneyAward, 
-	 Version, 
-	 StatusID,
-	 TaskID,
-	 CreatorID,
-	 PerformerID,
-	 CreateDate,
-	 ThemeID FROM TaskFunctionGetAllTasksAndVersions()
+	 SELECT TaskVersionID,MoneyAward,Version,StatusID,TaskID,CreatorID,PerformerID,CreateDate,ThemeID 
+	 FROM TaskFunctionGetAllTasksAndVersions()
 GO
 

@@ -12,7 +12,7 @@ AS
 	 CreatorID,
 	 PerformerID,
 	 CreateDate,
-	 ThemeID FROM TaskFunctionGetAllTasksAndVersions() 
+	 ThemeID FROM TaskFunctionGetAllTasksAndLastVersions() 
 		WHERE PerformerID = @PerformerID
 GO
 

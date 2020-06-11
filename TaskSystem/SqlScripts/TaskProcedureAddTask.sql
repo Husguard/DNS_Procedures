@@ -8,8 +8,7 @@ CREATE PROCEDURE [dbo].[TaskProcedureAddTask]
 	@CreatorID INT,
 	@ExpireDate DATE
 AS
-	INSERT INTO TaskTask(Name, Description, ThemeID, CreatorID, CreateDate, ExpireDate) 
-			VALUES(@Name, @Description, @ThemeID, @CreatorID, GETDATE(), @ExpireDate)
-	 EXEC TaskProcedureAddTaskVersion NULL, 1, Scope_identity, NULL
+	INSERT INTO TaskTask(Name, Description, ThemeID, CreatorID, ExpireDate) 
+			VALUES(@Name, @Description, @ThemeID, @CreatorID, @ExpireDate)
+	 EXEC TaskProcedureAddTaskVersion NULL, 1, @@IDENTITY, NULL
 GO
-

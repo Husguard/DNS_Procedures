@@ -11,9 +11,9 @@ namespace TaskSystem.Models.Objects
     public enum Status
     {
         New = 1,
-        InWork,
-        Paused,
-        Completed,
-        Canceled
+        InWork = 2,
+        Paused = 3,
+        Completed = 4,
+        Canceled = 5
     }
 }

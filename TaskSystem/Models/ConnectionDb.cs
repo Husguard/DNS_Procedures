@@ -16,12 +16,12 @@ namespace TaskSystem.Models
     public class ConnectionDb : IConnectionDb
     {
         private readonly string _connectionName;
-        public ConnectionDb(ConnectionOptions options)
+        public ConnectionDb(IOptions<ConnectionStringOptions> options)
         {
-            _connectionName = options.DefaultConnection;
+            _connectionName = options.Value.DefaultConnection;
         }
         // централизовать подключение для reader и nonquery
-        public List<T> ExecuteReader<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)
+        public List<T> ExecuteReaderGetList<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)
         {
             var result = new List<T>();
             using (var connection = new SqlConnection(_connectionName))
@@ -44,7 +44,7 @@ namespace TaskSystem.Models
                 return result;
             }
         }
-        public void ExecuteNonQuery(string storedProcedure, params SqlParameter[] args)
+        public int ExecuteNonQuery(string storedProcedure, params SqlParameter[] args)
         {
             using (var connection = new SqlConnection(_connectionName))
             {
@@ -58,7 +58,26 @@ namespace TaskSystem.Models
                 {
                     command.Parameters.Add(dbParam);
                 }
-                command.ExecuteNonQuery();
+                return command.ExecuteNonQuery();
+            }
+        }
+        public T ExecuteReaderGetSingle<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)
+        {
+            using (var connection = new SqlConnection(_connectionName))
+            {
+                connection.Open();
+                var command = new SqlCommand(storedProcedure, connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                foreach (var dbParam in args)
+                {
+                    command.Parameters.Add(dbParam);
+                }
+                var reader = command.ExecuteReader();
+                reader.Read();
+                return readerFunc(reader);
             }
         }
     }

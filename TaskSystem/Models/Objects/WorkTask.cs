@@ -50,12 +50,16 @@ namespace TaskSystem.Models.Objects
         /// </summary>
         public decimal? MoneyAward { get; set; }
         /// <summary>
-        /// Дата создания задания?
+        /// Дата создания задания
         /// </summary>
         public DateTime CreateDate { get; set; }
         /// <summary>
         /// Дата завершения задания
         /// </summary>
         public DateTime ExpireDate { get; set; }
+        /// <summary>
+        /// Дата создания версии
+        /// </summary>
+        public DateTime CreateVersionDate { get; set; }
     }
 }

@@ -27,7 +27,8 @@ namespace TaskSystem.Models.Interfaces
         /// </summary>
         /// <param name="storedProcedure">Процедура, которую необходимо исполнить</param>
         /// <param name="args">Параметры процедуры</param>
-        void ExecuteNonQuery(string storedProcedure, params SqlParameter[] args);
+        /// <returns> Количество затронутых записей </returns>
+        int ExecuteNonQuery(string storedProcedure, params SqlParameter[] args);
         /// <summary>
         /// Метод исполнения процедуры БД, требующий чтения результата и создания одного объекта по делегату
         /// </summary>

@@ -28,9 +28,9 @@ namespace TaskSystem.Models.Objects
         /// <returns></returns>
         public IEnumerable<Comment> GetCommentsOfTask(int taskId)
         {
-            return _db.ExecuteReader(
+            return _db.ExecuteReaderGetList(
                "TaskProcedureGetCommentsOfTask",
-               (reader) => CreateComment(reader),
+               CommentFromReader,
                new SqlParameter("@TaskID", taskId));
         }
 
@@ -41,9 +41,9 @@ namespace TaskSystem.Models.Objects
         /// <returns></returns>
         public IEnumerable<Comment> GetCommentsOfEmployee(int employeeId)
         {
-            return _db.ExecuteReader(
+            return _db.ExecuteReaderGetList(
               "TaskProcedureGetCommentsOfEmployee",
-              (reader) => CreateComment(reader),
+              CommentFromReader,
               new SqlParameter("@TaskID", employeeId));
         }
         /// <summary>
@@ -64,7 +64,7 @@ namespace TaskSystem.Models.Objects
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        private Comment CreateComment(IDataReader reader)
+        private Comment CommentFromReader(IDataReader reader)
         {
             return new Comment()
             {

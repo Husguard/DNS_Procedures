@@ -36,16 +36,27 @@ namespace TaskSystem.Models.Objects
         /// <returns></returns>
         public IEnumerable<Theme> GetAllThemes()
         {
-            return _db.ExecuteReader<Theme>(
+            return _db.ExecuteReaderGetList<Theme>(
                 "TaskProcedureGetAllThemes",
-                (reader) => CreateTheme(reader));
+                ThemeFromReader);
+        }
+        /// <summary>
+        /// Получение тем, которые начинаются с введенной строки
+        /// </summary>
+        /// <param name="name">Часть названия темы</param>
+        /// <returns></returns>
+        public IEnumerable<Theme> GetThemesByName(string name)
+        {
+            return _db.ExecuteReaderGetList<Theme>(
+                "TaskProcedureGetThemesByName",
+                ThemeFromReader);
         }
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        private Theme CreateTheme(IDataReader reader)
+        private Theme ThemeFromReader(IDataReader reader)
         {
             return new Theme()
             {

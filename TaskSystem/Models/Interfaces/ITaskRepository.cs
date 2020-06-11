@@ -12,9 +12,15 @@ namespace TaskSystem.Models.Interfaces
         /// </summary>
         /// <returns></returns>
         IEnumerable<WorkTask> GetAllTasks();
+        /// <summary>
+        /// Получение последних версий заданий по статусу
+        /// </summary>
+        /// <param name="status">Статус</param>
+        /// <returns></returns>
+        IEnumerable<WorkTask> GetLastVersions();
 
         /// <summary>
-        /// Получение последней версии заданий по статусу
+        /// Получение последних версий заданий по статусу
         /// </summary>
         /// <param name="status">Статус</param>
         /// <returns></returns>

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using TaskSystem.Models;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects.Repositories;
+using TaskSystem.Models.Options;
 
 namespace TaskSystem
 {
@@ -24,17 +25,18 @@ namespace TaskSystem
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ConnectionStringOptions>((settings) =>
+            {
+                Configuration.GetSection("ConnectionStrings").Bind(settings);
+            });
             services.AddControllersWithViews();
             services.AddSingleton<IConnectionDb,ConnectionDb>();
             services.AddSingleton<ITaskRepository,TaskRepository>();
-            services.Configure<ConnectionOptions>(
-                (options) => Configuration.GetConnectionString("DefaultConnection")
-                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

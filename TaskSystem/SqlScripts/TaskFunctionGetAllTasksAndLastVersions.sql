@@ -1,6 +1,6 @@
--- Шевелев Максим
+-- РЁРµРІРµР»РµРІ РњР°РєСЃРёРј
 -- 09.06.2020
--- Получение всех заданий и их версий
+-- РџРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… Р·Р°РґР°РЅРёР№ Рё РёС… РІРµСЂСЃРёР№
 CREATE FUNCTION TaskFunctionGetAllTasksAndVersions ()
     RETURNS TABLE
     AS RETURN (SELECT ttt.TaskID, Version, TaskVersionID, MoneyAward, StatusID, CreatorID, PerformerID, CreateDate, ThemeID FROM 

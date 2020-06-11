@@ -13,11 +13,11 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор задания, с которым связан комментарий
         /// </summary>
-        public int TaskID { get; set; }
+        public int TaskId { get; set; }
         /// <summary>
         /// Идентификатор пользователя, который оставил комментарий
         /// </summary>
-        public int EmployeeID { get; set; }
+        public int EmployeeId { get; set; }
         /// <summary>
         /// Текст комментария
         /// </summary>

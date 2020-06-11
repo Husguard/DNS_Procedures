@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using TaskSystem.Models.Interfaces;
 
 namespace TaskSystem.Models.Objects
@@ -14,10 +12,15 @@ namespace TaskSystem.Models.Objects
     {
         private readonly IConnectionDb _db;
 
+        /// <summary>
+        /// Агрегация класса подключения к БД
+        /// </summary>
+        /// <param name="db">Класс подключения к БД</param>
         public CommentRepository(IConnectionDb db)
         {
             _db = db;
         }
+
         /// <summary>
         /// Метод получения всех комментариев к определенному заданию
         /// </summary>
@@ -30,6 +33,7 @@ namespace TaskSystem.Models.Objects
                (reader) => CreateComment(reader),
                new SqlParameter("@TaskID", taskId));
         }
+
         /// <summary>
         /// Метод получения всех комментариев от определенного работника
         /// </summary>
@@ -64,8 +68,8 @@ namespace TaskSystem.Models.Objects
         {
             return new Comment()
             {
-                TaskID = (int)reader["TaskID"],
-                EmployeeID = (int)reader["CreatorID"],
+                TaskId = (int)reader["TaskID"],
+                EmployeeId = (int)reader["CreatorID"],
                 Message = (string)reader["Message"]
             };
         }

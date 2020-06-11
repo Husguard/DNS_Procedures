@@ -8,15 +8,17 @@ using TaskSystem.Models.Objects;
 using TaskSystem.Models.Objects.Repositories;
 using TaskSystem.Models.Interfaces;
 using System.Globalization;
+using Microsoft.Extensions.Options;
+using TaskSystem.Models.Options;
 
 namespace TaskSystem.Models
 {
     public class ConnectionDb : IConnectionDb
     {
         private readonly string _connectionName;
-        public ConnectionDb()
+        public ConnectionDb(ConnectionOptions options)
         {
-            _connectionName = "Server=test-itweb-sql.partner.ru;Database=TaskManage;Trusted_Connection=True;";
+            _connectionName = options.DefaultConnection;
         }
         // централизовать подключение для reader и nonquery
         public List<T> ExecuteReader<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)

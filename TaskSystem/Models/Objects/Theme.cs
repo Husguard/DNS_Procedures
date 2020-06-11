@@ -13,7 +13,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор темы
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Название темы
         /// </summary>

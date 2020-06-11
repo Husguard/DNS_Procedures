@@ -16,7 +16,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор задания
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Название задания
         /// </summary>
@@ -28,11 +28,11 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор темы задания
         /// </summary>
-        public int ThemeID { get; set; }
+        public int ThemeId { get; set; }
         /// <summary>
         /// Идентификатор работника-создателя
         /// </summary>
-        public int CreatorID { get; set; }
+        public int CreatorId { get; set; }
         /// <summary>
         /// Версия задания, которая меняется при обновлении статуса
         /// </summary>
@@ -44,7 +44,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор исполнителя
         /// </summary>
-        public int? PerformerID { get; set; }
+        public int? PerformerId { get; set; }
         /// <summary>
         /// Количество денежных знаков
         /// </summary>
@@ -57,9 +57,5 @@ namespace TaskSystem.Models.Objects
         /// Дата завершения задания
         /// </summary>
         public DateTime ExpireDate { get; set; }
-        public WorkTask()
-        {
-
-        }
     }
 }

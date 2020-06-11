@@ -49,7 +49,7 @@ namespace TaskSystem.Models.Objects
         {
             return new Theme()
             {
-                ID = (int)reader["ID"],
+                Id = (int)reader["ID"],
                 Name = (string)reader["Name"]
             };
         }

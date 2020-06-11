@@ -11,61 +11,64 @@ namespace TaskSystem.Models.Interfaces
         /// Получение всех заданий и их версий
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<WorkTask> GetAllTasks();
+        IEnumerable<WorkTask> GetAllTasks();
+
         /// <summary>
         /// Получение последней версии заданий по статусу
         /// </summary>
         /// <param name="status">Статус</param>
         /// <returns></returns>
-        public IEnumerable<WorkTask> GetTasksByStatus(Status status);
+        IEnumerable<WorkTask> GetTasksByStatus(Status status);
+
         /// <summary>
         /// Получение определенной версии, определенного задания
         /// </summary>
         /// <param name="version">Версия задания</param>
+        /// <param name="taskId">Идентификатор задания</param>
         /// <returns></returns>
-        public WorkTask GetTaskByVersion(int taskid, byte version);
+        WorkTask GetTaskByVersion(int taskId, byte version);
+
         /// <summary>
         /// Получение заданий, у которых создатель выбранный работник
         /// </summary>
         /// <param name="creatorId">Создатель задания</param>
         /// <returns></returns>
-        public IEnumerable<WorkTask> GetTasksByCreator(int creatorId);
+        IEnumerable<WorkTask> GetTasksByCreator(int creatorId);
+
         /// <summary>
         /// Получение заданий, у которых исполнитель выбранный работник
         /// </summary>
         /// <param name="performerId">Исполнитель задания</param>
         /// <returns></returns>
-        public IEnumerable<WorkTask> GetTasksByPerformer(int performerId);
+        IEnumerable<WorkTask> GetTasksByPerformer(int performerId);
+
         /// <summary>
         /// Получение всех версий определенного задания
         /// </summary>
-        /// <param name="taskid">ID задания</param>
+        /// <param name="taskId">Идентификатор задания</param>
         /// <returns></returns>
-        public IEnumerable<WorkTask> GetTaskByID(int taskid);
+        IEnumerable<WorkTask> GetTaskByID(int taskId);
+
         /// <summary>
         /// Получение последней версии задания
         /// </summary>
-        /// <param name="taskId"></param>
+        /// <param name="taskId">Идентификатор задания</param>
         /// <returns></returns>
-        public WorkTask GetLastVersionOfTask(int taskId);
+        WorkTask GetLastVersionOfTask(int taskId);
+
         /// <summary>
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
         void AddNewTask(WorkTask task);
+
         /// <summary>
-        /// Изменение исполнителя у определенной версии определенного задания
+        /// Добавление новой версии задания
         /// </summary>
-        /// <param name="taskId"></param>
-        /// <param name="statusId"></param>
-        /// <param name="version"></param>
-        void UpdatePerformerOfTask(int taskId, int employeeId, byte version);
-        /// <summary>
-        /// Изменение статуса у определенной версии определенного задания
-        /// </summary>
-        /// <param name="taskId"></param>
-        /// <param name="statusId"></param>
-        /// <param name="version"></param>
-        void UpdateStatusOfTask(int taskId, Status statusId, byte version)
+        /// <param name="moneyAward">Денежная награда</param>
+        /// <param name="statusId">Идентификатор статуса</param>
+        /// <param name="taskId">Идентификатор задания</param>
+        /// <param name="performerID">Идентификатор исполнителя</param>
+        void AddTaskVersion(int moneyAward, Status statusId, int taskId, int performerID);
     }
 }

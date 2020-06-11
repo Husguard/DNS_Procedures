@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,7 +31,10 @@ namespace TaskSystem
         {
             services.AddControllersWithViews();
             services.AddSingleton<IConnectionDb,ConnectionDb>();
-            services.AddSingleton<TaskRepository>();
+            services.AddSingleton<ITaskRepository,TaskRepository>();
+            services.Configure<ConnectionOptions>(
+                (options) => Configuration.GetConnectionString("DefaultConnection")
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

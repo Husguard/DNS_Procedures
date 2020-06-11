@@ -13,7 +13,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор работника
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Имя работника
         /// </summary>

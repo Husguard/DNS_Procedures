@@ -25,7 +25,6 @@ namespace TaskSystem.Models.Objects
         /// Метод получения всех комментариев к определенному заданию
         /// </summary>
         /// <param name="taskId"></param>
-        /// <returns></returns>
         public IEnumerable<Comment> GetCommentsOfTask(int taskId)
         {
             return _db.ExecuteReaderGetList(
@@ -38,7 +37,6 @@ namespace TaskSystem.Models.Objects
         /// Метод получения всех комментариев от определенного работника
         /// </summary>
         /// <param name="employeeId"></param>
-        /// <returns></returns>
         public IEnumerable<Comment> GetCommentsOfEmployee(int employeeId)
         {
             return _db.ExecuteReaderGetList(
@@ -63,7 +61,6 @@ namespace TaskSystem.Models.Objects
         /// Метод создания объекта из данных от БД
         /// </summary>
         /// <param name="reader"></param>
-        /// <returns></returns>
         private Comment CommentFromReader(IDataReader reader)
         {
             return new Comment()

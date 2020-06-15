@@ -20,13 +20,11 @@ namespace TaskSystem.Models.Interfaces
         /// <summary>
         /// Получение всех тем
         /// </summary>
-        /// <returns></returns>
         IEnumerable<Theme> GetAllThemes();
         /// <summary>
         /// Получение тем, которые начинаются с введенной строки
         /// </summary>
         /// <param name="name">Часть названия темы</param>
-        /// <returns></returns>
         IEnumerable<Theme> GetThemesByName(string name);
     }
 }

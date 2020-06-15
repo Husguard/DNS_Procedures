@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace TaskSystem.Models.Objects
 {
     /// <summary>
-    /// Перечисление статусов
+    /// Перечисление статусов задания
     /// </summary>
-    public enum Status
+    public enum WorkTaskStatus : byte
     {
         New = 1,
         InWork = 2,

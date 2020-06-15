@@ -40,7 +40,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Статус задания
         /// </summary>
-        public Status Status { get; set; }
+        public WorkTaskStatus Status { get; set; }
         /// <summary>
         /// Идентификатор исполнителя
         /// </summary>

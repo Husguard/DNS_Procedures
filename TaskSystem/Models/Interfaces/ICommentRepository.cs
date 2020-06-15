@@ -14,14 +14,12 @@ namespace TaskSystem.Models.Interfaces
         /// Получение комментариев с задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <returns>IEnumerable<Comment></returns>
         IEnumerable<Comment> GetCommentsOfTask(int taskId);
 
         /// <summary>
         /// Получение комментариев работника со всех заданий
         /// </summary>
         /// <param name="employeeId">Идентификатор работника</param>
-        /// <returns>IEnumerable<Comment></returns>
         IEnumerable<Comment> GetCommentsOfEmployee(int employeeId);
 
         /// <summary>

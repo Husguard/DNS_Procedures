@@ -22,13 +22,12 @@ namespace TaskSystem.Models.Objects.Repositories
         public TaskRepository(IConnectionDb db)
         {
             _db = db;
-            var l = GetTasksByStatus(Status.Completed);
+            var l = GetTasksByStatus(WorkTaskStatus.Completed);
         }
         /// <summary>
         /// Метод получения всех версий определенного задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <returns></returns>
         public IEnumerable<WorkTask> GetTaskByID(int taskId)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
@@ -36,34 +35,34 @@ namespace TaskSystem.Models.Objects.Repositories
                 WorkTaskFromReader,
                 new SqlParameter("@TaskID", taskId));
         }
+
         /// <summary>
         /// Метод получения всех заданий и их версий
         /// </summary>
-        /// <returns></returns>
         public IEnumerable<WorkTask> GetAllTasks()
         {
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetAllTasks",
                 WorkTaskFromReader);
         }
+
         /// <summary>
         /// Метод получения последних версий заданий, у которых определенный статус
         /// </summary>
         /// <param name="status">Номер статуса</param>
-        /// <returns></returns>
-        public IEnumerable<WorkTask> GetTasksByStatus(Status status)
+        public IEnumerable<WorkTask> GetTasksByStatus(WorkTaskStatus status)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetTaskByStatus",
                 WorkTaskFromReader,
                 new SqlParameter("@StatusID", status));
         }
+
         /// <summary>
         /// Метод получения определенного задания определенной версии
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="version">Версия задания</param>
-        /// <returns></returns>
         public WorkTask GetTaskByVersion(int taskId, byte version)
         {
             return _db.ExecuteReaderGetSingle<WorkTask>(
@@ -73,11 +72,11 @@ namespace TaskSystem.Models.Objects.Repositories
                 new SqlParameter("@Version", version)
                 );
         }
+
         /// <summary>
         /// Метод получения всех заданий, созданных определенным работником
         /// </summary>
         /// <param name="creatorId"></param>
-        /// <returns></returns>
         public IEnumerable<WorkTask> GetTasksByCreator(int creatorId)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
@@ -85,11 +84,11 @@ namespace TaskSystem.Models.Objects.Repositories
                 WorkTaskFromReader,
                 new SqlParameter("@CreatorID", creatorId));
         }
+
         /// <summary>
         /// Метод получения всех заданий, выполняемых определенным работником
         /// </summary>
         /// <param name="performerId"></param>
-        /// <returns></returns>
         public IEnumerable<WorkTask> GetTasksByPerformer(int performerId)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
@@ -101,7 +100,6 @@ namespace TaskSystem.Models.Objects.Repositories
         /// Метод получения последней версии определенного задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <returns></returns>
         public WorkTask GetLastVersionOfTask(int taskId)
         {
             return _db.ExecuteReaderGetSingle<WorkTask>(
@@ -110,6 +108,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 new SqlParameter("@TaskID", taskId)
                 );
         }
+
         /// <summary>
         /// Добавление нового задания
         /// </summary>
@@ -124,6 +123,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 new SqlParameter("@CreatorID", task.CreatorId),
                 new SqlParameter("@ExpireDate", task.ExpireDate));
         }
+
         /// <summary>
         /// Добавление новой версии задания
         /// </summary>
@@ -131,7 +131,7 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <param name="statusId">Идентификатор статуса</param>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="performerID">Идентификатор исполнителя</param>
-        public void AddTaskVersion(int moneyAward, Status statusId, int taskId, int performerID)
+        public void AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
         {
             _db.ExecuteNonQuery(
                 "TaskProcedureAddTaskVersion",
@@ -141,6 +141,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 new SqlParameter("@PerformerID", performerID)
                 );
         }
+
         public IEnumerable<WorkTask> GetLastVersions()
         {
             return _db.ExecuteReaderGetList<WorkTask>(
@@ -148,11 +149,11 @@ namespace TaskSystem.Models.Objects.Repositories
                 WorkTaskFromReader
                 );
         }
+
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
         /// <param name="reader">Поток чтения данных из БД</param>
-        /// <returns></returns>
         private WorkTask WorkTaskFromReader(IDataReader reader)
         {
             return new WorkTask()

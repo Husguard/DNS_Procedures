@@ -1,7 +1,7 @@
 -- Шевелев Максим
 -- 09.06.2020
 -- Получение всех заданий и их версий
-CREATE FUNCTION TaskFunctionGetAllTasksAndVersions ()
+CREATE FUNCTION TaskFunctionGetAllTasksAndLastVersions ()
     RETURNS TABLE
     AS RETURN (SELECT ttt.TaskID, Version, TaskVersionID, MoneyAward, StatusID, CreatorID, PerformerID, CreateDate, ThemeID FROM 
 		(SELECT ttv.TaskID, MAX(ttv.Version) AS LastVersion 

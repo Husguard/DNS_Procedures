@@ -4,6 +4,6 @@
 CREATE PROCEDURE [dbo].[TaskProcedureGetAllTasks]
 AS
 	 SELECT TaskVersionID,MoneyAward,Version,StatusID,TaskID,CreatorID,PerformerID,CreateDate,ThemeID 
-	 FROM TaskFunctionGetAllTasksAndVersions()
+	 FROM TaskFunctionGetAllTasksAndLastVersions()
 GO
 

@@ -9,4 +9,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Services\Interfaces\" />
+    <Folder Include="Models\Services\Implementations\" />
+  </ItemGroup>
+
 </Project>

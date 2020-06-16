@@ -30,6 +30,7 @@ namespace TaskSystem.Models.Objects
                new SqlParameter("@Name", name)
                );
         }
+
         /// <summary>
         /// Метод получения всех тем
         /// </summary>
@@ -39,6 +40,7 @@ namespace TaskSystem.Models.Objects
                 "TaskProcedureGetAllThemes",
                 ThemeFromReader);
         }
+
         /// <summary>
         /// Получение тем, которые начинаются с введенной строки
         /// </summary>
@@ -49,10 +51,11 @@ namespace TaskSystem.Models.Objects
                 "TaskProcedureGetThemesByName",
                 ThemeFromReader);
         }
+
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="reader">Поток чтения данных из БД</param>
         private Theme ThemeFromReader(IDataReader reader)
         {
             return new Theme()

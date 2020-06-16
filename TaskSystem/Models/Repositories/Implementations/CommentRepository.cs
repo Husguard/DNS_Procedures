@@ -60,7 +60,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="reader">Поток чтения данных</param>
         private Comment CommentFromReader(IDataReader reader)
         {
             return new Comment()

@@ -14,10 +14,12 @@ namespace TaskSystem.Models.Objects
         /// Идентификатор работника
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// Имя работника
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// Уникальный логин работника
         /// </summary>

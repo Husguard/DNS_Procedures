@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 
@@ -26,12 +27,13 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Получение всех тем
         /// </summary>
-        public ServiceResponseGeneric<IEnumerable<Theme>> GetAllThemes()
+        public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetAllThemes()
         {
             return ExecuteWithCatch(() =>
             {
                 var themes = _themeRepository.GetAllThemes();
-                return ServiceResponseGeneric<IEnumerable<Theme>>.Success(themes);
+                return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Success(
+                    themes.Select((theme) => new ThemeDto(theme)));
             });
         }
 
@@ -39,14 +41,15 @@ namespace TaskSystem.Models.Services
         /// Получение всех тем, название которых начинается с ввода
         /// </summary>
         /// <param name="name">Название темы</param>
-        public ServiceResponseGeneric<IEnumerable<Theme>> GetThemesByName(string name)
+        public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetThemesByName(string name)
         {
             return ExecuteWithCatch(() =>
             {
                 if (ThemeIsTooLong(name))
-                    return ServiceResponseGeneric<IEnumerable<Theme>>.Warning(ThemeTooLong);
+                    return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Warning(ThemeTooLong);
                 var themes = _themeRepository.GetThemesByName(name);
-                return ServiceResponseGeneric<IEnumerable<Theme>>.Success(themes);
+                return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Success(
+                    themes.Select((theme) => new ThemeDto(theme)));
             });
         }
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 
@@ -27,14 +28,15 @@ namespace TaskSystem.Models.Services
         /// Получение всех комментариев задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        public ServiceResponseGeneric<IEnumerable<Comment>> GetCommentsOfTask(int taskId)
+        public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId)
         {
             return ExecuteWithCatch(() =>
             {
                 if (TaskIsNotExists(taskId))
-                    return ServiceResponseGeneric<IEnumerable<Comment>>.Warning(WorkTaskNotFound);
+                    return ServiceResponseGeneric<IEnumerable<CommentDto>>.Warning(WorkTaskNotFound);
                 var taskComments = _commentRepository.GetCommentsOfTask(taskId);
-                return ServiceResponseGeneric<IEnumerable<Comment>>.Success(taskComments);
+                return ServiceResponseGeneric<IEnumerable<CommentDto>>.Success(
+                    taskComments.Select((comment) => new CommentDto(comment)));
             });
         }
 
@@ -42,14 +44,15 @@ namespace TaskSystem.Models.Services
         /// Получение всех комментариев от работника
         /// </summary>
         /// <param name="employeeId">Идентификатор работника</param>
-        public ServiceResponseGeneric<IEnumerable<Comment>> GetCommentsOfEmployee(int employeeId)
+        public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId)
         {
             return ExecuteWithCatch(() =>
             {
                 if (EmployeeIsNotExists(employeeId))
-                    return ServiceResponseGeneric<IEnumerable<Comment>>.Warning(EmployeeNotFound);
+                    return ServiceResponseGeneric<IEnumerable<CommentDto>>.Warning(EmployeeNotFound);
                 var employeeComments = _commentRepository.GetCommentsOfEmployee(employeeId);
-                return ServiceResponseGeneric<IEnumerable<Comment>>.Success(employeeComments);
+                return ServiceResponseGeneric<IEnumerable<CommentDto>>.Success(
+                    employeeComments.Select((comment) => new CommentDto(comment)));
             });
         }
 

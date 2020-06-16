@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskSystem.Dto;
 using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Services
@@ -14,13 +15,13 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Получение всех тем
         /// </summary>
-        ServiceResponseGeneric<IEnumerable<Theme>> GetAllThemes();
+        ServiceResponseGeneric<IEnumerable<ThemeDto>> GetAllThemes();
 
         /// <summary>
         /// Получение всех тем, название которых начинается с ввода
         /// </summary>
         /// <param name="name">Название темы</param>
-        ServiceResponseGeneric<IEnumerable<Theme>> GetThemesByName(string name);
+        ServiceResponseGeneric<IEnumerable<ThemeDto>> GetThemesByName(string name);
 
         /// <summary>
         /// Добавление новой темы

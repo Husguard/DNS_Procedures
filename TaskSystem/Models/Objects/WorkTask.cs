@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 
 namespace TaskSystem.Models.Objects
@@ -72,5 +73,29 @@ namespace TaskSystem.Models.Objects
         /// Дата создания версии
         /// </summary>
         public DateTime CreateVersionDate { get; set; }
+
+        /// <summary>
+        /// Конвертация из модели данных в объект бизнес-модели
+        /// </summary>
+        /// <param name="workTaskDto">Объект данных задания</param>
+        public WorkTask(WorkTaskDto workTaskDto) 
+        {
+            Id = workTaskDto.Id;
+            Name = workTaskDto.Name;
+            Description = workTaskDto.Description;
+            ThemeId = workTaskDto.ThemeId;
+            CreateDate = workTaskDto.CreateDate;
+            CreateVersionDate = workTaskDto.CreateVersionDate;
+            ExpireDate = workTaskDto.ExpireDate;
+            Status = workTaskDto.Status;
+            CreatorId = workTaskDto.CreatorId;
+            PerformerId = workTaskDto.PerformerId;
+            MoneyAward = workTaskDto.MoneyAward;
+            Version = workTaskDto.Version;
+        }
+        public WorkTask() // нужна перегрузка для чтения данных из бд
+        {
+
+        }
     }
 }

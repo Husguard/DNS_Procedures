@@ -22,6 +22,7 @@ namespace TaskSystem.Models.Objects.Repositories
         {
             _db = db;
         }
+
         /// <summary>
         /// Получение списка всех работников
         /// </summary>

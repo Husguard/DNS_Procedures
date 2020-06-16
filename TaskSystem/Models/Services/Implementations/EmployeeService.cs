@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services.Interfaces;
@@ -28,12 +27,13 @@ namespace TaskSystem.Models.Services.Implementations
         /// <summary>
         /// Получение всех работников
         /// </summary>
-        public ServiceResponseGeneric<IEnumerable<Employee>> GetAllEmployees()
+        public ServiceResponseGeneric<IEnumerable<EmployeeDto>> GetAllEmployees()
         {
             return ExecuteWithCatch(() =>
             {
                 var employees = _employeeRepository.GetAllEmployees();
-                return ServiceResponseGeneric<IEnumerable<Employee>>.Success(employees);
+                return ServiceResponseGeneric<IEnumerable<EmployeeDto>>.Success(
+                    employees.Select((employee) => new EmployeeDto(employee)));
             });
         }
 
@@ -41,14 +41,14 @@ namespace TaskSystem.Models.Services.Implementations
         /// Получение объекта работника, у которого введенный логин
         /// </summary>
         /// <param name="login">Логин работника</param>
-        public ServiceResponseGeneric<Employee> GetEmployeeByLogin(string login)
+        public ServiceResponseGeneric<EmployeeDto> GetEmployeeByLogin(string login)
         {
-            return ExecuteWithCatch<Employee>(() =>
+            return ExecuteWithCatch(() =>
             {
                 if (LoginIsTooLong(login))
-                    return ServiceResponseGeneric<Employee>.Warning(LoginTooLong);
+                    return ServiceResponseGeneric<EmployeeDto>.Warning(LoginTooLong);
                 var employee = _employeeRepository.GetEmployeeByLogin(login);
-                return ServiceResponseGeneric<Employee>.Success(employee);
+                return ServiceResponseGeneric<EmployeeDto>.Success(new EmployeeDto(employee));
             });
         }
 
@@ -62,7 +62,7 @@ namespace TaskSystem.Models.Services.Implementations
             {
                 if (NameIsTooLong(employee.Name))
                     return ServiceResponse.Warning(NameTooLong);
-                if(LoginIsTooLong(employee.Login))
+                if (LoginIsTooLong(employee.Login))
                     return ServiceResponse.Warning(LoginTooLong);
                 if (LoginIsAlreadyExists(employee.Login))
                     return ServiceResponse.Warning(LoginAlreadyExists);
@@ -75,12 +75,12 @@ namespace TaskSystem.Models.Services.Implementations
         /// Получение объекта работника по идентификатору
         /// </summary>
         /// <param name="employeeId">Идентификатор работника</param>
-        public ServiceResponseGeneric<Employee> GetEmployeeById(int employeeId)
+        public ServiceResponseGeneric<EmployeeDto> GetEmployeeById(int employeeId)
         {
-            return ExecuteWithCatch<Employee>(() =>
+            return ExecuteWithCatch(() =>
             {
                 var employee = _employeeRepository.GetEmployeeById(employeeId);
-                return ServiceResponseGeneric<Employee>.Success(employee);
+                return ServiceResponseGeneric<EmployeeDto>.Success(new EmployeeDto(employee));
             });
         }
 

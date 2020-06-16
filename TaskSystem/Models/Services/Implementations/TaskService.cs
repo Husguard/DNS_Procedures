@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 
@@ -16,6 +17,9 @@ namespace TaskSystem.Models.Services
         private const string EmployeeNotCreator = "Только создатель задания может отменить задание";
         private const string EmployeeNotPerformer = "Только исполнитель задания может приостанавливать, отменять и выполнять задание";
         private const string MoneyValueNegative = "Денежная награда должна быть больше нуля";
+        private const string ThemeNotExists = "Выбранной темы не существует, добавьте ее";
+        private const string CanceledTask = "У отмененного задания нельзя изменить статус";
+        private const string NotAllowedToChange = "Вы можете только принять задание";
 
         private readonly ITaskRepository _taskRepository;
 
@@ -28,12 +32,13 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Метод получения последних версий всех заданий
         /// </summary>
-        public ServiceResponseGeneric<IEnumerable<WorkTask>> GetLastVersions()
+        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetLastVersions()
         {
             return ExecuteWithCatch(() =>
             {
                 var workTasks = _taskRepository.GetLastVersions();
-                return ServiceResponseGeneric<IEnumerable<WorkTask>>.Success(workTasks);
+                return ServiceResponseGeneric<IEnumerable<WorkTaskDto>>.Success(
+                    workTasks.Select((task) => new WorkTaskDto(task)));
             });
         }
 
@@ -41,13 +46,14 @@ namespace TaskSystem.Models.Services
         /// Метод получения последних версий заданий, у которых выбранный статус
         /// </summary>
         /// <param name="statusId"></param>
-        public ServiceResponseGeneric<IEnumerable<WorkTask>> GetTasksByStatus(WorkTaskStatus statusId)
+        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus statusId)
         {
             // поиск существования статуса
             return ExecuteWithCatch(() =>
             {
                 var workTasks = _taskRepository.GetTasksByStatus(statusId);
-                return ServiceResponseGeneric<IEnumerable<WorkTask>>.Success(workTasks);
+                return ServiceResponseGeneric<IEnumerable<WorkTaskDto>>.Success(
+                    workTasks.Select((task) => new WorkTaskDto(task)));
             });
         }
 
@@ -55,20 +61,19 @@ namespace TaskSystem.Models.Services
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
-        public ServiceResponse AddNewTask(WorkTask task)
+        public ServiceResponse AddNewTask(WorkTaskDto task)
         {
-            // проверка корректности вводимых значений в задании
             return ExecuteWithCatch(() =>
             {
-                _taskRepository.AddNewTask(task);
+                _taskRepository.AddNewTask(new WorkTask(task));
                 return ServiceResponse.Success();
             });
+            
         }
 
         /// <summary>
         /// Добавление новой версии задания, при принятии задания меняется только 
         /// награда от нового исполнителя, при других статусах используются старые значения
-        /// ввиду этого нужна перегрузка метода
         /// </summary>
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
@@ -76,17 +81,17 @@ namespace TaskSystem.Models.Services
         /// <param name="performerId">Идентификатор исполнителя</param>
         public ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerId)
         {
-            // проверка корректности вводимых значений и существования задания
-            // проверка доступности действий с заданием(отмененное не взять в работу и тп)
             return ExecuteWithCatch(() =>
             {
                 if (MoneyIsNegative(moneyAward))
                     return ServiceResponse.Warning(MoneyValueNegative);
-                if(statusId == WorkTaskStatus.InWork)
-
-                if(statusId == WorkTaskStatus.Canceled)
-                    if(EmployeeIsNotCreator(taskId, performerId))
-                        return ServiceResponse.Warning(EmployeeNotCreator);
+                var task = _taskRepository.GetLastVersionOfTask(taskId);
+                if (task == null)
+                    return ServiceResponse.Warning(WorkTaskNotFound);
+                if (task.Status == WorkTaskStatus.Canceled)
+                    return ServiceResponse.Warning(CanceledTask);
+                if(task.CreatorId != performerId || task.PerformerId != performerId || task.PerformerId != null)
+                    return ServiceResponse.Warning(NotAllowedToChange);
                 _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, performerId);
                 return ServiceResponse.Success();
             });
@@ -96,12 +101,13 @@ namespace TaskSystem.Models.Services
         /// Получение всех версий задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        public ServiceResponseGeneric<IEnumerable<WorkTask>> GetTaskByID(int taskId)
+        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTaskByID(int taskId)
         {
             return ExecuteWithCatch(() =>
             {
                 var taskVersions = _taskRepository.GetTaskByID(taskId);
-                return ServiceResponseGeneric<IEnumerable<WorkTask>>.Success(taskVersions);
+                return ServiceResponseGeneric<IEnumerable<WorkTaskDto>>.Success(
+                    taskVersions.Select((task) => new WorkTaskDto(task)));
             });
         }
 
@@ -109,12 +115,12 @@ namespace TaskSystem.Models.Services
         /// Получение последней версии задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        public ServiceResponseGeneric<WorkTask> GetLastVersionOfTask(int taskId)
+        public ServiceResponseGeneric<WorkTaskDto> GetLastVersionOfTask(int taskId)
         {
             return ExecuteWithCatch(() =>
             {
                 var taskVersion = _taskRepository.GetLastVersionOfTask(taskId);
-                return ServiceResponseGeneric<WorkTask>.Success(taskVersion);
+                return ServiceResponseGeneric<WorkTaskDto>.Success(new WorkTaskDto(taskVersion));
             });
         }
 

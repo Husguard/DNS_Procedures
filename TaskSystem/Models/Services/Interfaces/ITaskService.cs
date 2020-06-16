@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaskSystem.Dto;
 using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services;
 
@@ -14,25 +15,25 @@ namespace TaskSystem.Models.Interfaces
         /// <summary>
         /// Метод получения последних версий всех заданий
         /// </summary>
-        ServiceResponseGeneric<IEnumerable<WorkTask>> GetLastVersions();
+        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetLastVersions();
 
         /// <summary>
         /// Метод получения последних версий заданий, у которых выбранный статус
         /// </summary>
         /// <param name="statusId"></param>
-        ServiceResponseGeneric<IEnumerable<WorkTask>> GetTasksByStatus(WorkTaskStatus status);
+        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus status);
 
         /// <summary>
         /// Получение всех версий задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponseGeneric<IEnumerable<WorkTask>> GetTaskByID(int taskId);
+        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTaskByID(int taskId);
 
         /// <summary>
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
-        ServiceResponse AddNewTask(WorkTask task);
+        ServiceResponse AddNewTask(WorkTaskDto task);
 
         /// <summary>
         /// Добавление новой версии задания, при принятии задания меняется только 
@@ -49,6 +50,6 @@ namespace TaskSystem.Models.Interfaces
         /// Получение последней версии задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponseGeneric<WorkTask> GetLastVersionOfTask(int taskId);
+        ServiceResponseGeneric<WorkTaskDto> GetLastVersionOfTask(int taskId);
     }
 }

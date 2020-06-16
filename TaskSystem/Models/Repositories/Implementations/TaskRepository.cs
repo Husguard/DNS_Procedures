@@ -23,7 +23,7 @@ namespace TaskSystem.Models.Objects.Repositories
         public TaskRepository(IConnectionDb db)
         {
             _db = db;
-            var l = GetTasksByStatus(WorkTaskStatus.Completed);
+            var l = GetTasksByStatus(WorkTaskStatus.New);
         }
         /// <summary>
         /// Метод получения всех версий определенного задания
@@ -54,7 +54,7 @@ namespace TaskSystem.Models.Objects.Repositories
         public IEnumerable<WorkTask> GetTasksByStatus(WorkTaskStatus status)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
-                "TaskProcedureGetTaskByStatus",
+                "TaskProcedureGetTasksByStatus",
                 WorkTaskFromReader,
                 new SqlParameter("@StatusID", status));
         }
@@ -165,7 +165,7 @@ namespace TaskSystem.Models.Objects.Repositories
             return new WorkTask()
             {
                 Id = (int)reader["TaskID"],
-                Name = (string)reader["Name"],
+                Name = (string)reader["TaskName"],
                 Description = (string)reader["Description"],
                 CreatorId = (int)reader["CreatorID"],
                 PerformerId = reader["PerformerID"] as int?,

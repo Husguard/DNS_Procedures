@@ -6,8 +6,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Objects;
 
-namespace TaskSystem.Models.Objects
+namespace TaskSystem.Dto
 {
     /// <summary>
     /// Модель DTO для задания и его состояния
@@ -24,13 +25,14 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Название задания
         /// </summary>
-        [DataMember(Name = "name")]
+        [DataMember(Name = "taskName")]
         public string Name { get; set; }
 
         /// <summary>
         /// Описание задания
         /// </summary>
         [DataMember(Name = "description")]
+        [StringLength(300, ErrorMessage = "Описание не может быть длинее 300 символов")]
         public string Description { get; set; }
 
         /// <summary>
@@ -87,12 +89,25 @@ namespace TaskSystem.Models.Objects
         [DataMember(Name = "createVersionDate")]
         public DateTime CreateVersionDate { get; set; }
 
+        /// <summary>
+        /// Конвертация модели бизнес-логики в модель данных
+        /// </summary>
+        /// <param name="workTask">Объект задания</param>
+        /// некоторые поля убрать бы
         public WorkTaskDto(WorkTask workTask)
         {
             Id = workTask.Id;
             Name = workTask.Name;
-            Status = workTask.Status;
+            Description = workTask.Description;
+            ThemeId = workTask.ThemeId;
+            CreateDate = workTask.CreateDate;
+            CreateVersionDate = workTask.CreateVersionDate;
             ExpireDate = workTask.ExpireDate;
+            Status = workTask.Status;
+            CreatorId = workTask.CreatorId;
+            PerformerId = workTask.PerformerId;
+            MoneyAward = workTask.MoneyAward;
+            Version = workTask.Version;
         }
     }
 }

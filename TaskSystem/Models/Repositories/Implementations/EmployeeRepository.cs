@@ -36,13 +36,24 @@ namespace TaskSystem.Models.Objects.Repositories
         /// Получение работника по логину
         /// </summary>
         /// <param name="login">Логин работника</param>
-        /// <returns></returns>
         public Employee GetEmployeeByLogin(string login)
         {
             return _db.ExecuteReaderGetSingle<Employee>(
                 "TaskProcedureGetEmployeeByLogin",
                 EmployeeFromReader,
                 new SqlParameter("@Login", login));
+        }
+
+        /// <summary>
+        /// Получение работника по идентификатору
+        /// </summary>
+        /// <param name="employeeId">Идентификатор работника</param>
+        public Employee GetEmployeeById(int employeeId)
+        {
+            return _db.ExecuteReaderGetSingle<Employee>(
+                "TaskProcedureGetEmployeeByID",
+                EmployeeFromReader,
+                new SqlParameter("@EmployeeID", employeeId));
         }
 
         /// <summary>
@@ -58,6 +69,10 @@ namespace TaskSystem.Models.Objects.Repositories
                );
         }
 
+        /// <summary>
+        /// Метод создания объекта работника из потока данных
+        /// </summary>
+        /// <param name="reader"></param>
         public Employee EmployeeFromReader(IDataReader reader)
         {
             return new Employee()

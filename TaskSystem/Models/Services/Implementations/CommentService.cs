@@ -14,12 +14,13 @@ namespace TaskSystem.Models.Services
     public class CommentService : BaseService, ICommentService
     {
         private readonly ICommentRepository _commentRepository;
-        private readonly ILogger _logger;
 
-        public CommentService(ICommentRepository commentRepository, ILogger logger)
+        private const string CommentTooLong = "Комментарий слишком длинный, ограничение в 300 символов";
+
+        public CommentService(ICommentRepository commentRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
+            : base(taskRepository, employeeRepository, logger)
         {
             _commentRepository = commentRepository;
-            _logger = logger;
         }
 
         /// <summary>
@@ -28,8 +29,10 @@ namespace TaskSystem.Models.Services
         /// <param name="taskId">Идентификатор задания</param>
         public ServiceResponseGeneric<IEnumerable<Comment>> GetCommentsOfTask(int taskId)
         {
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
+                if (TaskIsNotExists(taskId))
+                    return ServiceResponseGeneric<IEnumerable<Comment>>.Warning(WorkTaskNotFound);
                 var taskComments = _commentRepository.GetCommentsOfTask(taskId);
                 return ServiceResponseGeneric<IEnumerable<Comment>>.Success(taskComments);
             });
@@ -41,9 +44,10 @@ namespace TaskSystem.Models.Services
         /// <param name="employeeId">Идентификатор работника</param>
         public ServiceResponseGeneric<IEnumerable<Comment>> GetCommentsOfEmployee(int employeeId)
         {
-            // проверка существования работника
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
+                if (EmployeeIsNotExists(employeeId))
+                    return ServiceResponseGeneric<IEnumerable<Comment>>.Warning(EmployeeNotFound);
                 var employeeComments = _commentRepository.GetCommentsOfEmployee(employeeId);
                 return ServiceResponseGeneric<IEnumerable<Comment>>.Success(employeeComments);
             });
@@ -57,12 +61,31 @@ namespace TaskSystem.Models.Services
         /// <param name="employeeId">Идентификатор работника</param>
         public ServiceResponse AddCommentToTask(string message, int taskId, int employeeId)
         {
-            // проверка строки, существования задания, существования работника
             return ExecuteWithCatch(() =>
             {
+                if (CommentIsTooLong(message))
+                    return ServiceResponse.Warning(CommentTooLong);
+                if (TaskIsNotExists(taskId))
+                    return ServiceResponse.Warning(WorkTaskNotFound);
+                if (EmployeeIsNotExists(employeeId))
+                    return ServiceResponse.Warning(EmployeeNotFound);
                 _commentRepository.AddCommentToTask(message, taskId, employeeId);
                 return ServiceResponse.Success();
             });
+        }
+        
+        /// <summary>
+        /// Метод проверки длины введенного комментария
+        /// </summary>
+        /// <param name="message">Комментарий</param>
+        private bool CommentIsTooLong(string message)
+        {
+            if(message.Length > 100)
+            {
+                _logger.LogWarning("Message with Length = {0} is incorrect", message.Length);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -13,16 +13,16 @@ namespace TaskSystem.Models.Services
     /// </summary>
     public class TaskService : BaseService, ITaskService
     {
-        /// <summary>
-        /// Репозиторий заданий и логгер
-        /// </summary>
-        private readonly ITaskRepository _taskRepository;
-        private readonly ILogger _logger;
+        private const string EmployeeNotCreator = "Только создатель задания может отменить задание";
+        private const string EmployeeNotPerformer = "Только исполнитель задания может приостанавливать, отменять и выполнять задание";
+        private const string MoneyValueNegative = "Денежная награда должна быть больше нуля";
 
-        public TaskService(ITaskRepository taskRepository, ILogger logger)
+        private readonly ITaskRepository _taskRepository;
+
+        public TaskService(ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
+            : base(taskRepository, employeeRepository, logger)
         {
             _taskRepository = taskRepository;
-            _logger = logger;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TaskSystem.Models.Services
         /// </summary>
         public ServiceResponseGeneric<IEnumerable<WorkTask>> GetLastVersions()
         {
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
                 var workTasks = _taskRepository.GetLastVersions();
                 return ServiceResponseGeneric<IEnumerable<WorkTask>>.Success(workTasks);
@@ -44,7 +44,7 @@ namespace TaskSystem.Models.Services
         public ServiceResponseGeneric<IEnumerable<WorkTask>> GetTasksByStatus(WorkTaskStatus statusId)
         {
             // поиск существования статуса
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
                 var workTasks = _taskRepository.GetTasksByStatus(statusId);
                 return ServiceResponseGeneric<IEnumerable<WorkTask>>.Success(workTasks);
@@ -73,14 +73,21 @@ namespace TaskSystem.Models.Services
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <param name="performerID">Идентификатор исполнителя</param>
-        public ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
+        /// <param name="performerId">Идентификатор исполнителя</param>
+        public ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerId)
         {
             // проверка корректности вводимых значений и существования задания
             // проверка доступности действий с заданием(отмененное не взять в работу и тп)
             return ExecuteWithCatch(() =>
             {
-                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, performerID);
+                if (MoneyIsNegative(moneyAward))
+                    return ServiceResponse.Warning(MoneyValueNegative);
+                if(statusId == WorkTaskStatus.InWork)
+
+                if(statusId == WorkTaskStatus.Canceled)
+                    if(EmployeeIsNotCreator(taskId, performerId))
+                        return ServiceResponse.Warning(EmployeeNotCreator);
+                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, performerId);
                 return ServiceResponse.Success();
             });
         }
@@ -91,7 +98,7 @@ namespace TaskSystem.Models.Services
         /// <param name="taskId">Идентификатор задания</param>
         public ServiceResponseGeneric<IEnumerable<WorkTask>> GetTaskByID(int taskId)
         {
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
                 var taskVersions = _taskRepository.GetTaskByID(taskId);
                 return ServiceResponseGeneric<IEnumerable<WorkTask>>.Success(taskVersions);
@@ -104,11 +111,35 @@ namespace TaskSystem.Models.Services
         /// <param name="taskId">Идентификатор задания</param>
         public ServiceResponseGeneric<WorkTask> GetLastVersionOfTask(int taskId)
         {
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
                 var taskVersion = _taskRepository.GetLastVersionOfTask(taskId);
                 return ServiceResponseGeneric<WorkTask>.Success(taskVersion);
             });
+        }
+
+        private bool MoneyIsNegative(decimal money)
+        {
+            if (money < 0)
+            {
+                _logger.LogWarning("Money = {0} is negative", money);
+                return true;
+            }
+            return false;
+        }
+        private bool EmployeeIsNotCreator(int taskId, int employeeId)
+        {
+            if (employeeId != _taskRepository.GetLastVersionOfTask(taskId).CreatorId)
+            {
+                _logger.LogWarning("Employee №{0} is not creator of №{1} task", employeeId, taskId);
+                return true;
+            }
+            return false;
+        }
+        private bool EmployeeIsNotPerformer(int taskId, int employeeId)
+        {
+            var task = _taskRepository.GetLastVersionOfTask(taskId);
+            return (employeeId == task.PerformerId);
         }
     }
 }

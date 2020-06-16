@@ -52,7 +52,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="reader">Поток чтения данных из БД</param>
         private Theme ThemeFromReader(IDataReader reader)
         {
             return new Theme()

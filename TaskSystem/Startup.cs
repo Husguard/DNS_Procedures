@@ -13,8 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TaskSystem.Models;
 using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Objects;
 using TaskSystem.Models.Objects.Repositories;
 using TaskSystem.Models.Options;
+using TaskSystem.Models.Services;
+using TaskSystem.Models.Services.Implementations;
+using TaskSystem.Models.Services.Interfaces;
+using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace TaskSystem
 {
@@ -37,6 +43,14 @@ namespace TaskSystem
             services.AddControllersWithViews();
             services.AddSingleton<IConnectionDb,ConnectionDb>();
             services.AddSingleton<ITaskRepository,TaskRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IThemeRepository, ThemeRepository>();
+            services.AddSingleton<ICommentRepository, CommentRepository>();
+
+            services.AddSingleton<ITaskService, TaskService>();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddSingleton<IThemeService, ThemeService>();
+            services.AddSingleton<ICommentService, CommentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

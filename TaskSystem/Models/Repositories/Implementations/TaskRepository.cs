@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using TaskSystem.Models.Interfaces;
 using System.Threading.Tasks;
 using System.Data.SqlTypes;
+using TaskSystem.Models.Services;
 
 namespace TaskSystem.Models.Objects.Repositories
 {
@@ -82,7 +83,8 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetCreatorTasks",
                 WorkTaskFromReader,
-                new SqlParameter("@CreatorID", creatorId));
+                new SqlParameter("@CreatorID", creatorId)
+                ) ?? throw new EmptyResultException("Задания не были найдены");
         }
 
         /// <summary>
@@ -94,7 +96,8 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetPerformerTasks",
                 WorkTaskFromReader,
-                new SqlParameter("@PerformerID", performerId));
+                new SqlParameter("@PerformerID", performerId)
+                ) ?? throw new EmptyResultException();
         }
         /// <summary>
         /// Метод получения последней версии определенного задания
@@ -106,7 +109,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 "TaskProcedureGetLastVersionOfTask",
                 WorkTaskFromReader,
                 new SqlParameter("@TaskID", taskId)
-                );
+                ) ?? throw new EmptyResultException("");
         }
 
         /// <summary>
@@ -142,6 +145,9 @@ namespace TaskSystem.Models.Objects.Repositories
                 );
         }
 
+        /// <summary>
+        /// Получение последних версий всех заданий
+        /// </summary>
         public IEnumerable<WorkTask> GetLastVersions()
         {
             return _db.ExecuteReaderGetList<WorkTask>(

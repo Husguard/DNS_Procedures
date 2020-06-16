@@ -14,19 +14,21 @@ namespace TaskSystem.Models.Services
     public class ThemeService : BaseService, IThemeService
     {
         private readonly IThemeRepository _themeRepository;
-        private readonly ILogger _logger;
 
-        public ThemeService(IThemeRepository themeRepository, ILogger logger)
+        protected const string ThemeAlreadyExists = "Тема уже существует";
+        protected const string ThemeTooLong = "Тема слишком длинная, ограничение в 100 символов";
+
+        public ThemeService(IThemeRepository themeRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
+            : base(taskRepository, employeeRepository, logger)
         {
             _themeRepository = themeRepository;
-            _logger = logger;
         }
         /// <summary>
         /// Получение всех тем
         /// </summary>
         public ServiceResponseGeneric<IEnumerable<Theme>> GetAllThemes()
         {
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
                 var themes = _themeRepository.GetAllThemes();
                 return ServiceResponseGeneric<IEnumerable<Theme>>.Success(themes);
@@ -39,8 +41,10 @@ namespace TaskSystem.Models.Services
         /// <param name="name">Название темы</param>
         public ServiceResponseGeneric<IEnumerable<Theme>> GetThemesByName(string name)
         {
-            return ExecuteWithCatchGeneric(() =>
+            return ExecuteWithCatch(() =>
             {
+                if (ThemeIsTooLong(name))
+                    return ServiceResponseGeneric<IEnumerable<Theme>>.Warning(ThemeTooLong);
                 var themes = _themeRepository.GetThemesByName(name);
                 return ServiceResponseGeneric<IEnumerable<Theme>>.Success(themes);
             });
@@ -54,10 +58,44 @@ namespace TaskSystem.Models.Services
         {
             return ExecuteWithCatch(() =>
             {
-                // проверка существования темы
+                if (ThemeIsTooLong(name))
+                    return ServiceResponse.Warning(ThemeTooLong);
+                if(ThemeIsExists(name))
+                    return ServiceResponse.Warning(ThemeAlreadyExists);
                 _themeRepository.AddTheme(name);
-                return ServiceResponse.Warning(ServiceWarningMessages.ThemeAlreadyExists);
+                return ServiceResponse.Warning(ThemeAlreadyExists);
             });
+        }
+
+        /// <summary>
+        /// Метод проверки существования темы с введенным названием
+        /// </summary>
+        /// <param name="name">Название темы</param>
+        private bool ThemeIsExists(string name)
+        {
+            if (_themeRepository.GetThemesByName(name)
+                .Select(
+                    (theme) => theme.Name == name).Any())
+            {
+                _logger.LogWarning("Theme with Name = {0} is exists", name);
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// Метод проверки длины темы
+        /// </summary>
+        /// <param name="name">Название темы</param>
+        private bool ThemeIsTooLong(string name)
+        {
+            if (name.Length > 100)
+            {
+                _logger.LogWarning("Theme with Length = {0} is incorrect", name.Length);
+                return true;
+            }
+            return false;
         }
     }
 }

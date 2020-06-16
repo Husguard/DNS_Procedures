@@ -23,6 +23,12 @@ namespace TaskSystem.Models.Interfaces
         Employee GetEmployeeByLogin(string login);
 
         /// <summary>
+        /// Получение работника по идентификатору
+        /// </summary>
+        /// <param name="employeeId">Идентификатор работника</param>
+        Employee GetEmployeeById(int employeeId);
+
+        /// <summary>
         /// Зарегистрировать нового работника
         /// </summary>
         /// <param name="employee">Объект работника</param>

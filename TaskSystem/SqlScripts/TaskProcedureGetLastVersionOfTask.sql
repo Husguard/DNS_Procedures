@@ -4,8 +4,8 @@
 CREATE PROCEDURE [dbo].[TaskProcedureGetLastVersionOfTask]
 	@TaskID INT
 AS
-	SELECT * FROM 
-		(SELECT ttv.TaskID, MAX(ttv.Version) AS LastVersion 
+	SELECT TaskID, LastVersion, ID as TaskVersionID, Name, Description, ThemeID, CreatorID, CreateDate, ExpireDate 
+	FROM (SELECT ttv.TaskID, MAX(ttv.Version) AS LastVersion 
 		FROM TaskTaskVersion AS ttv 
 			INNER JOIN TaskTask AS tta ON tta.ID = ttv.TaskID
 				WHERE TaskID = @TaskID GROUP BY TaskID) AS LastResult

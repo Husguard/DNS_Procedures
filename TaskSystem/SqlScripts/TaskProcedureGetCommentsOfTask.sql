@@ -4,7 +4,7 @@
 CREATE PROCEDURE [dbo].[TaskProcedureGetCommentsOfTask]
 	@TaskID INT
 AS
-	 SELECT * FROM TaskComment 
-		INNER JOIN TaskEmployee ON (TaskEmployee.ID = TaskComment.EmployeeID AND TaskComment.TaskID = @TaskID)
+	 SELECT tc.EmployeeID, te.Login, te.Name, tc.TaskID, tc.Message FROM TaskComment as tc 
+		INNER JOIN TaskEmployee as te ON (te.ID = tc.EmployeeID AND tc.TaskID = @TaskID)
 GO
 

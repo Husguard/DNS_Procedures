@@ -16,8 +16,9 @@ namespace TaskSystem.Models.Services
     {
         private readonly IThemeRepository _themeRepository;
 
-        protected const string ThemeAlreadyExists = "Тема уже существует";
-        protected const string ThemeTooLong = "Тема слишком длинная, ограничение в 100 символов";
+        private const string ThemeAlreadyExists = "Тема уже существует";
+        private const string ThemeTooLong = "Тема слишком длинная, ограничение в 100 символов";
+        private const string ThemeNotExists = "Выбранной темы не существует, добавьте ее";
 
         public ThemeService(IThemeRepository themeRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
             : base(taskRepository, employeeRepository, logger)
@@ -47,6 +48,8 @@ namespace TaskSystem.Models.Services
             {
                 if (ThemeIsTooLong(name))
                     return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Warning(ThemeTooLong);
+                if(ThemeIsNotExists(name))
+                    return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Warning(ThemeNotExists);
                 var themes = _themeRepository.GetThemesByName(name);
                 return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Success(
                     themes.Select((theme) => new ThemeDto(theme)));
@@ -86,6 +89,20 @@ namespace TaskSystem.Models.Services
             return false;
         }
 
+        /// <summary>
+        /// Метод проверки отсутствия темы при ее поиске
+        /// </summary>
+        /// <param name="name">Название темы</param>
+        /// <returns></returns>
+        private bool ThemeIsNotExists(string name)
+        {
+            if (_themeRepository.GetThemesByName(name) == null)
+            {
+                _logger.LogWarning("Theme with Name = {0} is not exists", name);
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>
         /// Метод проверки длины темы

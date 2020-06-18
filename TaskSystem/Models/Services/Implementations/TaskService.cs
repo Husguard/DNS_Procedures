@@ -14,10 +14,7 @@ namespace TaskSystem.Models.Services
     /// </summary>
     public class TaskService : BaseService, ITaskService
     {
-        private const string EmployeeNotCreator = "Только создатель задания может отменить задание";
-        private const string EmployeeNotPerformer = "Только исполнитель задания может приостанавливать, отменять и выполнять задание";
         private const string MoneyValueNegative = "Денежная награда должна быть больше нуля";
-        private const string ThemeNotExists = "Выбранной темы не существует, добавьте ее";
         private const string CanceledTask = "У отмененного задания нельзя изменить статус";
         private const string NotAllowedToChange = "Вы можете только принять задание";
 
@@ -78,21 +75,27 @@ namespace TaskSystem.Models.Services
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <param name="performerId">Идентификатор исполнителя</param>
-        public ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerId)
+        public ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId)
         {
             return ExecuteWithCatch(() =>
             {
                 if (MoneyIsNegative(moneyAward))
                     return ServiceResponse.Warning(MoneyValueNegative);
+
                 var task = _taskRepository.GetLastVersionOfTask(taskId);
                 if (task == null)
                     return ServiceResponse.Warning(WorkTaskNotFound);
+
                 if (task.Status == WorkTaskStatus.Canceled)
                     return ServiceResponse.Warning(CanceledTask);
-                if(task.CreatorId != performerId || task.PerformerId != performerId || task.PerformerId != null)
+
+                if (task.CreatorId != _currentUser || task.PerformerId != _currentUser || task.PerformerId != null)
+                {
+                    _logger.LogWarning("");
                     return ServiceResponse.Warning(NotAllowedToChange);
-                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, performerId);
+                }
+  
+                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, _currentUser);
                 return ServiceResponse.Success();
             });
         }
@@ -132,20 +135,6 @@ namespace TaskSystem.Models.Services
                 return true;
             }
             return false;
-        }
-        private bool EmployeeIsNotCreator(int taskId, int employeeId)
-        {
-            if (employeeId != _taskRepository.GetLastVersionOfTask(taskId).CreatorId)
-            {
-                _logger.LogWarning("Employee №{0} is not creator of №{1} task", employeeId, taskId);
-                return true;
-            }
-            return false;
-        }
-        private bool EmployeeIsNotPerformer(int taskId, int employeeId)
-        {
-            var task = _taskRepository.GetLastVersionOfTask(taskId);
-            return (employeeId == task.PerformerId);
         }
     }
 }

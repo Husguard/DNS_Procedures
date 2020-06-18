@@ -14,6 +14,7 @@ namespace TaskSystem.Models.Services
         private readonly ITaskRepository _taskRepository;
         private readonly IEmployeeRepository _employeeRepository;
         protected readonly ILogger<BaseService> _logger;
+        protected int _currentUser;
 
         protected const string WorkTaskNotFound = "Задание не было найдено";
         protected const string EmployeeNotFound = "Работник не найден";
@@ -21,6 +22,7 @@ namespace TaskSystem.Models.Services
         {
             _taskRepository = taskRepository;
             _employeeRepository = employeeRepository;
+            _currentUser = 1;
             _logger = logger.CreateLogger<BaseService>();
         }
 
@@ -42,6 +44,10 @@ namespace TaskSystem.Models.Services
             {
                 return ServiceResponseGeneric<T>.Warning(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return ServiceResponseGeneric<T>.Fail(ex);
+            }
         }
 
         /// <summary>
@@ -61,6 +67,10 @@ namespace TaskSystem.Models.Services
             catch(EmptyResultException ex)
             {
                 return ServiceResponse.Warning(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse.Fail(ex);
             }
         }
 

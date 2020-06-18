@@ -43,8 +43,7 @@ namespace TaskSystem.Models.Interfaces
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <param name="performerID">Идентификатор исполнителя</param>
-        ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerID);
+        ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId);
 
         /// <summary>
         /// Получение последней версии задания

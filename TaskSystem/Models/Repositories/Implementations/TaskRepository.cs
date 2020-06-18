@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Data.SqlClient;
-using TaskSystem.Models.Interfaces;
 using System.Threading.Tasks;
 using System.Data.SqlTypes;
+using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Services;
 
 namespace TaskSystem.Models.Objects.Repositories
@@ -34,7 +34,8 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetTaskByID",
                 WorkTaskFromReader,
-                new SqlParameter("@TaskID", taskId));
+                new SqlParameter("@TaskID", taskId)
+                ) ?? throw new EmptyResultException("Задание не было найдено");
         }
 
         /// <summary>
@@ -44,7 +45,8 @@ namespace TaskSystem.Models.Objects.Repositories
         {
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetAllTasks",
-                WorkTaskFromReader);
+                WorkTaskFromReader)
+                ?? throw new EmptyResultException("Задания не были найдены");
         }
 
         /// <summary>
@@ -56,7 +58,8 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetTasksByStatus",
                 WorkTaskFromReader,
-                new SqlParameter("@StatusID", status));
+                new SqlParameter("@StatusID", status)
+                ) ?? throw new EmptyResultException("Задания не были найдены");
         }
 
         /// <summary>
@@ -71,7 +74,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 WorkTaskFromReader,
                 new SqlParameter("@TaskID", taskId),
                 new SqlParameter("@Version", version)
-                );
+                ) ?? throw new EmptyResultException("Версия не была найдена");
         }
 
         /// <summary>
@@ -97,7 +100,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 "TaskProcedureGetPerformerTasks",
                 WorkTaskFromReader,
                 new SqlParameter("@PerformerID", performerId)
-                ) ?? throw new EmptyResultException();
+                ) ?? throw new EmptyResultException("Задания не были найдены");
         }
         /// <summary>
         /// Метод получения последней версии определенного задания
@@ -109,7 +112,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 "TaskProcedureGetLastVersionOfTask",
                 WorkTaskFromReader,
                 new SqlParameter("@TaskID", taskId)
-                ) ?? throw new EmptyResultException("");
+                ) ?? throw new EmptyResultException("Задание не было найдено");
         }
 
         /// <summary>
@@ -153,7 +156,7 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetLastVersions",
                 WorkTaskFromReader
-                );
+                ) ?? throw new EmptyResultException("Задания не были найдены");
         }
 
         /// <summary>

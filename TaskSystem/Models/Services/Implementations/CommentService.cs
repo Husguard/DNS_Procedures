@@ -61,18 +61,17 @@ namespace TaskSystem.Models.Services
         /// </summary>
         /// <param name="message">Комментарий</param>
         /// <param name="taskId">Идентификатор задания</param>
-        /// <param name="employeeId">Идентификатор работника</param>
-        public ServiceResponse AddCommentToTask(string message, int taskId, int employeeId)
+        public ServiceResponse AddCommentToTask(CommentDto commentDto)
         {
             return ExecuteWithCatch(() =>
             {
-                if (CommentIsTooLong(message))
+                if (CommentIsTooLong(commentDto.Message))
                     return ServiceResponse.Warning(CommentTooLong);
-                if (TaskIsNotExists(taskId))
+                if (TaskIsNotExists(commentDto.TaskId))
                     return ServiceResponse.Warning(WorkTaskNotFound);
-                if (EmployeeIsNotExists(employeeId))
+                if (EmployeeIsNotExists(_currentUser))
                     return ServiceResponse.Warning(EmployeeNotFound);
-                _commentRepository.AddCommentToTask(message, taskId, employeeId);
+                _commentRepository.AddCommentToTask(commentDto.Message, commentDto.TaskId, _currentUser);
                 return ServiceResponse.Success();
             });
         }

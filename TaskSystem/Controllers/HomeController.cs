@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TaskSystem.Models;
+using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Objects.Repositories;
 
 namespace TaskSystem.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITaskRepository _connection;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ITaskRepository connectionRepository)
         {
             _logger = logger;
+            _connection = connectionRepository;
         }
 
         public IActionResult Index()

@@ -1,13 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TaskSystem.Models;
+using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Objects.Repositories;
+using TaskSystem.Models.Options;
 
 namespace TaskSystem
 {
@@ -18,12 +25,18 @@ namespace TaskSystem
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ConnectionStringOptions>((settings) =>
+            {
+                Configuration.GetSection("ConnectionStrings").Bind(settings);
+            });
             services.AddControllersWithViews();
+            services.AddSingleton<IConnectionDb,ConnectionDb>();
+            services.AddSingleton<ITaskRepository,TaskRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

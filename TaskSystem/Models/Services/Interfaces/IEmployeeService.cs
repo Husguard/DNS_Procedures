@@ -25,7 +25,7 @@ namespace TaskSystem.Models.Services.Interfaces
         /// Регистрация нового работника
         /// </summary>
         /// <param name="employee">Объект нового работника</param>
-        public ServiceResponse RegisterNewEmployee(Employee employee);
+        public ServiceResponse RegisterNewEmployee(EmployeeDto employee);
 
         /// <summary>
         /// Получение объекта работника по идентификатору

@@ -34,6 +34,7 @@ namespace TaskSystem.Models.Services
             {
                 if (TaskIsNotExists(taskId))
                     return ServiceResponseGeneric<IEnumerable<CommentDto>>.Warning(WorkTaskNotFound);
+
                 var taskComments = _commentRepository.GetCommentsOfTask(taskId);
                 return ServiceResponseGeneric<IEnumerable<CommentDto>>.Success(
                     taskComments.Select((comment) => new CommentDto(comment)));
@@ -59,8 +60,7 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Добавление комментария к заданию от работника
         /// </summary>
-        /// <param name="message">Комментарий</param>
-        /// <param name="taskId">Идентификатор задания</param>
+        /// <param name="commentDto">Данные комментария</param>
         public ServiceResponse AddCommentToTask(CommentDto commentDto)
         {
             return ExecuteWithCatch(() =>

@@ -3,5 +3,18 @@
 -- Получение всех последних версий заданий
 CREATE PROCEDURE [dbo].[TaskProcedureGetLastVersions]
 AS
-	SELECT TaskID, Version, TaskVersionID, MoneyAward, StatusID, CreatorID, PerformerID, CreateDate, ThemeID 
-		 FROM TaskFunctionGetAllTasksAndLastVersions()
+	SELECT 
+		TaskID, 
+		TaskName, 
+		Description,
+		Version, 
+		TaskVersionID, 
+		MoneyAward, 
+		StatusID, 
+		CreatorID, 
+		PerformerID,
+		CreateDate,
+		CreateVersionDate,
+		ExpireDate, 
+		ThemeID 
+	 FROM TaskFunctionGetAllTasksAndLastVersions()

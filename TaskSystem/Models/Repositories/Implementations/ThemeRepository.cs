@@ -49,7 +49,8 @@ namespace TaskSystem.Models.Objects
         {
             return _db.ExecuteReaderGetList<Theme>(
                 "TaskProcedureGetThemesByName",
-                ThemeFromReader);
+                ThemeFromReader,
+                new SqlParameter("@Name", name));
         }
 
         /// <summary>

@@ -42,5 +42,6 @@ namespace TaskSystem.Dto
             EmployeeId = comment.EmployeeId;
             Message = comment.Message;
         }
+        public CommentDto() { }
     }
 }

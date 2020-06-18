@@ -56,17 +56,21 @@ namespace TaskSystem.Models.Services.Implementations
         /// Регистрация нового работника
         /// </summary>
         /// <param name="employee">Объект нового работника</param>
-        public ServiceResponse RegisterNewEmployee(Employee employee)
+        public ServiceResponse RegisterNewEmployee(EmployeeDto employee)
         {
             return ExecuteWithCatch(() =>
             {
                 if (NameIsTooLong(employee.Name))
                     return ServiceResponse.Warning(NameTooLong);
+
                 if (LoginIsTooLong(employee.Login))
                     return ServiceResponse.Warning(LoginTooLong);
+
                 if (LoginIsAlreadyExists(employee.Login))
                     return ServiceResponse.Warning(LoginAlreadyExists);
-                _employeeRepository.RegisterNewEmployee(employee);
+
+                // после валидаторов теряется объект
+                _employeeRepository.RegisterNewEmployee(new Employee(employee));
                 return ServiceResponse.Success();
             });
         }
@@ -118,7 +122,7 @@ namespace TaskSystem.Models.Services.Implementations
         /// <param name="login">Логин работника</param>
         private bool LoginIsAlreadyExists(string login)
         {
-            if (_employeeRepository.GetEmployeeByLogin(login) == null)
+            if (_employeeRepository.GetEmployeeByLogin(login) != null)
             {
                 _logger.LogWarning("Employee with Login = {0} is exists", login);
                 return true;

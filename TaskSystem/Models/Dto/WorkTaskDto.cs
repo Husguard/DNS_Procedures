@@ -109,5 +109,6 @@ namespace TaskSystem.Dto
             MoneyAward = workTask.MoneyAward;
             Version = workTask.Version;
         }
+        public WorkTaskDto() { }
     }
 }

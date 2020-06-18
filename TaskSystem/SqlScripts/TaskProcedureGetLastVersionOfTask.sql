@@ -4,11 +4,20 @@
 CREATE PROCEDURE [dbo].[TaskProcedureGetLastVersionOfTask]
 	@TaskID INT
 AS
-	SELECT TaskID, LastVersion, ID as TaskVersionID, Name, Description, ThemeID, CreatorID, CreateDate, ExpireDate 
-	FROM (SELECT ttv.TaskID, MAX(ttv.Version) AS LastVersion 
-		FROM TaskTaskVersion AS ttv 
-			INNER JOIN TaskTask AS tta ON tta.ID = ttv.TaskID
-				WHERE TaskID = @TaskID GROUP BY TaskID) AS LastResult
-		INNER JOIN TaskTask AS tta ON tta.ID = LastResult.TaskID
-GO
+SELECT 
+	TaskID, 
+	TaskName, 
+	Description,
+	Version, 
+	TaskVersionID, 
+	MoneyAward, 
+	StatusID, 
+	CreatorID, 
+	PerformerID,
+	CreateDate,
+	CreateVersionDate,
+	ExpireDate, 
+	ThemeID 
+FROM TaskFunctionGetAllTasksAndLastVersions()
+	WHERE TaskID = @TaskID
 

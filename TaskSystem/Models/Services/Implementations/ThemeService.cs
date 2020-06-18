@@ -69,7 +69,7 @@ namespace TaskSystem.Models.Services
                 if(ThemeIsExists(name))
                     return ServiceResponse.Warning(ThemeAlreadyExists);
                 _themeRepository.AddTheme(name);
-                return ServiceResponse.Warning(ThemeAlreadyExists);
+                return ServiceResponse.Success();
             });
         }
 
@@ -93,7 +93,6 @@ namespace TaskSystem.Models.Services
         /// Метод проверки отсутствия темы при ее поиске
         /// </summary>
         /// <param name="name">Название темы</param>
-        /// <returns></returns>
         private bool ThemeIsNotExists(string name)
         {
             if (_themeRepository.GetThemesByName(name) == null)

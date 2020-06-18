@@ -36,12 +36,12 @@ namespace TaskSystem.Dto
         /// Конвертация модели бизнес-логики в модель данных
         /// </summary>
         /// <param name="employee">Объект работника</param>
-        /// некоторые поля убрать бы
         public EmployeeDto(Employee employee)
         {
             Id = employee.Id;
             Name = employee.Name;
             Login = employee.Login;
         }
+        public EmployeeDto() { }
     }
 }

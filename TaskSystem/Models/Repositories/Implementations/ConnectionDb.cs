@@ -71,8 +71,11 @@ namespace TaskSystem.Models
                     command.Parameters.Add(dbParam);
                 }
                 var reader = command.ExecuteReader();
-                reader.Read();
-                return readerFunc(reader);
+                while (reader.Read())
+                {
+                    return readerFunc(reader);
+                }
+                return default;
             }
         }
     }

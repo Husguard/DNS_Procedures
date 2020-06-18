@@ -68,6 +68,6 @@ namespace TaskSystem.Models.Interfaces
         /// <param name="statusId">Идентификатор статуса задания</param>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="performerID">Идентификатор исполнителя</param>
-        void AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerID);
+        void AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId, int performerID);
     }
 }

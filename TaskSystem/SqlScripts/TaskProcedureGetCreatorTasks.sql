@@ -4,7 +4,22 @@
 CREATE PROCEDURE [dbo].[TaskProcedureGetCreatorTasks]
 	@CreatorID INT
 AS
-	SELECT TaskVersionID, MoneyAward, Version, StatusID, TaskID, CreatorID, PerformerID, CreateDate, ThemeID FROM TaskFunctionGetAllTasksAndLastVersions()
+	SELECT 
+		TaskID, 
+		TaskName, 
+		Description,
+		Version, 
+		TaskVersionID, 
+		MoneyAward, 
+		StatusID, 
+		CreatorID, 
+		PerformerID,
+		CreateDate,
+		CreateVersionDate,
+		ExpireDate, 
+		ThemeID 
+	FROM TaskFunctionGetAllTasksAndLastVersions()
 		WHERE CreatorID = @CreatorID
+
 GO
 

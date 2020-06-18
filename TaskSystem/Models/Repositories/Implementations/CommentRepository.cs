@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Services;
 
 namespace TaskSystem.Models.Objects
 {
@@ -30,7 +32,8 @@ namespace TaskSystem.Models.Objects
             return _db.ExecuteReaderGetList(
                "TaskProcedureGetCommentsOfTask",
                CommentFromReader,
-               new SqlParameter("@TaskID", taskId));
+               new SqlParameter("@TaskID", taskId)
+               ) ?? throw new EmptyResultException("Комментарии отсутствуют");
         }
 
         /// <summary>
@@ -42,7 +45,7 @@ namespace TaskSystem.Models.Objects
             return _db.ExecuteReaderGetList(
               "TaskProcedureGetCommentsOfEmployee",
               CommentFromReader,
-              new SqlParameter("@TaskID", employeeId));
+              new SqlParameter("@EmployeeID", employeeId));
         }
         /// <summary>
         /// Добавление комментария к заданию от работника
@@ -54,8 +57,9 @@ namespace TaskSystem.Models.Objects
         {
             _db.ExecuteNonQuery(
                 "TaskProcedureAddCommentToTask",
-                new SqlParameter("@TaskID", employeeId),
-                new SqlParameter("@EmployeeID", employeeId));
+                new SqlParameter("@TaskID", taskId),
+                new SqlParameter("@EmployeeID", employeeId),
+                new SqlParameter("@Message", message));
         }
         /// <summary>
         /// Метод создания объекта из данных от БД
@@ -66,7 +70,7 @@ namespace TaskSystem.Models.Objects
             return new Comment()
             {
                 TaskId = (int)reader["TaskID"],
-                EmployeeId = (int)reader["CreatorID"],
+                EmployeeId = (int)reader["EmployeeID"],
                 Message = (string)reader["Message"]
             };
         }

@@ -36,19 +36,30 @@ namespace TaskSystem.Models.Interfaces
         ServiceResponse AddNewTask(WorkTaskDto task);
 
         /// <summary>
-        /// Добавление новой версии задания, при принятии задания меняется только 
-        /// награда от нового исполнителя, при других статусах используются старые значения
-        /// ввиду этого нужна перегрузка метода
+        /// Добавление новой версии задания
         /// </summary>
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId);
+        ServiceResponse AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId);
 
         /// <summary>
         /// Получение последней версии задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         ServiceResponseGeneric<WorkTaskDto> GetLastVersionOfTask(int taskId);
+
+        /// <summary>
+        /// Получение заданий, у которых определенный исполнитель
+        /// </summary>
+        /// <param name="performerId">Идентификатор исполнителя</param>
+        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByPerformer(int performerId);
+
+        /// <summary>
+        /// Получение заданий, у которых определенный создатель
+        /// </summary>
+        /// <param name="creatorId">Идентификатор создателя</param>
+        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByCreator(int creatorId);
+
     }
 }

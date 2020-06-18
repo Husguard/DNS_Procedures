@@ -26,8 +26,9 @@ namespace TaskSystem.Models.Interfaces
         ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId);
 
         /// <summary>
+        /// Добавление комментария к заданию от текущего пользователя
         /// </summary>
-
+        /// <param name="commentDto">Данные комментария</param>
         ServiceResponse AddCommentToTask(CommentDto commentDto);
     }
 }

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Services;
 
 namespace TaskSystem.Models.Objects.Repositories
 {
@@ -42,7 +43,8 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetSingle<Employee>(
                 "TaskProcedureGetEmployeeByLogin",
                 EmployeeFromReader,
-                new SqlParameter("@Login", login));
+                new SqlParameter("@Login", login)
+                );
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace TaskSystem.Models.Objects.Repositories
         public void RegisterNewEmployee(Employee employee)
         {
             _db.ExecuteNonQuery(
-               "TaskProcedureRegisterEmployee",
+               "TaskProcedureAddEmployee",
                new SqlParameter("@Name", employee.Name),
                new SqlParameter("@Login", employee.Login)
                );

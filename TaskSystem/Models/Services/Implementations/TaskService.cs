@@ -15,7 +15,7 @@ namespace TaskSystem.Models.Services
     public class TaskService : BaseService, ITaskService
     {
         private const string MoneyValueNegative = "Денежная награда должна быть больше нуля";
-        private const string CanceledTask = "У отмененного задания нельзя изменить статус";
+        private const string CanceledOrCompletedTask = "У отмененного или выполненного задания нельзя изменить статус";
         private const string NotAllowedToChange = "Вы можете только принять задание";
 
         private readonly ITaskRepository _taskRepository;
@@ -39,10 +39,40 @@ namespace TaskSystem.Models.Services
             });
         }
 
+
+        /// <summary>
+        /// Получение заданий, у которых определенный создатель
+        /// </summary>
+        /// <param name="creatorId">Идентификатор создателя</param>
+        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByCreator(int creatorId)
+        {
+            return ExecuteWithCatch(() =>
+            {
+                var workTasks = _taskRepository.GetTasksByCreator(creatorId);
+                return ServiceResponseGeneric<IEnumerable<WorkTaskDto>>.Success(
+                    workTasks.Select((task) => new WorkTaskDto(task)));
+            });
+        }
+
+        /// <summary>
+        /// Получение заданий, у которых определенный исполнитель
+        /// </summary>
+        /// <param name="performerId">Идентификатор исполнителя</param>
+        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByPerformer(int performerId)
+        {
+            return ExecuteWithCatch(() =>
+            {
+                var workTasks = _taskRepository.GetTasksByPerformer(performerId);
+                return ServiceResponseGeneric<IEnumerable<WorkTaskDto>>.Success(
+                    workTasks.Select((task) => new WorkTaskDto(task)));
+            });
+        }
+
+
         /// <summary>
         /// Метод получения последних версий заданий, у которых выбранный статус
         /// </summary>
-        /// <param name="statusId"></param>
+        /// <param name="statusId">Статус задания</param>
         public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus statusId)
         {
             // поиск существования статуса
@@ -60,6 +90,7 @@ namespace TaskSystem.Models.Services
         /// <param name="task">Объект задания</param>
         public ServiceResponse AddNewTask(WorkTaskDto task)
         {
+            task.CreatorId = _currentUser;
             return ExecuteWithCatch(() =>
             {
                 _taskRepository.AddNewTask(new WorkTask(task));
@@ -75,7 +106,7 @@ namespace TaskSystem.Models.Services
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        public ServiceResponse AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId)
+        public ServiceResponse AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId)
         {
             return ExecuteWithCatch(() =>
             {
@@ -86,13 +117,16 @@ namespace TaskSystem.Models.Services
                 if (task == null)
                     return ServiceResponse.Warning(WorkTaskNotFound);
 
-                if (task.Status == WorkTaskStatus.Canceled)
-                    return ServiceResponse.Warning(CanceledTask);
+                if (task.Status == WorkTaskStatus.Canceled || task.Status == WorkTaskStatus.Completed)
+                    return ServiceResponse.Warning(CanceledOrCompletedTask);
 
-                if (task.CreatorId != _currentUser || task.PerformerId != _currentUser || task.PerformerId != null)
+                if (task.CreatorId != _currentUser || task.PerformerId == null)
                 {
-                    _logger.LogWarning("");
-                    return ServiceResponse.Warning(NotAllowedToChange);
+                    if(task.PerformerId != _currentUser)
+                    {
+                        _logger.LogWarning("User №{0} not allowed to change status of №{1} task", _currentUser, taskId);
+                        return ServiceResponse.Warning(NotAllowedToChange);
+                    }
                 }
   
                 _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, _currentUser);
@@ -126,7 +160,11 @@ namespace TaskSystem.Models.Services
                 return ServiceResponseGeneric<WorkTaskDto>.Success(new WorkTaskDto(taskVersion));
             });
         }
-
+        
+        /// <summary>
+        /// Метод проверки на отрицательное число введенных денег
+        /// </summary>
+        /// <param name="money">Сумма денег</param>
         private bool MoneyIsNegative(decimal money)
         {
             if (money < 0)

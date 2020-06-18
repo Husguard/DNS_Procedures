@@ -1,7 +1,9 @@
-﻿using System;
+﻿using NLog.Fluent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskSystem.Dto;
 
 namespace TaskSystem.Models.Objects
 {
@@ -24,5 +26,12 @@ namespace TaskSystem.Models.Objects
         /// Уникальный логин работника
         /// </summary>
         public string Login { get; set; }
+
+        public Employee(EmployeeDto employeeDto)
+        {
+            Name = employeeDto.Name;
+            Login = employeeDto.Login;
+        }
+        public Employee() {}
     }
 }

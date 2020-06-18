@@ -35,7 +35,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 "TaskProcedureGetTaskByID",
                 WorkTaskFromReader,
                 new SqlParameter("@TaskID", taskId)
-                ) ?? throw new EmptyResultException("Задание не было найдено");
+                ) ?? throw new EmptyResultException("Задание не было найдено"); // не работает
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <param name="statusId">Идентификатор статуса</param>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="performerID">Идентификатор исполнителя</param>
-        public void AddTaskVersion(int moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
+        public void AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
         {
             _db.ExecuteNonQuery(
                 "TaskProcedureAddTaskVersion",
@@ -175,7 +175,9 @@ namespace TaskSystem.Models.Objects.Repositories
                 ThemeId = (int)reader["ThemeID"],
                 CreateDate = (DateTime)reader["CreateDate"],
                 ExpireDate = (DateTime)reader["ExpireDate"],
-                MoneyAward = reader["MoneyAward"] as decimal?
+                MoneyAward = reader["MoneyAward"] as decimal?,
+                Status = (WorkTaskStatus)reader["StatusID"],
+                CreateVersionDate = (DateTime)reader["CreateVersionDate"]
             };
         }
     }

@@ -34,5 +34,7 @@ namespace TaskSystem.Dto
             Id = theme.Id;
             Name = theme.Name;
         }
+
+        public ThemeDto() { }
     }
 }

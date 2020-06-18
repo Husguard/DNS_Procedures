@@ -80,7 +80,7 @@ namespace TaskSystem.Models.Services
         /// <param name="taskId">Идентификатор задания</param>
         protected bool TaskIsNotExists(int taskId)
         {
-            if (!_taskRepository.GetTaskByID(taskId).Any())
+            if (_taskRepository.GetTaskByID(taskId) == null)
             {
                 _logger.LogWarning("Task with ID = {0} is not exists", taskId);
                 return true;

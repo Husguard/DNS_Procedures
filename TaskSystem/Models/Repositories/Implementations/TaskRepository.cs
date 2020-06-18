@@ -23,8 +23,8 @@ namespace TaskSystem.Models.Objects.Repositories
         public TaskRepository(IConnectionDb db)
         {
             _db = db;
-            var l = GetTasksByStatus(WorkTaskStatus.New);
         }
+
         /// <summary>
         /// Метод получения всех версий определенного задания
         /// </summary>

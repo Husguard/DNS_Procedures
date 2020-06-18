@@ -3,6 +3,6 @@
 -- Получение всех тем
 CREATE PROCEDURE [dbo].[TaskProcedureGetAllThemes]
 AS
-	 SELECT * FROM TaskTheme
+	 SELECT tt.ID, tt.Name FROM TaskTheme AS tt
 GO
 

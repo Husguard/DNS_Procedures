@@ -6,7 +6,7 @@ CREATE PROCEDURE [dbo].[TaskProcedureAddComment]
 	@EmployeeID INT,
 	@Message NVARCHAR(300)
 AS
-	INSERT INTO TaskComment(Message, TaskID, EmployeeID, CreateDate) 
-		VALUES(@Message, @TaskID, @EmployeeID, GETDATE())
+	INSERT INTO TaskComment(Message, TaskID, EmployeeID) 
+		VALUES(@Message, @TaskID, @EmployeeID)
 GO
 

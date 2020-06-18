@@ -1,5 +1,5 @@
-USE TaskManager
-ALTER DATABASE TaskManager
+USE TaskManage
+ALTER DATABASE TaskManage
 COLLATE Cyrillic_General_CI_AS
 GO
 CREATE TABLE [TaskTheme] 
@@ -31,8 +31,8 @@ CREATE TABLE [TaskTask]
  [Description] NVARCHAR(500) COLLATE Cyrillic_General_CI_AS NOT NULL ,
  [ThemeID]    int NOT NULL ,
  [CreatorID]  int NOT NULL ,
- [CreateDate]  date NOT NULL ,
- [ExpireDate]  date NOT NULL ,
+ [CreateDate]  datetime DEFAULT GETDATE(),
+ [ExpireDate]  datetime NOT NULL ,
 
 
  CONSTRAINT [PK_Task] PRIMARY KEY CLUSTERED ([ID] ASC),
@@ -52,6 +52,7 @@ CREATE TABLE [TaskTaskVersion]
  [StatusID]    tinyint NOT NULL ,
  [TaskID]      int NOT NULL ,
  [PerformerID] int NULL ,
+ [CreateDate] datetime DEFAULT GETDATE()
 
  UNIQUE([TaskID],[Version]),
  CONSTRAINT [PK_TaskVersion] PRIMARY KEY CLUSTERED ([ID] ASC),
@@ -68,7 +69,7 @@ CREATE TABLE [TaskComment]
  [Message]     nvarchar(300) COLLATE Cyrillic_General_CI_AS NOT NULL ,
  [TaskID]     int NOT NULL ,
  [EmployeeID] int NOT NULL ,
- [CreateDate] Datetime NOT NULL
+ [CreateDate] Datetime DEFAULT GETDATE()
  
  CONSTRAINT [FK_TaskID] FOREIGN KEY ([TaskID])  REFERENCES [TaskTask]([ID]),
  CONSTRAINT [FK_EmployeeID] FOREIGN KEY ([EmployeeID])  REFERENCES [TaskEmployee]([ID]),

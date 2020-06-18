@@ -159,7 +159,7 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
-        /// <param name="reader">Поток чтения данных из БД</param>
+        /// <param name="reader">Класс чтения потока данных из БД</param>
         private WorkTask WorkTaskFromReader(IDataReader reader)
         {
             return new WorkTask()

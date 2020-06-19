@@ -20,7 +20,8 @@ using TaskSystem.Models.Services;
 using TaskSystem.Models.Services.Implementations;
 using TaskSystem.Models.Services.Interfaces;
 using Microsoft.Extensions.Logging;
-using NLog;
+using Swashbuckle.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 namespace TaskSystem
 {
@@ -51,6 +52,11 @@ namespace TaskSystem
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<IThemeService, ThemeService>();
             services.AddSingleton<ICommentService, CommentService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +72,11 @@ namespace TaskSystem
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

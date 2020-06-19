@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using TaskSystem.Models.Interfaces;
 
 namespace TaskSystem.Models.Objects
@@ -56,7 +53,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
-        /// <param name="reader">Поток чтения данных из БД</param>
+        /// <param name="reader">Класс чтения потоков данных из БД</param>
         private Theme ThemeFromReader(IDataReader reader)
         {
             return new Theme()

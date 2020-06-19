@@ -1,19 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace TaskSystem.Models.Services
 {
+    /// <summary>
+    /// Класс ответа на запрос
+    /// </summary>
+    [DataContract]
     public class ServiceResponse
     {
-      
+        /// <summary>
+        /// Статус выполнения запроса
+        /// </summary>
+        [DataMember(Name = "status")]
         public ServiceStatus Status { get; protected set; }
 
-        
+        /// <summary>
+        /// Сообщение при статусе "Предупреждение" или "Критическая ошибка"
+        /// </summary>
+        [DataMember(Name = "errorMessage")]
         public string ErrorMessage { get; protected set; }
 
-        
+        /// <summary>
+        /// Метод создания объекта ответа со статусом "успешно"
+        /// </summary>
         public static ServiceResponse Success()
         {
             return new ServiceResponse
@@ -23,7 +33,9 @@ namespace TaskSystem.Models.Services
             };
         }
 
-
+        /// <summary>
+        /// Метод создания объекта ответа со статусом "критическая ошибка"
+        /// </summary>
         public static ServiceResponse Fail(Exception ex)
         {
             return new ServiceResponse
@@ -33,7 +45,9 @@ namespace TaskSystem.Models.Services
             };
         }
 
-
+        /// <summary>
+        /// Метод создания объекта ответа со статусом "предупреждение"
+        /// </summary>
         public static ServiceResponse Warning(string message)
         {
             return new ServiceResponse

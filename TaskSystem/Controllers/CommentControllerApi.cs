@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
@@ -10,7 +6,7 @@ using TaskSystem.Models.Services;
 
 namespace TaskSystem.Controllers
 {
-    public class CommentController : Controller
+    public class CommentControllerApi : Controller
     {
         private readonly ICommentService _commentService;
 
@@ -18,7 +14,7 @@ namespace TaskSystem.Controllers
         /// Инициализация сервисов
         /// </summary>
         /// <param name="commentService">Сервис комментариев</param>
-        public CommentController(ICommentService commentService)
+        public CommentControllerApi(ICommentService commentService)
         {
             _commentService = commentService;
         }
@@ -27,24 +23,21 @@ namespace TaskSystem.Controllers
         /// Получение всех комментариев определенного задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        [HttpGet]
-        [Route("GetCommentsOfTask")]
+        [HttpGet("GetCommentsOfTask")]
         public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId) => _commentService.GetCommentsOfTask(taskId);
 
         /// <summary>
         /// Получение всех комментариев определенного работника
         /// </summary>
         /// <param name="employeeId">Идентификатор работника</param>
-        [HttpGet]
-        [Route("GetCommentsOfEmployee")]
+        [HttpGet("GetCommentsOfEmployee")]
         public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId) => _commentService.GetCommentsOfEmployee(employeeId);
         
         /// <summary>
         /// Добавление комментария к заданию
         /// </summary>
         /// <param name="commentDto">Данные комментария</param>
-        [HttpPost]
-        [Route("AddCommentToTask")]
+        [HttpPost("AddCommentToTask")]
         public ServiceResponse AddCommentToTask(CommentDto commentDto) => _commentService.AddCommentToTask(commentDto);
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
-using System.Data.SqlTypes;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Services;
 
@@ -35,7 +32,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 "TaskProcedureGetTaskByID",
                 WorkTaskFromReader,
                 new SqlParameter("@TaskID", taskId)
-                ) ?? throw new EmptyResultException("Задание не было найдено"); // не работает
+                );
         }
 
         /// <summary>
@@ -45,8 +42,7 @@ namespace TaskSystem.Models.Objects.Repositories
         {
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetAllTasks",
-                WorkTaskFromReader)
-                ?? throw new EmptyResultException("Задания не были найдены");
+                WorkTaskFromReader);
         }
 
         /// <summary>
@@ -59,7 +55,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 "TaskProcedureGetTasksByStatus",
                 WorkTaskFromReader,
                 new SqlParameter("@StatusID", status)
-                ) ?? throw new EmptyResultException("Задания не были найдены");
+                );
         }
 
         /// <summary>
@@ -80,27 +76,27 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <summary>
         /// Метод получения всех заданий, созданных определенным работником
         /// </summary>
-        /// <param name="creatorId"></param>
+        /// <param name="creatorId">Идентификатор создателя</param>
         public IEnumerable<WorkTask> GetTasksByCreator(int creatorId)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetCreatorTasks",
                 WorkTaskFromReader,
                 new SqlParameter("@CreatorID", creatorId)
-                ) ?? throw new EmptyResultException("Задания не были найдены");
+                );
         }
 
         /// <summary>
         /// Метод получения всех заданий, выполняемых определенным работником
         /// </summary>
-        /// <param name="performerId"></param>
+        /// <param name="performerId">Идентификатор исполнителя</param>
         public IEnumerable<WorkTask> GetTasksByPerformer(int performerId)
         {
             return _db.ExecuteReaderGetList<WorkTask>(
                 "TaskProcedureGetPerformerTasks",
                 WorkTaskFromReader,
                 new SqlParameter("@PerformerID", performerId)
-                ) ?? throw new EmptyResultException("Задания не были найдены");
+                );
         }
         /// <summary>
         /// Метод получения последней версии определенного задания

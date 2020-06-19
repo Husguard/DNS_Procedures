@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TaskSystem.Dto;
-using TaskSystem.Models.Interfaces;
-using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services;
 
 namespace TaskSystem.Controllers
 {
-    public class ThemeController : ControllerBase
+    public class ThemeControllerApi : ControllerBase
     {
         private readonly IThemeService _themeService;
 
@@ -19,7 +13,7 @@ namespace TaskSystem.Controllers
         /// Инициализация сервисов
         /// </summary>
         /// <param name="themeService">Сервис тем</param>
-        public ThemeController(IThemeService themeService)
+        public ThemeControllerApi(IThemeService themeService)
         {
             _themeService = themeService;
         }
@@ -27,16 +21,14 @@ namespace TaskSystem.Controllers
         /// <summary>
         /// Получение всех тем
         /// </summary>
-        [HttpGet]
-        [Route("GetAllThemes")]
+        [HttpGet("GetAllThemes")]
         public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetAllThemes() => _themeService.GetAllThemes();
 
         /// <summary>
         /// Получение тем, название которых начинаются с введенной строки
         /// </summary>
         /// <param name="name">Название темы</param>
-        [HttpGet]
-        [Route("GetThemesByName")]
+        [HttpGet("GetThemesByName")]
         public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetThemesByName(string name) => _themeService.GetThemesByName(name);
 
 
@@ -44,8 +36,7 @@ namespace TaskSystem.Controllers
         /// Добавление новой темы
         /// </summary>
         /// <param name="themeDto">Название темы</param>
-        [HttpPost]
-        [Route("AddTheme")]
+        [HttpPost("AddTheme")]
         public ServiceResponse AddTheme(ThemeDto themeDto) => _themeService.AddTheme(themeDto.Name);
     }
 }

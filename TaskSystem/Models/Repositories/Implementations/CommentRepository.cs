@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using TaskSystem.Models.Interfaces;
-using TaskSystem.Models.Services;
 
 namespace TaskSystem.Models.Objects
 {
@@ -33,7 +31,7 @@ namespace TaskSystem.Models.Objects
                "TaskProcedureGetCommentsOfTask",
                CommentFromReader,
                new SqlParameter("@TaskID", taskId)
-               ) ?? throw new EmptyResultException("Комментарии отсутствуют");
+               );
         }
 
         /// <summary>
@@ -64,7 +62,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Метод создания объекта из данных от БД
         /// </summary>
-        /// <param name="reader">Поток чтения данных</param>
+        /// <param name="reader">Класс чтения потоков данных</param>
         private Comment CommentFromReader(IDataReader reader)
         {
             return new Comment()

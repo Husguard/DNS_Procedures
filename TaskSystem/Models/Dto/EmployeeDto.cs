@@ -1,9 +1,4 @@
-﻿using NLog.Fluent;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Dto
@@ -42,6 +37,10 @@ namespace TaskSystem.Dto
             Name = employee.Name;
             Login = employee.Login;
         }
+
+        /// <summary>
+        /// Пустой конструктор для принятия объекта со стороны клиента
+        /// </summary>
         public EmployeeDto() { }
     }
 }

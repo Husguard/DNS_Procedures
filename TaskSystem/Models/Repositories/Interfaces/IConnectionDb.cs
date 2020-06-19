@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TaskSystem.Models.Interfaces
 {
@@ -29,6 +26,7 @@ namespace TaskSystem.Models.Interfaces
         /// <param name="args">Параметры процедуры</param>
         /// <returns> Количество затронутых записей </returns>
         int ExecuteNonQuery(string storedProcedure, params SqlParameter[] args);
+
         /// <summary>
         /// Метод исполнения процедуры БД, требующий чтения результата и создания одного объекта по делегату
         /// </summary>

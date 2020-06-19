@@ -1,18 +1,24 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace TaskSystem.Models.Services
 {
     /// <summary>
     /// Класс ответа выполнения запроса
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Тип значения результата</typeparam>
+    [DataContract]
     public class ServiceResponseGeneric<T> : ServiceResponse
     {
+        /// <summary>
+        /// Результат выполнения запроса
+        /// </summary>
+        [DataMember(Name = "result")]
         public T Result { get; set; }
+
+        /// <summary>
+        /// Метод создания объекта ответа со статусом "успешно"
+        /// </summary>
         public static ServiceResponseGeneric<T> Success(T value)
         {
             return new ServiceResponseGeneric<T>
@@ -21,6 +27,10 @@ namespace TaskSystem.Models.Services
                 Result = value
             };
         }
+
+        /// <summary>
+        /// Метод создания объекта ответа со статусом "критическая ошибка"
+        /// </summary>
         public static new ServiceResponseGeneric<T> Fail(Exception ex)
         {
             return new ServiceResponseGeneric<T>
@@ -29,6 +39,10 @@ namespace TaskSystem.Models.Services
                 ErrorMessage = ex.Message
             };
         }
+
+        /// <summary>
+        /// Метод создания объекта ответа со статусом "предупреждение"
+        /// </summary>
         public static new ServiceResponseGeneric<T> Warning(string message)
         {
             return new ServiceResponseGeneric<T>

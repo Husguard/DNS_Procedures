@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
-using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Services
 {
@@ -15,13 +12,24 @@ namespace TaskSystem.Models.Services
     public class CommentService : BaseService, ICommentService
     {
         private readonly ICommentRepository _commentRepository;
+        protected readonly ITaskRepository _taskRepository;
+        protected readonly IEmployeeRepository _employeeRepository;
 
         private const string CommentTooLong = "Комментарий слишком длинный, ограничение в 300 символов";
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        /// <param name="commentRepository">Репозиторий комментариев</param>
+        /// <param name="taskRepository">Репозиторий заданий</param>
+        /// <param name="employeeRepository">Репозиторий работников</param>
+        /// <param name="logger">Инициализатор логгера</param>
         public CommentService(ICommentRepository commentRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(taskRepository, employeeRepository, logger)
+            : base(logger)
         {
             _commentRepository = commentRepository;
+            _taskRepository = taskRepository;
+            _employeeRepository = employeeRepository;
         }
 
         /// <summary>
@@ -84,7 +92,35 @@ namespace TaskSystem.Models.Services
         {
             if(message.Length > 100)
             {
-                _logger.LogWarning("Message with Length = {0} is incorrect", message.Length);
+                _logger.LogWarning("Попытка добавить комментарий с длиной {0}", message.Length);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Метод проверки существования задания с введенным идентификатором
+        /// </summary>
+        /// <param name="taskId">Идентификатор задания</param>
+        private bool TaskIsNotExists(int taskId)
+        {
+            if (_taskRepository.GetTaskByID(taskId) == null)
+            {
+                _logger.LogWarning("Задания с Id = {0} не существует", taskId);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Метод проверки существования работника с введеным идентификатором
+        /// </summary>
+        /// <param name="employeeId">Идентификатор работника</param>
+        private bool EmployeeIsNotExists(int employeeId)
+        {
+            if (_employeeRepository.GetEmployeeById(employeeId) == null)
+            {
+                _logger.LogWarning("Работника с Id = {0} не существует", employeeId);
                 return true;
             }
             return false;

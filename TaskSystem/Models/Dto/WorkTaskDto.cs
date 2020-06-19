@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
-using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Dto
@@ -109,6 +104,10 @@ namespace TaskSystem.Dto
             MoneyAward = workTask.MoneyAward;
             Version = workTask.Version;
         }
+
+        /// <summary>
+        /// Пустой конструктор для принятия объекта со стороны клиента
+        /// </summary>
         public WorkTaskDto() { }
     }
 }

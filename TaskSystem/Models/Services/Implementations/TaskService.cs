@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
@@ -20,8 +18,14 @@ namespace TaskSystem.Models.Services
 
         private readonly ITaskRepository _taskRepository;
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        /// <param name="taskRepository">Репозиторий заданий</param>
+        /// <param name="employeeRepository">Репозиторий работников</param>
+        /// <param name="logger">Инициализатор логгера</param>
         public TaskService(ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(taskRepository, employeeRepository, logger)
+            : base(logger)
         {
             _taskRepository = taskRepository;
         }
@@ -75,7 +79,6 @@ namespace TaskSystem.Models.Services
         /// <param name="statusId">Статус задания</param>
         public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus statusId)
         {
-            // поиск существования статуса
             return ExecuteWithCatch(() =>
             {
                 var workTasks = _taskRepository.GetTasksByStatus(statusId);
@@ -124,7 +127,7 @@ namespace TaskSystem.Models.Services
                 {
                     if(task.PerformerId != _currentUser)
                     {
-                        _logger.LogWarning("User №{0} not allowed to change status of №{1} task", _currentUser, taskId);
+                        _logger.LogWarning("Пользователю №{0} нельзя изменять задание №{1}", _currentUser, taskId);
                         return ServiceResponse.Warning(NotAllowedToChange);
                     }
                 }
@@ -169,7 +172,7 @@ namespace TaskSystem.Models.Services
         {
             if (money < 0)
             {
-                _logger.LogWarning("Money = {0} is negative", money);
+                _logger.LogWarning("Значение денег {0} отрицательно", money);
                 return true;
             }
             return false;

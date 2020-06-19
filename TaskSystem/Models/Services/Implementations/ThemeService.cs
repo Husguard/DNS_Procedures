@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
-using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Services
 {
@@ -20,8 +17,13 @@ namespace TaskSystem.Models.Services
         private const string ThemeTooLong = "Тема слишком длинная, ограничение в 100 символов";
         private const string ThemeNotExists = "Выбранной темы не существует, добавьте ее";
 
-        public ThemeService(IThemeRepository themeRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(taskRepository, employeeRepository, logger)
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        /// <param name="themeRepository">Репозиторий тем</param>
+        /// <param name="logger">Инициализатор логгера</param>
+        public ThemeService(IThemeRepository themeRepository, ILoggerFactory logger)
+            : base(logger)
         {
             _themeRepository = themeRepository;
         }
@@ -83,7 +85,7 @@ namespace TaskSystem.Models.Services
                 .Select(
                     (theme) => theme.Name == name).Any())
             {
-                _logger.LogWarning("Theme with Name = {0} is exists", name);
+                _logger.LogWarning("Тема с названием {0} уже существует", name);
                 return true;
             }
             return false;
@@ -97,7 +99,7 @@ namespace TaskSystem.Models.Services
         {
             if (_themeRepository.GetThemesByName(name) == null)
             {
-                _logger.LogWarning("Theme with Name = {0} is not exists", name);
+                _logger.LogWarning("Темы с названием {0} не существует", name);
                 return true;
             }
             return false;
@@ -111,7 +113,7 @@ namespace TaskSystem.Models.Services
         {
             if (name.Length > 100)
             {
-                _logger.LogWarning("Theme with Length = {0} is incorrect", name.Length);
+                _logger.LogWarning("Длина введенной темы слишком большая '{0}'", name.Length);
                 return true;
             }
             return false;

@@ -19,8 +19,13 @@ namespace TaskSystem.Models.Services.Implementations
         private const string NameTooLong = "Имя работника слишком длинное, ограничение в 100 символов";
         private const string LoginAlreadyExists = "Работник с таким логином уже существует";
 
-        public EmployeeService(ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(taskRepository, employeeRepository, logger)
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        /// <param name="employeeRepository">Репозиторий работников</param>
+        /// <param name="logger">Инициализатор логгера</param>
+        public EmployeeService(IEmployeeRepository employeeRepository, ILoggerFactory logger)
+            : base(logger)
         {
             _employeeRepository = employeeRepository;
         }
@@ -69,7 +74,6 @@ namespace TaskSystem.Models.Services.Implementations
                 if (LoginIsAlreadyExists(employee.Login))
                     return ServiceResponse.Warning(LoginAlreadyExists);
 
-                // после валидаторов теряется объект
                 _employeeRepository.RegisterNewEmployee(new Employee(employee));
                 return ServiceResponse.Success();
             });
@@ -96,7 +100,7 @@ namespace TaskSystem.Models.Services.Implementations
         {
             if (name.Length > 100)
             {
-                _logger.LogWarning("Employee Name with Length = {0} is incorrect", name.Length);
+                _logger.LogWarning("Попытка добавить работника с именем длиной {0}", name.Length);
                 return true;
             }
             return false;
@@ -110,7 +114,7 @@ namespace TaskSystem.Models.Services.Implementations
         {
             if (login.Length > 100)
             {
-                _logger.LogWarning("Employee Login with Length = {0} is incorrect", login.Length);
+                _logger.LogWarning("Попытка добавить работника с логином длиной {0}", login.Length);
                 return true;
             }
             return false;
@@ -124,7 +128,7 @@ namespace TaskSystem.Models.Services.Implementations
         {
             if (_employeeRepository.GetEmployeeByLogin(login) != null)
             {
-                _logger.LogWarning("Employee with Login = {0} is exists", login);
+                _logger.LogWarning("Работник с логином '{0} уже существует'", login);
                 return true;
             }
             return false;

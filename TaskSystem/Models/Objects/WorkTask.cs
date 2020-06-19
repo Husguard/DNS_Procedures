@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using TaskSystem.Dto;
-using TaskSystem.Models.Interfaces;
 
 namespace TaskSystem.Models.Objects
 {
@@ -93,9 +87,10 @@ namespace TaskSystem.Models.Objects
             MoneyAward = workTaskDto.MoneyAward;
             Version = workTaskDto.Version;
         }
-        public WorkTask() // нужна перегрузка для чтения данных из бд
-        {
 
-        }
+        /// <summary>
+        /// Пустой конструктор для создания объекта в потоке БД
+        /// </summary>
+        public WorkTask() {}
     }
 }

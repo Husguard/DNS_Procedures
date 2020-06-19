@@ -8,14 +8,28 @@ using TaskSystem.Models.Options;
 
 namespace TaskSystem.Models
 {
+    /// <summary>
+    /// Класс подключения к БД
+    /// </summary>
     public class ConnectionDb : IConnectionDb
     {
         private readonly string _connectionName;
+        /// <summary>
+        /// Инициализация класса
+        /// </summary>
+        /// <param name="options">Настройки подключения</param>
         public ConnectionDb(IOptions<ConnectionStringOptions> options)
         {
             _connectionName = options.Value.DefaultConnection;
         }
-        // централизовать подключение для reader и nonquery
+
+        /// <summary>
+        /// Метод исполнения процедуры БД, требующий чтения результата и создания коллекции объектов по делегату
+        /// </summary>
+        /// <typeparam name="T">Тип возвращаемого экземпляра</typeparam>
+        /// <param name="storedProcedure">Процедура, которую необходимо исполнить</param>
+        /// <param name="readerFunc">Метод создания экземпляра</param>
+        /// <param name="args">Параметры процедуры</param>
         public List<T> ExecuteReaderGetList<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)
         {
             var result = new List<T>();
@@ -39,6 +53,13 @@ namespace TaskSystem.Models
                 return result;
             }
         }
+
+        /// <summary>
+        /// Метод исполнения процедуры, не возвращающий результат от БД
+        /// </summary>
+        /// <param name="storedProcedure">Процедура, которую необходимо исполнить</param>
+        /// <param name="args">Параметры процедуры</param>
+        /// <returns> Количество затронутых записей </returns>
         public int ExecuteNonQuery(string storedProcedure, params SqlParameter[] args)
         {
             using (var connection = new SqlConnection(_connectionName))
@@ -56,6 +77,14 @@ namespace TaskSystem.Models
                 return command.ExecuteNonQuery();
             }
         }
+
+        /// <summary>
+        /// Метод исполнения процедуры БД, требующий чтения результата и создания одного объекта по делегату
+        /// </summary>
+        /// <typeparam name="T">Тип возвращаемого экземпляра</typeparam>
+        /// <param name="storedProcedure">Процедура, которую необходимо исполнить</param>
+        /// <param name="readerFunc">Метод создания экземпляра</param>
+        /// <param name="args">Параметры процедуры</param>
         public T ExecuteReaderGetSingle<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)
         {
             using (var connection = new SqlConnection(_connectionName))

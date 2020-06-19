@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using TaskSystem.Models.Interfaces;
-using TaskSystem.Models.Services;
 
 namespace TaskSystem.Models.Objects.Repositories
 {
@@ -43,8 +39,7 @@ namespace TaskSystem.Models.Objects.Repositories
             return _db.ExecuteReaderGetSingle<Employee>(
                 "TaskProcedureGetEmployeeByLogin",
                 EmployeeFromReader,
-                new SqlParameter("@Login", login)
-                );
+                new SqlParameter("@Login", login));
         }
 
         /// <summary>
@@ -75,7 +70,7 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <summary>
         /// Метод создания объекта работника из потока данных
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="reader">Класс чтения потока данных из БД</param>
         public Employee EmployeeFromReader(IDataReader reader)
         {
             return new Employee()

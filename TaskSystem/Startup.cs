@@ -1,13 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,8 +11,6 @@ using TaskSystem.Models.Options;
 using TaskSystem.Models.Services;
 using TaskSystem.Models.Services.Implementations;
 using TaskSystem.Models.Services.Interfaces;
-using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore;
 using Microsoft.OpenApi.Models;
 
 namespace TaskSystem

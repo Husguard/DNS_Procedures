@@ -12,6 +12,8 @@ using TaskSystem.Models.Services;
 using TaskSystem.Models.Services.Implementations;
 using TaskSystem.Models.Services.Interfaces;
 using Microsoft.OpenApi.Models;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TaskSystem
 {
@@ -31,6 +33,7 @@ namespace TaskSystem
             {
                 Configuration.GetSection("ConnectionStrings").Bind(settings);
             });
+            services.AddControllers().AddNewtonsoftJson();
             services.AddControllersWithViews();
             services.AddSingleton<IConnectionDb,ConnectionDb>();
             services.AddSingleton<ITaskRepository,TaskRepository>();
@@ -38,10 +41,18 @@ namespace TaskSystem
             services.AddSingleton<IThemeRepository, ThemeRepository>();
             services.AddSingleton<ICommentRepository, CommentRepository>();
 
-            services.AddSingleton<ITaskService, TaskService>();
-            services.AddSingleton<IEmployeeService, EmployeeService>();
-            services.AddSingleton<IThemeService, ThemeService>();
-            services.AddSingleton<ICommentService, CommentService>();
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IThemeService, ThemeService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<UserManager>();
+
+           services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options => //CookieAuthenticationOptions
+                {
+                   options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+               });
 
             services.AddSwaggerGen(c =>
             {
@@ -69,6 +80,8 @@ namespace TaskSystem
             });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

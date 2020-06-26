@@ -1,0 +1,54 @@
+﻿<div id="taskInfoHeader">
+    <label>
+        Задание № {{:#data.id}}
+    </label>
+    <button type="button" onclick="currentTask.toggle()">X</button>
+</div>
+<div id="taskInfoContent">
+    <div>
+        Название: {{:name}}
+        Тема: {{:themeId}}
+    </div>
+    <div>
+        Дата создания: {{:createDate}}
+        Обновлена {{:createVersionDate}}
+        Дата окончания: {{:expireDate}}
+    </div>
+    <div>
+        {{:description}}
+    </div>
+    <div>
+        Создатель {{:creatorId}}
+        Текущий статус: {{:status}}
+        {{if performerId}}
+        <label>
+            Исполнитель: {{:performerId}}
+        </label>
+        <label>
+            Награда: {{:moneyAward}}
+        </label>
+        {{/if}}
+    </div>
+    <div id="taskActions">
+        <div>
+            <dialog id="setMoneyAward">
+                <div id="moneyHeader">
+                    <b>Награда за выполнение</b>
+                    <button type="button" onclick="currentTask.statusObject.toggle()">X</button>
+                </div>
+                <div class="form-group">
+                    <label for="moneyAward" class="control-label">Награда</label>
+                    <input name="moneyAward" class="form-control" />
+                    <button type="button" name="statusId" value="2" onclick={currentTask.statusObject.setStatus(this.value, 1)}>Принять</button> <!--в других вытаскивает из формы-->
+                </div>
+            </dialog>
+            <button type="button" onclick="currentTask.statusObject.toggle()">В работу</button>
+            <button type="button" name="statusId" value="3" onclick=currentTask.statusObject.setStatus({{:moneyAward}}, 3)>Приостановить</button>
+            <button type="button" name="statusId" value="4" onclick=currentTask.statusObject.setStatus({{:moneyAward}}, 4)>Выполнить</button>
+            <button type="button" name="statusId" value="5" onclick=currentTask.statusObject.setStatus({{:moneyAward}}, 5)>Отменить</button>
+        </div>
+        <button type="button" onclick=currentTask.historyObject.showHistory()>История версий</button>
+        <dialog id="taskHistoryContainer">
+        </dialog>
+    </div>
+</div>

@@ -5,6 +5,7 @@ using TaskSystem.Models.Services;
 
 namespace TaskSystem.Controllers
 {
+    [ApiController]
     public class ThemeControllerApi : ControllerBase
     {
         private readonly IThemeService _themeService;
@@ -37,6 +38,6 @@ namespace TaskSystem.Controllers
         /// </summary>
         /// <param name="themeDto">Название темы</param>
         [HttpPost("AddTheme")]
-        public ServiceResponse AddTheme(ThemeDto themeDto) => _themeService.AddTheme(themeDto.Name);
+        public ServiceResponse AddTheme([FromBody] ThemeDto themeDto) => _themeService.AddTheme(themeDto.Name);
     }
 }

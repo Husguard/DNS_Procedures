@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskSystem.Dto;
 using TaskSystem.Models.Services;
@@ -9,6 +10,7 @@ namespace TaskSystem.Controllers
     /// <summary>
     /// Контроллер работников
     /// </summary>
+    [ApiController]
     public class EmployeeControllerApi : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -26,14 +28,18 @@ namespace TaskSystem.Controllers
         /// Получение всех работников
         /// </summary>
         [HttpGet("GetAllEmployees")]
-        public ServiceResponseGeneric<IEnumerable<EmployeeDto>> GetAllEmployees() => _employeeService.GetAllEmployees();
+        public ServiceResponseGeneric<IEnumerable<EmployeeDto>> GetAllEmployees() 
+        {
+
+            return _employeeService.GetAllEmployees();
+        }
 
         /// <summary>
         /// Регистрация нового работника
         /// </summary>
         /// <param name="employeeDto">Объект нового работника</param>
         [HttpPost("RegisterNewEmployee")]
-        public ServiceResponse RegisterNewEmployee(EmployeeDto employeeDto) => _employeeService.RegisterNewEmployee(employeeDto);
+        public ServiceResponse RegisterNewEmployee([FromBody] EmployeeDto employeeDto) => _employeeService.RegisterNewEmployee(employeeDto);
 
         /// <summary>
         /// Получение объекта работника, у которого введенный логин

@@ -1,0 +1,19 @@
+﻿<div id="taskComments" class="comments">
+    {{for result}}
+    <div class="rowComment">
+        <label>
+            От работника {{:employeeId}}
+        </label>
+        <label>
+            к заданию №{{:taskId}}
+        </label>
+        <label>
+            {{:message}}
+        </label>
+    </div>
+    {{/for}}
+</div>
+<div id="addComment" class="form-group">
+    <input name="message" placeholder="Введите комментарий" />
+    <button type="button" class="btn btn-primary">Добавить</button>
+</div>

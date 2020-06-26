@@ -24,8 +24,8 @@ namespace TaskSystem.Models.Services.Implementations
         /// </summary>
         /// <param name="employeeRepository">Репозиторий работников</param>
         /// <param name="logger">Инициализатор логгера</param>
-        public EmployeeService(IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(logger)
+        public EmployeeService(IEmployeeRepository employeeRepository, ILoggerFactory logger, UserManager manager)
+            : base(logger, manager)
         {
             _employeeRepository = employeeRepository;
         }

@@ -25,6 +25,6 @@ namespace TaskSystem.Models.Interfaces
         /// Добавление комментария к заданию от текущего пользователя
         /// </summary>
         /// <param name="commentDto">Данные комментария</param>
-        ServiceResponse AddCommentToTask(CommentDto commentDto);
+        ServiceResponse AddCommentToTask(int taskId, string message);
     }
 }

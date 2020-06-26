@@ -6,7 +6,8 @@ using TaskSystem.Models.Services;
 
 namespace TaskSystem.Controllers
 {
-    public class CommentControllerApi : Controller
+    [ApiController]
+    public class CommentControllerApi : ControllerBase
     {
         private readonly ICommentService _commentService;
 
@@ -32,12 +33,15 @@ namespace TaskSystem.Controllers
         /// <param name="employeeId">Идентификатор работника</param>
         [HttpGet("GetCommentsOfEmployee")]
         public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId) => _commentService.GetCommentsOfEmployee(employeeId);
-        
+
         /// <summary>
         /// Добавление комментария к заданию
         /// </summary>
         /// <param name="commentDto">Данные комментария</param>
         [HttpPost("AddCommentToTask")]
-        public ServiceResponse AddCommentToTask(CommentDto commentDto) => _commentService.AddCommentToTask(commentDto);
+        public ServiceResponse AddCommentToTask(CommentDto commentDto)
+        {
+            return _commentService.AddCommentToTask(commentDto.TaskId, commentDto.Message);
+        }
     }
 }

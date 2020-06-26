@@ -1,10 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TaskSystem.Models;
 
 namespace TaskSystem.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,9 +16,9 @@ namespace TaskSystem.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
+            Console.WriteLine(User.Identity.Name);
             return View();
         }
 

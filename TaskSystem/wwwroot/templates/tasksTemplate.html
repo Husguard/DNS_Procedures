@@ -1,0 +1,32 @@
+﻿<table class="table table-condensed col-md-6">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Тема</th>
+            <th>Текущий статус</th>
+            <th>Срок окончания</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{for result}}
+        <tr class="rowTask" onclick={setCurrentTask({{: id }})}>
+            <td>
+                {{:id}}
+            </td>
+            <td>
+                {{:name}}
+            </td>
+            <td>
+                {{:themeId}}
+            </td>
+            <td>
+                {{:status}}
+            </td>
+            <td>
+                {{:expireDate}}
+            </td>
+        </tr>
+        {{/for}}
+    </tbody>
+</table>

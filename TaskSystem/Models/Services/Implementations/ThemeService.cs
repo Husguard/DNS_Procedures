@@ -22,8 +22,8 @@ namespace TaskSystem.Models.Services
         /// </summary>
         /// <param name="themeRepository">Репозиторий тем</param>
         /// <param name="logger">Инициализатор логгера</param>
-        public ThemeService(IThemeRepository themeRepository, ILoggerFactory logger)
-            : base(logger)
+        public ThemeService(IThemeRepository themeRepository, ILoggerFactory logger, UserManager manager)
+            : base(logger, manager)
         {
             _themeRepository = themeRepository;
         }

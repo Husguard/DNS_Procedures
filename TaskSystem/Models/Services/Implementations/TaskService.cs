@@ -24,8 +24,8 @@ namespace TaskSystem.Models.Services
         /// <param name="taskRepository">Репозиторий заданий</param>
         /// <param name="employeeRepository">Репозиторий работников</param>
         /// <param name="logger">Инициализатор логгера</param>
-        public TaskService(ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(logger)
+        public TaskService(ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger, UserManager manager)
+            : base(logger,manager)
         {
             _taskRepository = taskRepository;
         }
@@ -93,7 +93,7 @@ namespace TaskSystem.Models.Services
         /// <param name="task">Объект задания</param>
         public ServiceResponse AddNewTask(WorkTaskDto task)
         {
-            task.CreatorId = _currentUser;
+            task.CreatorId = _manager._currentUserId;
             return ExecuteWithCatch(() =>
             {
                 _taskRepository.AddNewTask(new WorkTask(task));
@@ -123,16 +123,16 @@ namespace TaskSystem.Models.Services
                 if (task.Status == WorkTaskStatus.Canceled || task.Status == WorkTaskStatus.Completed)
                     return ServiceResponse.Warning(CanceledOrCompletedTask);
 
-                if (task.CreatorId != _currentUser || task.PerformerId == null)
+                if (task.CreatorId != _manager._currentUserId || task.PerformerId == null)
                 {
-                    if(task.PerformerId != _currentUser)
+                    if(task.PerformerId != _manager._currentUserId)
                     {
-                        _logger.LogWarning("Пользователю №{0} нельзя изменять задание №{1}", _currentUser, taskId);
+                        _logger.LogWarning("Пользователю №{0} нельзя изменять задание №{1}", _manager._currentUserId, taskId);
                         return ServiceResponse.Warning(NotAllowedToChange);
                     }
                 }
   
-                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, _currentUser);
+                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, _manager._currentUserId);
                 return ServiceResponse.Success();
             });
         }

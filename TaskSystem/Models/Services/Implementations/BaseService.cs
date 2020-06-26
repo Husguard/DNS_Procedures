@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data.SqlClient;
+using TaskSystem.Dto;
 
 namespace TaskSystem.Models.Services
 {
@@ -13,13 +16,13 @@ namespace TaskSystem.Models.Services
         /// Общий логгер для всех сервисов и идентификатор текущего пользователя
         /// </summary>
         protected readonly ILogger<BaseService> _logger;
-        protected int _currentUser;
+        protected UserManager _manager;
 
         protected const string WorkTaskNotFound = "Задание не было найдено";
         protected const string EmployeeNotFound = "Работник не найден";
-        public BaseService(ILoggerFactory logger)
+        public BaseService(ILoggerFactory logger, UserManager manager)
         {
-            _currentUser = 1;
+            _manager = manager;
             _logger = logger.CreateLogger<BaseService>();
         }
 

@@ -1,0 +1,22 @@
+﻿<div id="taskHistoryHeader">
+    <label>
+        История версий задания № {{:#data.id}}
+    </label>
+    <button type="button" onclick="currentTask.historyObject.toggle()">X</button>
+</div>
+<div id="taskHistoryContent">
+    <label>
+        Исполнитель
+        Награда
+        Статус
+        Обновлена
+    </label>
+    {{for}}
+    <div>
+        {{:performerId}}
+        {{:moneyAward}}
+        {{:status}}
+        {{:createVersionDate}}
+    </div>
+    {{/for}}
+</div>

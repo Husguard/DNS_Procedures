@@ -24,8 +24,8 @@ namespace TaskSystem.Models.Services
         /// <param name="taskRepository">Репозиторий заданий</param>
         /// <param name="employeeRepository">Репозиторий работников</param>
         /// <param name="logger">Инициализатор логгера</param>
-        public CommentService(ICommentRepository commentRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger)
-            : base(logger)
+        public CommentService(ICommentRepository commentRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger, UserManager manager)
+            : base(logger, manager)
         {
             _commentRepository = commentRepository;
             _taskRepository = taskRepository;
@@ -69,17 +69,20 @@ namespace TaskSystem.Models.Services
         /// Добавление комментария к заданию от работника
         /// </summary>
         /// <param name="commentDto">Данные комментария</param>
-        public ServiceResponse AddCommentToTask(CommentDto commentDto)
+        public ServiceResponse AddCommentToTask(int taskId, string message)
         {
             return ExecuteWithCatch(() =>
             {
-                if (CommentIsTooLong(commentDto.Message))
+                if (CommentIsTooLong(message))
                     return ServiceResponse.Warning(CommentTooLong);
-                if (TaskIsNotExists(commentDto.TaskId))
+
+                if (TaskIsNotExists(taskId))
                     return ServiceResponse.Warning(WorkTaskNotFound);
-                if (EmployeeIsNotExists(_currentUser))
+
+                if (EmployeeIsNotExists(_manager._currentUserId))
                     return ServiceResponse.Warning(EmployeeNotFound);
-                _commentRepository.AddCommentToTask(commentDto.Message, commentDto.TaskId, _currentUser);
+
+                _commentRepository.AddCommentToTask(message, taskId, _manager._currentUserId);
                 return ServiceResponse.Success();
             });
         }

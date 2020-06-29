@@ -21,11 +21,11 @@ function AddTheme() {
 				break;
 			}
 			case 1: {
-				alert(data.errorMessage);
+				Insert(data.errorMessage, "addThemeValidation");
 				break;
 			}
 			case 2: {
-				alert("Сервер не доступен");
+				alert("Сервер недоступен");
 				break;
 			}
 		}

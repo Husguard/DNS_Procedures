@@ -50,7 +50,7 @@ namespace TaskSystem.Controllers
                 ServiceResponseGeneric<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
                 if (user.Result != null)
                 {
-                    await Authenticate(model);
+                    await Authenticate(user.Result);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -81,12 +81,13 @@ namespace TaskSystem.Controllers
                 if (user.Result == null)
                 {
                     _employeeService.RegisterNewEmployee(model);
+                    ServiceResponseGeneric<EmployeeDto> newUser = _employeeService.GetEmployeeByLogin(model.Login);
 
-                    await Authenticate(model);
+                    await Authenticate(newUser.Result);
 
                     return RedirectToAction("Index", "Home");
                 }
-                else ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                else ModelState.AddModelError(model.Login, "Пользователь с таким логином уже существует");
             }
             return View(model);
         }

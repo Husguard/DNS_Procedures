@@ -3,20 +3,19 @@
 }
 @using TaskSystem.Dto
 <div class="text-center">
-    <div id="addSection">
+    <div id="addSection" class="add-section">
         <button id="btnAddTask" type="button" onclick="addTask.toggle()">Добавить задание</button>
         <button id="btnAddTheme" type="button" onclick="addTheme.toggle()">Добавить тему</button>
     </div>
-    <div>
         <div id="taskStatusSection" class="toolbar">
             <button class="toolbar-element" onclick="taskList.getAll()">Все задания</button>
             <button class="toolbar-element" id="btnTaskStatus" value="1" onclick="taskList.getByStatus(1)">Новые</button>
             <button class="toolbar-element" name="taskStatus" value="2" onclick="taskList.getByStatus(2)">В работе</button>
             <button class="toolbar-element" name="taskStatus" value="3" onclick="taskList.getByStatus(3)">Приостановленные</button>
-            <button class="toolbar-element" name="taskStatus" value="4" onclick="taskList.getByStatus(4)">Отмененные</button>
-            <button class="toolbar-element" name="taskStatus" value="5" onclick="taskList.getByStatus(5)">Выполненные</button>
+            <button class="toolbar-element" name="taskStatus" value="4" onclick="taskList.getByStatus(4)">Выполненные</button>
+            <button class="toolbar-element" name="taskStatus" value="5" onclick="taskList.getByStatus(5)">Отмененные</button>
         </div>
-        <div id="mainTable">
+        <div id="mainTable" class="main-table">
 
         </div>
         <dialog id="addTask">
@@ -29,7 +28,7 @@
                 <input name="taskName" class="form-control" type="text" required />
                 <div class="form-group">
                     <label for="taskTheme" class="control-label">Тема</label>
-                    <input name="taskTheme" class="form-control" type="text" required oninput="ThemeRepository.ShowSuggests(this.value)" />
+                    <input id="taskTheme" name="taskTheme" class="form-control" type="text" required oninput="ThemeRepository.ShowSuggests(this.value)" />
                     <div id="suggestsThemes" style="display: none;"></div>
                 </div>
 
@@ -38,6 +37,7 @@
 
                 <label for="taskExpireDateTime" class="control-label">Дата окончания</label>
                 <input name="taskExpireDateTime" class="form-control" type="datetime-local" required />
+                <span id="addTaskValidation"></span>
                 <div class="form-group">
                     <button type="button" onclick="addTask.submit()" class="btn btn-primary">Добавить</button>
                 </div>
@@ -51,22 +51,12 @@
             <form id="addThemeContent">
                 <label for="themeName" class="control-label">Название темы</label>
                 <input name="themeName" class="form-control" type="text" />
+                <span id="addThemeValidation"></span>
                 <input type="button" value="Добавить" class="btn btn-primary" onclick="addTheme.submit()" />
             </form>
         </dialog>
-
         <dialog id="taskInfoContainer">
-            <div id="taskInfoHeader">
-                <label>Задание №</label>
-                <button type="button" onclick="currentTask.toggle()">X</button>
-            </div>
-            <div id="taskInfoContent"></div>
-
-            <div id="commentSection" class="commentSection">
-
-            </div>
         </dialog>
-    </div>
 </div>
 
 

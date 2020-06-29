@@ -2,18 +2,13 @@
     {{for result}}
     <div class="rowComment">
         <label>
-            От работника {{:employeeId}}
-        </label>
-        <label>
-            к заданию №{{:taskId}}
-        </label>
-        <label>
-            {{:message}}
+            {{:employeeName}} :: {{:message}}
         </label>
     </div>
     {{/for}}
 </div>
 <div id="addComment" class="form-group">
-    <input name="message" placeholder="Введите комментарий" />
-    <button type="button" class="btn btn-primary">Добавить</button>
+    <input id="commentMessage" name="message" placeholder="Введите комментарий" onchange="currentTask.setCurrentComment(this.value)" required />
+    <p id="commentValidation"></p>
+    <button type="button" class="btn btn-primary" onclick="currentTask.saveComment()">Добавить</button>
 </div>

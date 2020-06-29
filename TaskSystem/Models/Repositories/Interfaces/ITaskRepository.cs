@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Interfaces
@@ -57,7 +58,7 @@ namespace TaskSystem.Models.Interfaces
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
-        void AddNewTask(WorkTask task);
+        void AddNewTask(string name, string description, int themeId, int creatorId, DateTime expireDate);
 
         /// <summary>
         /// Добавление новой версии задания
@@ -66,6 +67,6 @@ namespace TaskSystem.Models.Interfaces
         /// <param name="statusId">Идентификатор статуса задания</param>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="performerID">Идентификатор исполнителя</param>
-        void AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId, int performerID);
+        void AddTaskVersion(decimal? moneyAward, WorkTaskStatus statusId, int taskId, int performerID);
     }
 }

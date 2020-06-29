@@ -1,6 +1,5 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -72,9 +71,34 @@ body {
 textarea {
     resize: none;
 }
-.toolbar{
-    display:inline;
+.toolbar {
+    background: green;
+    border: 1px solid;
+    float: left;
+    width: 30%;
 }
 .toolbar .toolbar-element{
     display:block;
+}
+.add-section {
+    background: aqua;
+    border: 1px solid;
+    text-align: end;
+}
+.comment-section {
+    border: 1px solid;
+}
+.main-table{
+    float:left;
+    width:70%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }

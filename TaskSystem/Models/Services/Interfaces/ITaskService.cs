@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TaskSystem.Dto;
+using TaskSystem.Models.Dto;
 using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services;
 
@@ -31,7 +32,7 @@ namespace TaskSystem.Models.Interfaces
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
-        ServiceResponse AddNewTask(WorkTaskDto task);
+        ServiceResponse AddNewTask(AddNewTaskDto task);
 
         /// <summary>
         /// Добавление новой версии задания
@@ -39,7 +40,7 @@ namespace TaskSystem.Models.Interfaces
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponse AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId);
+        ServiceResponse AddTaskVersion(AddTaskVersionDto taskVersion);
 
         /// <summary>
         /// Получение последней версии задания

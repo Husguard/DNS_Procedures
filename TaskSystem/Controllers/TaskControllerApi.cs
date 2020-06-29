@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskSystem.Dto;
+using TaskSystem.Models.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services;
@@ -25,7 +26,6 @@ namespace TaskSystem.Controllers
         /// <summary>
         /// Метод получения последних версий всех заданий
         /// </summary>
-        [AllowAnonymous]
         [HttpGet("GetLastVersions")]
         public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetLastVersions() => _taskService.GetLastVersions();
 
@@ -69,7 +69,7 @@ namespace TaskSystem.Controllers
         /// </summary>
         /// <param name="workTask">Данные нового задания</param>
         [HttpPost("AddNewTask")]
-        public ServiceResponse AddNewTask([FromBody] WorkTaskDto workTask) => _taskService.AddNewTask(workTask);
+        public ServiceResponse AddNewTask([FromBody] AddNewTaskDto workTask) => _taskService.AddNewTask(workTask);
 
         /// <summary>
         /// Добавление новой версии определенного задания
@@ -78,7 +78,6 @@ namespace TaskSystem.Controllers
         /// <param name="statusId">Новый статус задания</param>
         /// <param name="taskId">Идентификатор задания</param>
         [HttpPost("AddTaskVersion")]
-        public ServiceResponse AddTaskVersion(WorkTaskDto version) => _taskService.AddTaskVersion((decimal)version.MoneyAward, version.Status, version.Id);
-        // лучше сделать модель версии
+        public ServiceResponse AddTaskVersion(AddTaskVersionDto version) => _taskService.AddTaskVersion(version);
     }
 }

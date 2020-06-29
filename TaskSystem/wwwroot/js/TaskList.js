@@ -15,7 +15,7 @@ function TaskList() {
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Сервер недоступен");
                 break;
             }
         }
@@ -34,7 +34,7 @@ function TaskList() {
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Сервер недоступен");
                 break;
             }
         }
@@ -60,7 +60,7 @@ function TaskList() {
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Сервер недоступен");
                 break;
             }
         }
@@ -68,9 +68,12 @@ function TaskList() {
 
     /// Метод отрисовки HTML верстки
     /// <json> - JSON объект данных
-    this.render = function (json) {
+    this.render = async function (json) {
         const html = await Render(this.template, json);
         Insert(html, this.container);
     }
 }
 const taskList = new TaskList();
+window.onload = function () {
+    taskList.getAll();
+}

@@ -1,6 +1,10 @@
 ﻿/// Класс окна подробностей о задании
+let currentTask; /// объект выбранного задания
+
 function TaskObject(id) {
     this.id = id; /// идентификатор задания
+    this.commentMessage = null;
+    this.commentValidation = "commentValidation";
     this.historyObject = new HistoryObject(this); /// объект окна истории версий задания
     this.statusObject = new StatusObject(this); /// объект окна изменения статуса задания
     this.container = "taskInfoContainer"; /// идентификатор контейнера для подробностей задания
@@ -13,7 +17,7 @@ function TaskObject(id) {
         const data = await CommentRepository.GetCommentsOfTask(this.id);
         switch (data.status) {
             case 0: {
-                const html = Render(this.commentTemplate, data);
+                const html = await Render(this.commentTemplate, data);
                 Insert(html, this.commentSection);
                 break;
             };
@@ -29,15 +33,15 @@ function TaskObject(id) {
     };
     /// Метод добавления нового комментария
     /// <message> - текст комментария 
-    this.writeComment = async function (message) {
-        const data = await CommentRepository.AddCommentToTask(this.id, message);
+    this.saveComment = async function () {
+        const data = await CommentRepository.AddCommentToTask(this.id, this.commentMessage);
         switch (data.status) {
             case 0: {
                 this.showComments();
                 break;
             };
             case 1: {
-                alert(data.errorMessage);
+                Insert(data.errorMessage, this.commentValidation);
                 break;
             };
             case 2: {
@@ -46,17 +50,21 @@ function TaskObject(id) {
             }
         }
     };
+    this.setCurrentComment = function (message) {
+        this.commentMessage = message;
+    }
 
     /// Метод получения подробностей о задании и ее отрисовка
     this.render = async function () {
         const data = await TaskRepository.GetLastVersionOfTask(this.id);
         switch (data.status) {
             case 0: {
-                const html = await Render(this.infoTemplate, data);
+                const html = await Render(this.infoTemplate, data.result);
                 Insert(html, this.container);
+                break;
             };
             case 1: {
-                alert(data.errorMessage);
+                Insert(data.errorMessage, this.container);
                 break;
             };
             case 2: {
@@ -71,7 +79,6 @@ function TaskObject(id) {
         Toggle(this.container);
     }
 }
-let currentTask; /// объект выбранного задания
 
 /// Метод создания и инициализации объекта выбранного задания
 /// <id> - идентификатор задания

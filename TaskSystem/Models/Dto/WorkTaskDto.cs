@@ -33,14 +33,14 @@ namespace TaskSystem.Dto
         /// <summary>
         /// Идентификатор темы задания
         /// </summary>
-        [DataMember(Name = "themeId")]
-        public int ThemeId { get; set; }
+        [DataMember(Name = "theme")]
+        public ThemeDto Theme { get; set; }
 
         /// <summary>
         /// Идентификатор работника-создателя
         /// </summary>
-        [DataMember(Name = "creatorId")]
-        public int CreatorId { get; set; }
+        [DataMember(Name = "creator")]
+        public EmployeeDto Creator { get; set; }
 
         /// <summary>
         /// Версия задания, которая меняется при обновлении статуса
@@ -55,10 +55,16 @@ namespace TaskSystem.Dto
         public WorkTaskStatus Status { get; set; }
 
         /// <summary>
+        /// Название статуса задания
+        /// </summary>
+        [DataMember(Name = "statusName")]
+        public string StatusName { get; set; }
+
+        /// <summary>
         /// Идентификатор исполнителя
         /// </summary>
-        [DataMember(Name = "performerId")]
-        public int? PerformerId { get; set; }
+        [DataMember(Name = "performer")]
+        public EmployeeDto Performer { get; set; }
 
         /// <summary>
         /// Количество денежных знаков
@@ -76,6 +82,7 @@ namespace TaskSystem.Dto
         /// Дата завершения задания
         /// </summary>
         [DataMember(Name = "expireDate")]
+        [DisplayFormat(DataFormatString = "{0:g}")]
         public DateTime ExpireDate { get; set; }
 
         /// <summary>
@@ -88,19 +95,19 @@ namespace TaskSystem.Dto
         /// Конвертация модели бизнес-логики в модель данных
         /// </summary>
         /// <param name="workTask">Объект задания</param>
-        /// некоторые поля убрать бы
         public WorkTaskDto(WorkTask workTask)
         {
             Id = workTask.Id;
             Name = workTask.Name;
             Description = workTask.Description;
-            ThemeId = workTask.ThemeId;
+            Theme = new ThemeDto(workTask.Theme);
             CreateDate = workTask.CreateDate;
             CreateVersionDate = workTask.CreateVersionDate;
             ExpireDate = workTask.ExpireDate;
             Status = workTask.Status;
-            CreatorId = workTask.CreatorId;
-            PerformerId = workTask.PerformerId;
+            StatusName = workTask.StatusName;
+            Creator = new EmployeeDto(workTask.Creator);
+            Performer = workTask.Performer == null ? null : new EmployeeDto(workTask.Performer);
             MoneyAward = workTask.MoneyAward;
             Version = workTask.Version;
         }

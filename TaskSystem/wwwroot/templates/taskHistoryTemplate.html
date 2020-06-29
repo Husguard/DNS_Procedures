@@ -1,22 +1,46 @@
 ﻿<div id="taskHistoryHeader">
     <label>
-        История версий задания № {{:#data.id}}
+        История версий задания № {{:#data[0].taskId}}
     </label>
     <button type="button" onclick="currentTask.historyObject.toggle()">X</button>
 </div>
 <div id="taskHistoryContent">
-    <label>
-        Исполнитель
-        Награда
-        Статус
-        Обновлена
-    </label>
-    {{for}}
-    <div>
-        {{:performerId}}
-        {{:moneyAward}}
-        {{:status}}
-        {{:createVersionDate}}
-    </div>
-    {{/for}}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Исполнитель
+                </th>
+                <th>
+                    Награда
+                </th>
+                <th>
+                    Статус
+                </th>
+                <th>
+                    Обновлена
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for}}
+            <tr>
+                <td>
+                    {{if performer}} {{:performer.employeeName}}
+                    {{else}} Отсутствует {{/if}}
+                </td>
+                <td>
+                    {{if moneyAward}} {{:moneyAward}}
+                    {{else}} Отсутствует  {{/if}}
+                </td>
+                <td>
+                    {{:statusName}}
+                </td>
+                <td>
+                    {{:createVersionDate}}
+                </td>
+            </tr>
+            {{/for}}
+        </tbody>
+    </table>
 </div>

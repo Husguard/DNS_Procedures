@@ -33,7 +33,11 @@ namespace TaskSystem
             {
                 Configuration.GetSection("ConnectionStrings").Bind(settings);
             });
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                options.SerializerSettings.DateFormatString = "dd'-'MM'-'yyyy' 'HH':'mm";
+            });
             services.AddControllersWithViews();
             services.AddSingleton<IConnectionDb,ConnectionDb>();
             services.AddSingleton<ITaskRepository,TaskRepository>();

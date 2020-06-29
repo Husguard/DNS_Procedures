@@ -26,12 +26,12 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Идентификатор темы задания
         /// </summary>
-        public int ThemeId { get; set; }
+        public Theme Theme { get; set; }
 
         /// <summary>
         /// Идентификатор работника-создателя
         /// </summary>
-        public int CreatorId { get; set; }
+        public Employee Creator { get; set; }
 
         /// <summary>
         /// Версия задания, которая меняется при обновлении статуса
@@ -44,9 +44,14 @@ namespace TaskSystem.Models.Objects
         public WorkTaskStatus Status { get; set; }
 
         /// <summary>
+        /// Название статуса задания
+        /// </summary>
+        public string StatusName { get; set; }
+
+        /// <summary>
         /// Идентификатор исполнителя
         /// </summary>
-        public int? PerformerId { get; set; }
+        public Employee Performer { get; set; }
 
         /// <summary>
         /// Количество денежных знаков
@@ -67,26 +72,6 @@ namespace TaskSystem.Models.Objects
         /// Дата создания версии
         /// </summary>
         public DateTime CreateVersionDate { get; set; }
-
-        /// <summary>
-        /// Конвертация из модели данных в объект бизнес-модели
-        /// </summary>
-        /// <param name="workTaskDto">Объект данных задания</param>
-        public WorkTask(WorkTaskDto workTaskDto) 
-        {
-            Id = workTaskDto.Id;
-            Name = workTaskDto.Name;
-            Description = workTaskDto.Description;
-            ThemeId = workTaskDto.ThemeId;
-            CreateDate = workTaskDto.CreateDate;
-            CreateVersionDate = workTaskDto.CreateVersionDate;
-            ExpireDate = workTaskDto.ExpireDate;
-            Status = workTaskDto.Status;
-            CreatorId = workTaskDto.CreatorId;
-            PerformerId = workTaskDto.PerformerId;
-            MoneyAward = workTaskDto.MoneyAward;
-            Version = workTaskDto.Version;
-        }
 
         /// <summary>
         /// Пустой конструктор для создания объекта в потоке БД

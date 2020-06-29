@@ -12,12 +12,16 @@ SELECT
 	TaskVersionID, 
 	MoneyAward, 
 	StatusID, 
+	StatusName,
 	CreatorID, 
+	CreatorName,
 	PerformerID,
+	PerformerName,
 	CreateDate,
 	CreateVersionDate,
 	ExpireDate, 
-	ThemeID 
+	ThemeID,
+	ThemeName
 FROM TaskFunctionGetAllTasksAndLastVersions()
 	WHERE TaskID = @TaskID
 

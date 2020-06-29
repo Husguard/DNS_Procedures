@@ -10,18 +10,18 @@
     </thead>
     <tbody>
         {{for result}}
-        <tr class="rowTask" onclick={setCurrentTask({{: id }})}>
+        <tr class="rowTask" onclick={setCurrentTask({{: taskId }})}>
             <td>
-                {{:id}}
+                {{:taskId}}
             </td>
             <td>
-                {{:name}}
+                {{:taskName}}
             </td>
             <td>
-                {{:themeId}}
+                {{:theme.themeName}}
             </td>
             <td>
-                {{:status}}
+                {{:statusName}}
             </td>
             <td>
                 {{:expireDate}}

@@ -13,7 +13,7 @@
         /// <summary>
         /// Идентификатор пользователя, который оставил комментарий
         /// </summary>
-        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; }
 
         /// <summary>
         /// Текст комментария

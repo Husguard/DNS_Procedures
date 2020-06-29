@@ -18,27 +18,29 @@ const ThemeRepository = {
 
     /// Метод создания окна выбора желаемой темы, полученных из метода GetThemesByName
     /// <name> - название желаемой темы
-    ShowSuggests: function (name) {
-        const suggests = document.getElementById("suggestsThemes")
+    ShowSuggests: async function (name) {
+        const suggests = document.getElementById("suggestsThemes");
         suggests.style.display = 'none';
         while (suggests.firstChild) {
             suggests.removeChild(suggests.firstChild);
         }
-        if (name > 0) {
-            ThemeRepository.GetThemesByName(name).then(
-                (json) => {
-                    for (let i = 0; i < json.length; i++) {
-                        let btnShow = document.createElement('a');
-                        btnShow.innerText = json[i];
-                        btnShow.addEventListener('click', function () {
-                            document.getElementById("taskTheme").innerHTML = this.innerText;
-                            suggests.style.display = 'none';
-                        });
-                        suggests.append(btnShow);
-                    }
-                    suggests.style.display = 'block';
-                }
-            );
+        if (name.length > 0) {
+            const json = await ThemeRepository.GetThemesByName(name);
+            const input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "themeId");
+            for (let i = 0; i < json.result.length; i++) {
+                const option = document.createElement('a');
+                option.innerText = json.result[i].themeName;
+                option.addEventListener('click', function () {
+                    document.getElementById("taskTheme").value = this.innerText;
+                    input.setAttribute("value", json.result[i].themeId); // выбор значения обязателен, нет проверки выбрана ли тема
+                    suggests.style.display = 'none';
+                });
+                suggests.append(option);
+            }
+            suggests.append(input); // в родительский div бы
+            suggests.style.display = 'block';
         }
     }
 }

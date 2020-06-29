@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TaskSystem.Dto;
+using TaskSystem.Models.Dto;
 using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 
@@ -14,7 +15,8 @@ namespace TaskSystem.Models.Services
     {
         private const string MoneyValueNegative = "Денежная награда должна быть больше нуля";
         private const string CanceledOrCompletedTask = "У отмененного или выполненного задания нельзя изменить статус";
-        private const string NotAllowedToChange = "Вы можете только принять задание";
+        private const string NotAllowedToChange = "Вам нельзя изменять статус задания";
+        private const string OnlyAccept = "Вы можете только принять задание";
 
         private readonly ITaskRepository _taskRepository;
 
@@ -25,7 +27,7 @@ namespace TaskSystem.Models.Services
         /// <param name="employeeRepository">Репозиторий работников</param>
         /// <param name="logger">Инициализатор логгера</param>
         public TaskService(ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger, UserManager manager)
-            : base(logger,manager)
+            : base(logger, manager)
         {
             _taskRepository = taskRepository;
         }
@@ -91,15 +93,15 @@ namespace TaskSystem.Models.Services
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания</param>
-        public ServiceResponse AddNewTask(WorkTaskDto task)
+        public ServiceResponse AddNewTask(AddNewTaskDto task)
         {
             task.CreatorId = _manager._currentUserId;
             return ExecuteWithCatch(() =>
             {
-                _taskRepository.AddNewTask(new WorkTask(task));
+                _taskRepository.AddNewTask(task.Name, task.Description, task.ThemeId, task.CreatorId, task.ExpireDate);
                 return ServiceResponse.Success();
             });
-            
+
         }
 
         /// <summary>
@@ -109,30 +111,38 @@ namespace TaskSystem.Models.Services
         /// <param name="moneyAward">Денежная награда</param>
         /// <param name="statusId">Новый статус</param>
         /// <param name="taskId">Идентификатор задания</param>
-        public ServiceResponse AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId)
+        public ServiceResponse AddTaskVersion(AddTaskVersionDto versionDto)
         {
             return ExecuteWithCatch(() =>
             {
-                if (MoneyIsNegative(moneyAward))
+                if (MoneyIsNegative(versionDto.MoneyAward))
                     return ServiceResponse.Warning(MoneyValueNegative);
 
-                var task = _taskRepository.GetLastVersionOfTask(taskId);
+                var task = _taskRepository.GetLastVersionOfTask(versionDto.TaskId);
                 if (task == null)
                     return ServiceResponse.Warning(WorkTaskNotFound);
 
                 if (task.Status == WorkTaskStatus.Canceled || task.Status == WorkTaskStatus.Completed)
                     return ServiceResponse.Warning(CanceledOrCompletedTask);
 
-                if (task.CreatorId != _manager._currentUserId || task.PerformerId == null)
+                if ((task.Creator.Id != _manager._currentUserId))
                 {
-                    if(task.PerformerId != _manager._currentUserId)
+                    if ((task.Performer == null))
                     {
-                        _logger.LogWarning("Пользователю №{0} нельзя изменять задание №{1}", _manager._currentUserId, taskId);
+                        if (versionDto.Status != WorkTaskStatus.InWork)
+                        {
+                            _logger.LogWarning("Пользователь №{0} может только принять задание №{1}", _manager._currentUserId, versionDto.TaskId);
+                            return ServiceResponse.Warning(OnlyAccept);
+                        }
+                    }
+                    else if (task.Performer.Id != _manager._currentUserId)
+                    {
+                        _logger.LogWarning("Пользователю №{0} нельзя изменять задание №{1}", _manager._currentUserId, versionDto.TaskId);
                         return ServiceResponse.Warning(NotAllowedToChange);
                     }
                 }
-  
-                _taskRepository.AddTaskVersion(moneyAward, statusId, taskId, _manager._currentUserId);
+
+                _taskRepository.AddTaskVersion(versionDto.MoneyAward, versionDto.Status, versionDto.TaskId, _manager._currentUserId);
                 return ServiceResponse.Success();
             });
         }
@@ -163,17 +173,20 @@ namespace TaskSystem.Models.Services
                 return ServiceResponseGeneric<WorkTaskDto>.Success(new WorkTaskDto(taskVersion));
             });
         }
-        
+
         /// <summary>
         /// Метод проверки на отрицательное число введенных денег
         /// </summary>
         /// <param name="money">Сумма денег</param>
-        private bool MoneyIsNegative(decimal money)
+        private bool MoneyIsNegative(decimal? money)
         {
-            if (money < 0)
+            if (money.HasValue)
             {
-                _logger.LogWarning("Значение денег {0} отрицательно", money);
-                return true;
+                if (money.Value < 0)
+                {
+                    _logger.LogWarning("Значение денег {0} отрицательно", money);
+                    return true;
+                }
             }
             return false;
         }

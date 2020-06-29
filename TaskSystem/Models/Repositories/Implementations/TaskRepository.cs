@@ -115,15 +115,15 @@ namespace TaskSystem.Models.Objects.Repositories
         /// Добавление нового задания
         /// </summary>
         /// <param name="task">Объект задания, созданный клиентом</param>
-        public void AddNewTask(WorkTask task)
+        public void AddNewTask(string name, string description, int themeId, int creatorId, DateTime expireDate)
         {
             _db.ExecuteNonQuery(
                 "TaskProcedureAddTask",
-                new SqlParameter("@Name", task.Name),
-                new SqlParameter("@Description", task.Description),
-                new SqlParameter("@ThemeID", task.ThemeId),
-                new SqlParameter("@CreatorID", task.CreatorId),
-                new SqlParameter("@ExpireDate", task.ExpireDate));
+                new SqlParameter("@Name", name),
+                new SqlParameter("@Description", description),
+                new SqlParameter("@ThemeID", themeId),
+                new SqlParameter("@CreatorID", creatorId),
+                new SqlParameter("@ExpireDate", expireDate));
         }
 
         /// <summary>
@@ -133,11 +133,11 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <param name="statusId">Идентификатор статуса</param>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="performerID">Идентификатор исполнителя</param>
-        public void AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
+        public void AddTaskVersion(decimal? moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
         {
             _db.ExecuteNonQuery(
                 "TaskProcedureAddTaskVersion",
-                new SqlParameter("@MoneyAward", moneyAward),
+                new SqlParameter("@MoneyAward", moneyAward == null ? DBNull.Value : (object)moneyAward.Value),
                 new SqlParameter("@StatusID", statusId),
                 new SqlParameter("@TaskID", taskId),
                 new SqlParameter("@PerformerID", performerID)
@@ -161,20 +161,37 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <param name="reader">Класс чтения потока данных из БД</param>
         private WorkTask WorkTaskFromReader(IDataReader reader)
         {
-            return new WorkTask()
+            WorkTask task = new WorkTask()
             {
                 Id = (int)reader["TaskID"],
                 Name = (string)reader["TaskName"],
                 Description = (string)reader["Description"],
-                CreatorId = (int)reader["CreatorID"],
-                PerformerId = reader["PerformerID"] as int?,
-                ThemeId = (int)reader["ThemeID"],
+                Creator = new Employee
+                {
+                    Id = (int)reader["CreatorID"],
+                    Name = (string)reader["CreatorName"]
+                },
+                Theme = new Theme
+                {
+                    Id = (int)reader["ThemeID"],
+                    Name = (string)reader["ThemeName"]
+                },
                 CreateDate = (DateTime)reader["CreateDate"],
                 ExpireDate = (DateTime)reader["ExpireDate"],
                 MoneyAward = reader["MoneyAward"] as decimal?,
                 Status = (WorkTaskStatus)reader["StatusID"],
+                StatusName = (string)reader["StatusName"],
                 CreateVersionDate = (DateTime)reader["CreateVersionDate"]
             };
+            if (reader["PerformerID"] != DBNull.Value)
+            {
+                task.Performer = new Employee
+                {
+                    Id = (int)reader["PerformerID"],
+                    Name = (string)reader["PerformerName"]
+                };
+            }
+            return task;
         }
     }
 }

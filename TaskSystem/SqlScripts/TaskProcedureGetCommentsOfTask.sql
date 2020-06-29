@@ -12,5 +12,6 @@ AS
 		tc.Message 
 	FROM TaskComment as tc 
 	INNER JOIN TaskEmployee as te ON (te.ID = tc.EmployeeID AND tc.TaskID = @TaskID)
+	ORDER BY tc.CreateDate
 GO
 

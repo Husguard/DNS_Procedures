@@ -7,7 +7,7 @@ AS
 		TaskVersionID,
 		MoneyAward,
 		Version,
-		StatusID
+		StatusID,
 		TaskID,
 		CreatorID,
 		PerformerID,

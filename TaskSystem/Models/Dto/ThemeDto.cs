@@ -12,7 +12,7 @@ namespace TaskSystem.Dto
         /// <summary>
         /// Идентификатор темы
         /// </summary>
-        [DataMember(Name = "themeid")]
+        [DataMember(Name = "themeId")]
         public int Id { get; set; }
 
         /// <summary>

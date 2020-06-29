@@ -6,7 +6,7 @@ CREATE PROCEDURE [dbo].[TaskProcedureAddTask]
 	@Description NVARCHAR(500),
 	@ThemeID INT,
 	@CreatorID INT,
-	@ExpireDate DATE
+	@ExpireDate DATETIME
 AS
 	INSERT INTO TaskTask(Name, Description, ThemeID, CreatorID, ExpireDate) 
 			VALUES(@Name, @Description, @ThemeID, @CreatorID, @ExpireDate)

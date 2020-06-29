@@ -22,6 +22,12 @@ namespace TaskSystem.Dto
         public int EmployeeId { get; set; }
 
         /// <summary>
+        /// Имя пользователя, который оставил комментарий
+        /// </summary>
+        [DataMember(Name = "employeeName")]
+        public string EmployeeName { get; set; }
+
+        /// <summary>
         /// Текст комментария
         /// </summary>
         [DataMember(Name = "message")]
@@ -35,7 +41,8 @@ namespace TaskSystem.Dto
         public CommentDto(Comment comment)
         {
             TaskId = comment.TaskId;
-            EmployeeId = comment.EmployeeId;
+            EmployeeId = comment.Employee.Id;
+            EmployeeName = comment.Employee.Name;
             Message = comment.Message;
         }
 

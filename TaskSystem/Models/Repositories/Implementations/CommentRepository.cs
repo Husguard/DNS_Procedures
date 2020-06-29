@@ -68,7 +68,12 @@ namespace TaskSystem.Models.Objects
             return new Comment()
             {
                 TaskId = (int)reader["TaskID"],
-                EmployeeId = (int)reader["EmployeeID"],
+                Employee = new Employee
+                {
+                    Id = (int)reader["EmployeeID"],
+                    Name = (string)reader["Name"],
+                    Login = (string)reader["Login"]
+                },
                 Message = (string)reader["Message"]
             };
         }

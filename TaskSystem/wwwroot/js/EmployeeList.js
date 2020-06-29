@@ -9,28 +9,9 @@ function EmployeeList() {
         this.checkData(data);
     }
 
-    /// Метод регистрации нового работника - отпала необходимость из-за AccountController
-    //this.register = async function (name, login) {
-    //    const data = await EmployeeRepository.RegisterNewEmployee(name, login);
-    //    switch (data.status) {
-    //        case 0: {
-    //             успешная операция
-    //            break;
-    //        }
-    //        case 1: {
-    //            Insert(data.errorMessage, "mainTable");
-    //            break;
-    //        };
-    //        case 2: {
-    //            alert("Сервер не доступен");
-    //            break;
-    //        }
-    //    }
-    //}
-
     /// Метод создания HTML верстки на основе данных и ее отрисовка в главной таблице
     /// <json> - JSON объект данных
-    this.render = function (json) {
+    this.render = async function (json) {
         const html = await Render(this.template, json);
         Insert(html, "mainTable");
     }
@@ -48,7 +29,7 @@ function EmployeeList() {
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Сервер недоступен");
                 break;
             }
         }

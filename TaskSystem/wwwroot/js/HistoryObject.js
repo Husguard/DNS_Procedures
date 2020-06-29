@@ -14,16 +14,16 @@ function HistoryObject(currentTask) {
         const data = await TaskRepository.GetTaskHistory(this.id);
         switch (data.status) {
             case 0: {
-                const html = await Render(this.template, data);
+                const html = await Render(this.template, data.result);
                 Insert(html, this.container);
                 break;
             };
             case 1: {
-                alert(data.errorMessage);
+                Insert(data.errorMessage, this.container);
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Сервер недоступен");
                 break;
             };
         }

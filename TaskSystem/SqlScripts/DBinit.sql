@@ -47,7 +47,7 @@ GO
 CREATE TABLE [TaskTaskVersion]
 (
  [ID]           INT IDENTITY NOT NULL ,
- [MoneyAward]   money NULL ,
+ [MoneyAward]   money NOT NULL DEFAULT 0,
  [Version]      tinyint NOT NULL ,
  [StatusID]    tinyint NOT NULL ,
  [TaskID]      int NOT NULL ,

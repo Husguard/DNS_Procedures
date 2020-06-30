@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskSystem.Dto;
 using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Interfaces
@@ -29,6 +30,6 @@ namespace TaskSystem.Models.Interfaces
         /// Зарегистрировать нового работника
         /// </summary>
         /// <param name="employee">Объект работника</param>
-        void RegisterNewEmployee(Employee employee);
+        void RegisterNewEmployee(LoginEmployee employee);
     }
 }

@@ -16,10 +16,8 @@ namespace TaskSystem.Models.Services
         /// Общий логгер для всех сервисов и идентификатор текущего пользователя
         /// </summary>
         protected readonly ILogger<BaseService> _logger;
-        protected UserManager _manager;
+        protected readonly UserManager _manager;
 
-        protected const string WorkTaskNotFound = "Задание не было найдено";
-        protected const string EmployeeNotFound = "Работник не найден";
         public BaseService(ILoggerFactory logger, UserManager manager)
         {
             _manager = manager;
@@ -30,7 +28,7 @@ namespace TaskSystem.Models.Services
         /// Выполняет функцию, обворачивая ее в try-catch
         /// </summary>
         /// <param name="function">Функция</param>
-        protected ServiceResponseGeneric<T> ExecuteWithCatch<T>(Func<ServiceResponseGeneric<T>> function)
+        protected ServiceResponse<T> ExecuteWithCatch<T>(Func<ServiceResponse<T>> function)
         {
             try
             {
@@ -38,15 +36,17 @@ namespace TaskSystem.Models.Services
             }
             catch (SqlException ex)
             {
-                return ServiceResponseGeneric<T>.Fail(ex);
+                _logger.LogError(ex.Message);
+                return ServiceResponse<T>.Fail(ex);
             }
             catch (EmptyResultException ex)
             {
-                return ServiceResponseGeneric<T>.Warning(ex.Message);
+                return ServiceResponse<T>.Warning(ex.Message);
             }
             catch (Exception ex)
             {
-                return ServiceResponseGeneric<T>.Fail(ex);
+                _logger.LogError(ex.Message);
+                return ServiceResponse<T>.Fail(ex);
             }
         }
 
@@ -62,6 +62,7 @@ namespace TaskSystem.Models.Services
             }
             catch (SqlException ex)
             {
+                _logger.LogError(ex.Message);
                 return ServiceResponse.Fail(ex);
             }
             catch (EmptyResultException ex)
@@ -70,6 +71,7 @@ namespace TaskSystem.Models.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return ServiceResponse.Fail(ex);
             }
         }

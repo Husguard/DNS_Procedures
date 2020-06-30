@@ -133,11 +133,11 @@ namespace TaskSystem.Models.Objects.Repositories
         /// <param name="statusId">Идентификатор статуса</param>
         /// <param name="taskId">Идентификатор задания</param>
         /// <param name="performerID">Идентификатор исполнителя</param>
-        public void AddTaskVersion(decimal? moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
+        public void AddTaskVersion(decimal moneyAward, WorkTaskStatus statusId, int taskId, int performerID)
         {
             _db.ExecuteNonQuery(
                 "TaskProcedureAddTaskVersion",
-                new SqlParameter("@MoneyAward", moneyAward == null ? DBNull.Value : (object)moneyAward.Value),
+                new SqlParameter("@MoneyAward", moneyAward),
                 new SqlParameter("@StatusID", statusId),
                 new SqlParameter("@TaskID", taskId),
                 new SqlParameter("@PerformerID", performerID)
@@ -178,7 +178,7 @@ namespace TaskSystem.Models.Objects.Repositories
                 },
                 CreateDate = (DateTime)reader["CreateDate"],
                 ExpireDate = (DateTime)reader["ExpireDate"],
-                MoneyAward = reader["MoneyAward"] as decimal?,
+                MoneyAward = (decimal)reader["MoneyAward"],
                 Status = (WorkTaskStatus)reader["StatusID"],
                 StatusName = (string)reader["StatusName"],
                 CreateVersionDate = (DateTime)reader["CreateVersionDate"]

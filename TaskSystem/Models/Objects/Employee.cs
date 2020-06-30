@@ -21,19 +21,5 @@ namespace TaskSystem.Models.Objects
         /// Уникальный логин работника
         /// </summary>
         public string Login { get; set; }
-
-        /// <summary>
-        /// Конвертация из модели данных в бизнес-модель
-        /// </summary>
-        public Employee(EmployeeDto employeeDto)
-        {
-            Name = employeeDto.Name;
-            Login = employeeDto.Login;
-        }
-
-        /// <summary>
-        /// Пустой конструктор для создания объекта в потоке БД
-        /// </summary>
-        public Employee() {}
     }
 }

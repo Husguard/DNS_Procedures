@@ -27,42 +27,42 @@ namespace TaskSystem.Controllers
         /// Метод получения последних версий всех заданий
         /// </summary>
         [HttpGet("GetLastVersions")]
-        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetLastVersions() => _taskService.GetLastVersions();
+        public ServiceResponse<IEnumerable<WorkTaskDto>> GetLastVersions() => _taskService.GetLastVersions();
 
         /// <summary>
         /// Получение истории версий задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         [HttpGet("GetTaskByID")]
-        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTaskByID(int taskId) => _taskService.GetTaskByID(taskId);
+        public ServiceResponse<IEnumerable<WorkTaskDto>> GetTaskByID(int taskId) => _taskService.GetTaskByID(taskId);
 
         /// <summary>
         /// Получение последних версий всех заданий, у которых выбранный статус
         /// </summary>
         /// <param name="statusId">Статус задания</param>
         [HttpGet("GetTasksByStatus")]
-        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus statusId) => _taskService.GetTasksByStatus(statusId); 
+        public ServiceResponse<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus statusId) => _taskService.GetTasksByStatus(statusId); 
 
         /// <summary>
         /// Получение последней версии определенного задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         [HttpGet("GetLastVersionOfTask")]
-        public ServiceResponseGeneric<WorkTaskDto> GetLastVersionOfTask(int taskId) => _taskService.GetLastVersionOfTask(taskId);
+        public ServiceResponse<WorkTaskDto> GetLastVersionOfTask(int taskId) => _taskService.GetLastVersionOfTask(taskId);
 
         /// <summary>
         /// Получение списка заданий, у которых определенный исполнитель
         /// </summary>
         /// <param name="performerId">Идентификатор исполнителя</param>
         [HttpGet("GetTasksByPerformer")]
-        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByPerformer(int performerId) => _taskService.GetTasksByPerformer(performerId);
+        public ServiceResponse<IEnumerable<WorkTaskDto>> GetTasksByPerformer(int performerId) => _taskService.GetTasksByPerformer(performerId);
 
         /// <summary>
         /// Получение списка заданий, у которых определенный создатель
         /// </summary>
         /// <param name="creatorId">Идентификатор создателя</param>
         [HttpGet("GetTasksByCreator")]
-        public ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByCreator(int creatorId) => _taskService.GetTasksByCreator(creatorId);
+        public ServiceResponse<IEnumerable<WorkTaskDto>> GetTasksByCreator(int creatorId) => _taskService.GetTasksByCreator(creatorId);
 
         /// <summary>
         /// Добавление нового задания

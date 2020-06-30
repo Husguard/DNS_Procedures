@@ -85,7 +85,7 @@ namespace TaskSystem.Models
         /// <param name="storedProcedure">Процедура, которую необходимо исполнить</param>
         /// <param name="readerFunc">Метод создания экземпляра</param>
         /// <param name="args">Параметры процедуры</param>
-        public T ExecuteReaderGetSingle<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args)
+        public T ExecuteReaderGetSingle<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args) where T : class
         {
             using (var connection = new SqlConnection(_connectionName))
             {

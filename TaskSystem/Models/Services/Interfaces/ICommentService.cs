@@ -13,13 +13,13 @@ namespace TaskSystem.Models.Interfaces
         /// Получение всех комментариев задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId);
+        ServiceResponse<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId);
 
         /// <summary>
         /// Получение всех комментариев работника
         /// </summary>
         /// <param name="employeeId">Идентификатор работника</param>
-        ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId);
+        ServiceResponse<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId);
 
         /// <summary>
         /// Добавление комментария к заданию от текущего пользователя

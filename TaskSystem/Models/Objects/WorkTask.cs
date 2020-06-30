@@ -56,7 +56,7 @@ namespace TaskSystem.Models.Objects
         /// <summary>
         /// Количество денежных знаков
         /// </summary>
-        public decimal? MoneyAward { get; set; }
+        public decimal MoneyAward { get; set; }
 
         /// <summary>
         /// Дата создания задания

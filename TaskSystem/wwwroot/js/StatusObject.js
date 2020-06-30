@@ -14,6 +14,7 @@ function StatusObject(currentTask) {
     this.setNewMoneyAward = function (newMoneyAward) {
         this.newAward = newMoneyAward;
     }
+    // второй метод
 
     /// Метод создания новой версии задания
     /// <moneyAward> - награда за выполнение(новая при взятии в работу задания, иначе старая)

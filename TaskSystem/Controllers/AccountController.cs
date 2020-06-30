@@ -43,11 +43,11 @@ namespace TaskSystem.Controllers
         /// <param name="model">Данные работника</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(EmployeeDto model)
+        public async Task<IActionResult> Login(LoginEmployee model)
         {
             if (ModelState.IsValid)
             {
-                ServiceResponseGeneric<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
+                ServiceResponse<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
                 if (user.Result != null)
                 {
                     await Authenticate(user.Result);
@@ -73,15 +73,15 @@ namespace TaskSystem.Controllers
         /// <param name="model">Данные нового работника</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(EmployeeDto model)
+        public async Task<IActionResult> Register(LoginEmployee model)
         {
             if (ModelState.IsValid)
             {
-                ServiceResponseGeneric<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
+                ServiceResponse<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
                 if (user.Result == null)
                 {
                     _employeeService.RegisterNewEmployee(model);
-                    ServiceResponseGeneric<EmployeeDto> newUser = _employeeService.GetEmployeeByLogin(model.Login);
+                    ServiceResponse<EmployeeDto> newUser = _employeeService.GetEmployeeByLogin(model.Login);
 
                     await Authenticate(newUser.Result);
 

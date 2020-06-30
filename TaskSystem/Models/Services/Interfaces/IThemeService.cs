@@ -11,13 +11,13 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Получение всех тем
         /// </summary>
-        ServiceResponseGeneric<IEnumerable<ThemeDto>> GetAllThemes();
+        ServiceResponse<IEnumerable<ThemeDto>> GetAllThemes();
 
         /// <summary>
         /// Получение всех тем, название которых начинается с ввода
         /// </summary>
         /// <param name="name">Название темы</param>
-        ServiceResponseGeneric<IEnumerable<ThemeDto>> GetThemesByName(string name);
+        ServiceResponse<IEnumerable<ThemeDto>> GetThemesByName(string name);
 
         /// <summary>
         /// Добавление новой темы

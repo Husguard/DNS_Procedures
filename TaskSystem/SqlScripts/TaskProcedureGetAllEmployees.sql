@@ -3,7 +3,7 @@
 -- Получение всех работников
 CREATE PROCEDURE [dbo].[TaskProcedureGetAllEmployees]
 AS
-	 SELECT te.ID, te.Name, te.Login
+	 SELECT te.ID, te.Name
 	 FROM TaskEmployee AS te
 GO
 

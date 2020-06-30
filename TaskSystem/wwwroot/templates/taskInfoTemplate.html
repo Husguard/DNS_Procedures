@@ -43,19 +43,17 @@
                 </div>
                 <div class="form-group">
                     <label for="moneyAward" class="control-label">Награда</label>
-                    <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" />
+                    <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" placeholder="0"/>
                     <p id="taskSetMoneyValidation"></p>
                     <button type="button" name="statusId" value="2" onclick="{currentTask.statusObject.setStatus(2)}">Принять</button>
                 </div>
             </dialog>
             <button type="button" onclick="currentTask.statusObject.toggle()">В работу</button>
-            {{if moneyAward}}
+            {{if performer}}
             <button type="button" name="statusId" value="3" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(3);}">Приостановить</button>
-            {{/if}}
-            {{if moneyAward}}
             <button type="button" name="statusId" value="4" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(4)}">Выполнить</button>
             {{/if}}
-            <button type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(null); currentTask.statusObject.setStatus(5)}">Отменить</button>
+            <button type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(0); currentTask.statusObject.setStatus(5)}">Отменить</button>
         </div>
         <span id="taskInfoValidation"></span>
         <dialog id="taskHistoryContainer">

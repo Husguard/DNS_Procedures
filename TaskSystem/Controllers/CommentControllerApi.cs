@@ -25,14 +25,14 @@ namespace TaskSystem.Controllers
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         [HttpGet("GetCommentsOfTask")]
-        public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId) => _commentService.GetCommentsOfTask(taskId);
+        public ServiceResponse<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId) => _commentService.GetCommentsOfTask(taskId);
 
         /// <summary>
         /// Получение всех комментариев определенного работника
         /// </summary>
         /// <param name="employeeId">Идентификатор работника</param>
         [HttpGet("GetCommentsOfEmployee")]
-        public ServiceResponseGeneric<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId) => _commentService.GetCommentsOfEmployee(employeeId);
+        public ServiceResponse<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId) => _commentService.GetCommentsOfEmployee(employeeId);
 
         /// <summary>
         /// Добавление комментария к заданию

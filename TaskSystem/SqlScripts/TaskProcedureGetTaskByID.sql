@@ -28,8 +28,8 @@ AS
 	INNER JOIN TaskEmployee as tec ON tec.ID = tta.CreatorID
 	LEFT JOIN TaskEmployee as tep on tep.ID = ttv.PerformerID
 	INNER JOIN TaskTheme as tth on tth.ID = tta.ThemeID
-	 WHERE TaskID = @TaskId
-	 ORDER BY CreateVersionDate
+	 WHERE ttv.TaskID = @TaskId
+	 ORDER BY ttv.CreateDate
 GO
 
 

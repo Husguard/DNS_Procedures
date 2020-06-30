@@ -9,12 +9,12 @@ namespace TaskSystem.Models.Services
 {
     public class UserManager
     {
-        private IHttpContextAccessor _httpContext;
-        public int _currentUserId { get; }
+        private readonly IHttpContextAccessor _httpContext;
+        public int CurrentUserId { get; }
         public UserManager(IHttpContextAccessor httpContext)
         {
             _httpContext = httpContext;
-            _currentUserId = Convert.ToInt32(httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            CurrentUserId = Convert.ToInt32(httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
     }
 }

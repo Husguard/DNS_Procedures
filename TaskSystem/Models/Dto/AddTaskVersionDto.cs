@@ -33,7 +33,7 @@ namespace TaskSystem.Models.Dto
         /// Количество денежных знаков
         /// </summary>
         [DataMember(Name = "moneyAward")]
-        public decimal? MoneyAward { get; set; }
+        public decimal MoneyAward { get; set; }
 
         /// <summary>
         /// Дата создания версии

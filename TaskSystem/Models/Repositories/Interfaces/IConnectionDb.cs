@@ -34,6 +34,6 @@ namespace TaskSystem.Models.Interfaces
         /// <param name="storedProcedure">Процедура, которую необходимо исполнить</param>
         /// <param name="readerFunc">Метод создания экземпляра</param>
         /// <param name="args">Параметры процедуры</param>
-        T ExecuteReaderGetSingle<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args);
+        T ExecuteReaderGetSingle<T>(string storedProcedure, Func<IDataReader, T> readerFunc, params SqlParameter[] args) where T : class;
     }
 }

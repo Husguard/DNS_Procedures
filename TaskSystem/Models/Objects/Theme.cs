@@ -7,12 +7,6 @@ namespace TaskSystem.Models.Objects
     /// </summary>
     public class Theme
     {
-        public Theme(ThemeDto theme)
-        {
-            Id = theme.Id;
-            Name = theme.Name;
-        }
-
         /// <summary>
         /// Идентификатор темы
         /// </summary>
@@ -22,7 +16,5 @@ namespace TaskSystem.Models.Objects
         /// Название темы
         /// </summary>
         public string Name { get; set; }
-
-        public Theme() { }
     }
 }

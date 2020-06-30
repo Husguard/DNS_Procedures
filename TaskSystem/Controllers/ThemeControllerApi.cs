@@ -23,14 +23,14 @@ namespace TaskSystem.Controllers
         /// Получение всех тем
         /// </summary>
         [HttpGet("GetAllThemes")]
-        public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetAllThemes() => _themeService.GetAllThemes();
+        public ServiceResponse<IEnumerable<ThemeDto>> GetAllThemes() => _themeService.GetAllThemes();
 
         /// <summary>
         /// Получение тем, название которых начинаются с введенной строки
         /// </summary>
         /// <param name="name">Название темы</param>
         [HttpGet("GetThemesByName")]
-        public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetThemesByName(string name) => _themeService.GetThemesByName(name);
+        public ServiceResponse<IEnumerable<ThemeDto>> GetThemesByName(string name) => _themeService.GetThemesByName(name);
 
 
         /// <summary>

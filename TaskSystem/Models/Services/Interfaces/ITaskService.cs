@@ -14,19 +14,19 @@ namespace TaskSystem.Models.Interfaces
         /// <summary>
         /// Метод получения последних версий всех заданий
         /// </summary>
-        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetLastVersions();
+        ServiceResponse<IEnumerable<WorkTaskDto>> GetLastVersions();
 
         /// <summary>
         /// Метод получения последних версий заданий, у которых выбранный статус
         /// </summary>
         /// <param name="statusId"></param>
-        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus status);
+        ServiceResponse<IEnumerable<WorkTaskDto>> GetTasksByStatus(WorkTaskStatus status);
 
         /// <summary>
         /// Получение всех версий задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTaskByID(int taskId);
+        ServiceResponse<IEnumerable<WorkTaskDto>> GetTaskByID(int taskId);
 
         /// <summary>
         /// Добавление нового задания
@@ -46,19 +46,19 @@ namespace TaskSystem.Models.Interfaces
         /// Получение последней версии задания
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
-        ServiceResponseGeneric<WorkTaskDto> GetLastVersionOfTask(int taskId);
+        ServiceResponse<WorkTaskDto> GetLastVersionOfTask(int taskId);
 
         /// <summary>
         /// Получение заданий, у которых определенный исполнитель
         /// </summary>
         /// <param name="performerId">Идентификатор исполнителя</param>
-        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByPerformer(int performerId);
+        ServiceResponse<IEnumerable<WorkTaskDto>> GetTasksByPerformer(int performerId);
 
         /// <summary>
         /// Получение заданий, у которых определенный создатель
         /// </summary>
         /// <param name="creatorId">Идентификатор создателя</param>
-        ServiceResponseGeneric<IEnumerable<WorkTaskDto>> GetTasksByCreator(int creatorId);
+        ServiceResponse<IEnumerable<WorkTaskDto>> GetTasksByCreator(int creatorId);
 
     }
 }

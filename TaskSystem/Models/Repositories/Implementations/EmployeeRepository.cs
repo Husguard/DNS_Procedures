@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using TaskSystem.Dto;
 using TaskSystem.Models.Interfaces;
 
 namespace TaskSystem.Models.Objects.Repositories
@@ -58,7 +59,7 @@ namespace TaskSystem.Models.Objects.Repositories
         /// Регистрация нового работника
         /// </summary>
         /// <param name="employee">Объект нового работника</param>
-        public void RegisterNewEmployee(Employee employee)
+        public void RegisterNewEmployee(LoginEmployee employee)
         {
             _db.ExecuteNonQuery(
                "TaskProcedureAddEmployee",

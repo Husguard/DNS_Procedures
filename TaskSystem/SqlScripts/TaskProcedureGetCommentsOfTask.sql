@@ -6,12 +6,12 @@ CREATE PROCEDURE [dbo].[TaskProcedureGetCommentsOfTask]
 AS
 	 SELECT 
 		tc.EmployeeID,
-		te.Login,
 		te.Name, 
 		tc.TaskID,
 		tc.Message 
 	FROM TaskComment as tc 
-	INNER JOIN TaskEmployee as te ON (te.ID = tc.EmployeeID AND tc.TaskID = @TaskID)
+	INNER JOIN TaskEmployee as te ON te.ID = tc.EmployeeID
+	WHERE tc.TaskID = @TaskID
 	ORDER BY tc.CreateDate
 GO
 

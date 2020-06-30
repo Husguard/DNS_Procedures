@@ -22,12 +22,6 @@ namespace TaskSystem.Dto
         public string Name { get; set; }
 
         /// <summary>
-        /// Уникальный логин работника
-        /// </summary>
-        [DataMember(Name = "login")]
-        public string Login { get; set; }
-
-        /// <summary>
         /// Конвертация модели бизнес-логики в модель данных
         /// </summary>
         /// <param name="employee">Объект работника</param>
@@ -35,7 +29,6 @@ namespace TaskSystem.Dto
         {
             Id = employee.Id;
             Name = employee.Name;
-            Login = employee.Login;
         }
 
         /// <summary>

@@ -20,9 +20,6 @@ namespace TaskSystem.Models.Dto
         [DataMember(Name = "themeId")]
         public int ThemeId { get; set; }
 
-        [DataMember(Name = "creator")]
-        public int CreatorId { get; set; }
-
         [DataMember(Name = "expireDate")]
         public DateTime ExpireDate { get; set; }
     }

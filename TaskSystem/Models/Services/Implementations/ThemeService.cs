@@ -13,10 +13,6 @@ namespace TaskSystem.Models.Services
     {
         private readonly IThemeRepository _themeRepository;
 
-        private const string ThemeAlreadyExists = "Тема уже существует";
-        private const string ThemeTooLong = "Тема слишком длинная, ограничение в 100 символов";
-        private const string ThemeNotExists = "Выбранной темы не существует, добавьте ее";
-
         /// <summary>
         /// .ctor
         /// </summary>
@@ -30,12 +26,13 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Получение всех тем
         /// </summary>
-        public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetAllThemes()
+        public ServiceResponse<IEnumerable<ThemeDto>> GetAllThemes()
         {
             return ExecuteWithCatch(() =>
             {
                 var themes = _themeRepository.GetAllThemes();
-                return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Success(
+
+                return ServiceResponse<IEnumerable<ThemeDto>>.Success(
                     themes.Select((theme) => new ThemeDto(theme)));
             });
         }
@@ -44,16 +41,18 @@ namespace TaskSystem.Models.Services
         /// Получение всех тем, название которых начинается с ввода
         /// </summary>
         /// <param name="name">Название темы</param>
-        public ServiceResponseGeneric<IEnumerable<ThemeDto>> GetThemesByName(string name)
+        public ServiceResponse<IEnumerable<ThemeDto>> GetThemesByName(string name)
         {
             return ExecuteWithCatch(() =>
             {
                 if (ThemeIsTooLong(name))
-                    return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Warning(ThemeTooLong);
+                    return ServiceResponse<IEnumerable<ThemeDto>>.Warning("Тема слишком длинная, ограничение в 100 символов");
+
                 if(ThemeIsNotExists(name))
-                    return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Warning(ThemeNotExists);
+                    return ServiceResponse<IEnumerable<ThemeDto>>.Warning("Такой темы не существует, добавьте ее");
+
                 var themes = _themeRepository.GetThemesByName(name);
-                return ServiceResponseGeneric<IEnumerable<ThemeDto>>.Success(
+                return ServiceResponse<IEnumerable<ThemeDto>>.Success(
                     themes.Select((theme) => new ThemeDto(theme)));
             });
         }
@@ -67,9 +66,11 @@ namespace TaskSystem.Models.Services
             return ExecuteWithCatch(() =>
             {
                 if (ThemeIsTooLong(name))
-                    return ServiceResponse.Warning(ThemeTooLong);
+                    return ServiceResponse.Warning("Тема слишком длинная, ограничение в 100 символов");
+
                 if(ThemeIsExists(name))
-                    return ServiceResponse.Warning(ThemeAlreadyExists);
+                    return ServiceResponse.Warning("Тема уже существует");
+
                 _themeRepository.AddTheme(name);
                 return ServiceResponse.Success();
             });
@@ -85,7 +86,6 @@ namespace TaskSystem.Models.Services
                 .Select(
                     (theme) => theme.Name == name).Any())
             {
-                _logger.LogWarning("Тема с названием {0} уже существует", name);
                 return true;
             }
             return false;
@@ -97,12 +97,7 @@ namespace TaskSystem.Models.Services
         /// <param name="name">Название темы</param>
         private bool ThemeIsNotExists(string name)
         {
-            if (_themeRepository.GetThemesByName(name) == null)
-            {
-                _logger.LogWarning("Темы с названием {0} не существует", name);
-                return true;
-            }
-            return false;
+            return (_themeRepository.GetThemesByName(name).Any());
         }
 
         /// <summary>
@@ -111,12 +106,7 @@ namespace TaskSystem.Models.Services
         /// <param name="name">Название темы</param>
         private bool ThemeIsTooLong(string name)
         {
-            if (name.Length > 100)
-            {
-                _logger.LogWarning("Длина введенной темы слишком большая '{0}'", name.Length);
-                return true;
-            }
-            return false;
+            return (name.Length > 100);
         }
     }
 }

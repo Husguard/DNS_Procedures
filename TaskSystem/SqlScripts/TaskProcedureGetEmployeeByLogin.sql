@@ -9,5 +9,5 @@ AS
 		te.Name, 
 		te.Login
 	 FROM TaskEmployee AS te 
-	 WHERE te.Login LIKE @Login
+	 WHERE te.Login = @Login
 GO

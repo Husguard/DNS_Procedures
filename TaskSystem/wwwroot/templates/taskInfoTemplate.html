@@ -1,36 +1,41 @@
 ﻿<div id="taskInfoHeader">
-    <label>
+    <h2>
         Задание № {{:#data.taskId}}
-    </label>
-    <button type="button" onclick="currentTask.toggle()">X</button>
+        <button type="button" onclick="currentTask.toggle()">X</button>
+    </h2>
 </div>
 <div id="taskInfoContent">
-    <div>
-        Название: {{:taskName}}
-        Тема: {{:theme.themeName}}
+    <div style="
+    display: inline-block;
+    width: 42%;">
+        <p>Название: {{:taskName}}</p>
+        <p>Тема: {{:theme.themeName}}</p>
     </div>
-    <div>
-        Дата создания: {{:createDate}}
-        Обновлено: {{:createVersionDate}}
-        Дата окончания: {{:expireDate}}
+    <div style="
+    display: inline-block;
+    width: 55%;">
+        <p>Дата создания: {{:createDate}}</p>
+        <p>Обновлено: {{:createVersionDate}}</p>
+        <p>Дата окончания: {{:expireDate}}</p>
     </div>
-    <div>
-        {{:description}}
-    </div>
-    <div>
-        Создатель: {{:creator.employeeName}}
-        Текущий статус: {{:statusName}}
+    <div style="
+    display: inline-block;
+    width: 42%;">
+        <p>Создатель: {{:creator.employeeName}}</p>
+        <p>Текущий статус: {{:statusName}} </p>
         {{if performer}}
-        <label>
-            Исполнитель: {{:performer.employeeName}}
-        </label>
-        <label>
-            Награда: {{:moneyAward}}
-        </label>
+        <p>Исполнитель: {{:performer.employeeName}} </p>
+        <p>Награда: {{:moneyAward}}</p>
         {{/if}}
+    </div>
+    <div style="
+    display: inline-block;
+    width: 55%;">
+        {{:description}}
     </div>
     <div id="taskActions">
         <div>
+            <button type="button" onclick=currentTask.historyObject.showHistory()>История версий</button>
             <dialog id="setMoneyAward">
                 <div id="moneyHeader">
                     <b>Награда за выполнение</b>
@@ -39,7 +44,7 @@
                 <div class="form-group">
                     <label for="moneyAward" class="control-label">Награда</label>
                     <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" />
-                    <span id="taskSetMoneyValidation"></span>
+                    <p id="taskSetMoneyValidation"></p>
                     <button type="button" name="statusId" value="2" onclick="{currentTask.statusObject.setStatus(2)}">Принять</button>
                 </div>
             </dialog>
@@ -53,7 +58,6 @@
             <button type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(null); currentTask.statusObject.setStatus(5)}">Отменить</button>
         </div>
         <span id="taskInfoValidation"></span>
-        <button type="button" onclick=currentTask.historyObject.showHistory()>История версий</button>
         <dialog id="taskHistoryContainer">
         </dialog>
     </div>

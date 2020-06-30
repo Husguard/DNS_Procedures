@@ -75,7 +75,7 @@ textarea {
     background: green;
     border: 1px solid;
     float: left;
-    width: 30%;
+    width: 29%;
 }
 .toolbar .toolbar-element{
     display:block;
@@ -101,4 +101,44 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
     -moz-appearance: textfield;
+}
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    text-align: left;
+    border-collapse: separate;
+    border-spacing: 5px;
+    background: #ECE9E0;
+    color: #656665;
+    border: 16px solid #ECE9E0;
+    border-radius: 20px;
+}
+
+th {
+    font-size: 18px;
+    padding: 10px;
+}
+
+td {
+    background: #F5D7BF;
+    padding: 10px;
+}
+
+#suggestsThemes {
+    position: fixed;
+    display: block;
+    background-color: white;
+    border: 1px solid #030605;
+    overflow: auto;
+    height: 40px;
+    width: 200px;
+    line-height: 20px;
+    margin: 0 38px;
+}
+
+    #suggestsThemes a {
+        color: #0366d6;
+        display: block;
+    }
+.text-danger{
+    color:red;
 }

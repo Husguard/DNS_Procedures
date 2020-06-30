@@ -82,9 +82,9 @@ function TaskObject(id) {
 
 /// Метод создания и инициализации объекта выбранного задания
 /// <id> - идентификатор задания
-function setCurrentTask(id) {
+async function setCurrentTask(id) {
     currentTask = new TaskObject(id);
-    currentTask.render();
-    currentTask.showComments();
+    await currentTask.render();
+    await currentTask.showComments();
     currentTask.toggle();
 }

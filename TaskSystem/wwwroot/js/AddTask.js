@@ -14,12 +14,10 @@ function AddTask() {
 	/// Метод добавления нового задания из данных формы
 	this.submit = async function (e) {
 		const taskName = this.form.elements["taskName"].value;
+		if (this.form.elements["themeId"] == null) return Insert("Выберите тему", this.validation);
 		const taskTheme = this.form.elements["themeId"].value;
 
-		//const theme = await ThemeRepository.GetThemesByName(this.form.elements["themeName"].value); // метод возвращает несколько, нужно добавить по определенному
-		//const themeId = theme.result[0].themeId;  // themeId или Id
-		//// и передача themeId в addNewTask
-
+		if (this.form.elements["taskExpireDateTime"].value == "") return Insert("Выберите дату окончания", this.validation);
 		const taskDescription = this.form.elements["taskDescription"].value;
 		const taskExpireDateTime = this.form.elements["taskExpireDateTime"].value;
 		const data = await TaskRepository.AddNewTask(taskName, taskDescription, taskTheme, taskExpireDateTime);

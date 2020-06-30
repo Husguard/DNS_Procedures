@@ -2,10 +2,13 @@
 function StatusObject(currentTask) {
     this.id = currentTask.id; /// идентификатор задания
     this.container = "setMoneyAward"; /// идентификатор окна новой награды
+    this.validation = "taskInfoValidation";
     this.newAward = 0;
 
     /// Метод переключения видимости окна новой награды
     this.toggle = function () {
+        this.validation = (this.validation == "taskSetMoneyValidation") ? "taskInfoValidation" : "taskSetMoneyValidation";
+        // необходимо обновлять значение moneyAward при смене окна
         Toggle(this.container);
     };
     this.setNewMoneyAward = function (newMoneyAward) {
@@ -19,13 +22,13 @@ function StatusObject(currentTask) {
         const data = await TaskRepository.AddTaskVersion(this.newAward, statusId, this.id);
         switch (data.status) {
             case 0: {
-                this.toggle();
-                currentTask.render();
+                document.getElementById(this.container).close();
+                await currentTask.render();
+                await currentTask.showComments();
                 break;
             }
             case 1: {
-                Insert(data.errorMessage, "taskInfoValidation");
-           //     Insert(data.errorMessage, "taskSetMoneyValidation");
+                Insert(data.errorMessage, this.validation);
                 break;
             };
             case 2: {

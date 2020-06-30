@@ -12,7 +12,7 @@ function AddTheme() {
 
 	/// Метод добавления новой темы из данных формы
     this.submit = async function () {
-        const name = this.form.elements["themeName"].value;
+		const name = this.form.elements["themeName"].value;
         const data = await ThemeRepository.AddTheme(name);
 		switch (data.status) {
 			case 0: {

@@ -54,7 +54,7 @@ namespace TaskSystem.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Некорректный логин");
+                ModelState.AddModelError("Login", "Пользователя с таким логином не существует");
             }
             return View(model);
         }
@@ -87,7 +87,7 @@ namespace TaskSystem.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                else ModelState.AddModelError(model.Login, "Пользователь с таким логином уже существует");
+                else ModelState.AddModelError("Login", "Пользователь с таким логином уже существует");
             }
             return View(model);
         }

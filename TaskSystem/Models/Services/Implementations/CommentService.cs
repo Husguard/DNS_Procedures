@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaskSystem.Dto;
@@ -16,6 +17,7 @@ namespace TaskSystem.Models.Services
         protected readonly IEmployeeRepository _employeeRepository;
 
         private const string CommentTooLong = "Комментарий слишком длинный, ограничение в 300 символов";
+        private const string EmptyComment = "Комментарий не должен быть пустым";
 
         /// <summary>
         /// .ctor
@@ -59,6 +61,7 @@ namespace TaskSystem.Models.Services
             {
                 if (EmployeeIsNotExists(employeeId))
                     return ServiceResponseGeneric<IEnumerable<CommentDto>>.Warning(EmployeeNotFound);
+
                 var employeeComments = _commentRepository.GetCommentsOfEmployee(employeeId);
                 return ServiceResponseGeneric<IEnumerable<CommentDto>>.Success(
                     employeeComments.Select((comment) => new CommentDto(comment)));
@@ -73,6 +76,9 @@ namespace TaskSystem.Models.Services
         {
             return ExecuteWithCatch(() =>
             {
+                if (CommentIsEmpty(message))
+                    return ServiceResponse.Warning(EmptyComment);
+
                 if (CommentIsTooLong(message))
                     return ServiceResponse.Warning(CommentTooLong);
 
@@ -86,7 +92,21 @@ namespace TaskSystem.Models.Services
                 return ServiceResponse.Success();
             });
         }
-        
+
+        /// <summary>
+        /// Метод проверки строки на пустой комментарий
+        /// </summary>
+        /// <param name="message"></param>
+        private bool CommentIsEmpty(string message)
+        {
+            if(string.IsNullOrWhiteSpace(message))
+            {
+                _logger.LogWarning("Попытка добавить пустой комментарий");
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Метод проверки длины введенного комментария
         /// </summary>

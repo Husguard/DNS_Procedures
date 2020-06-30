@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaskSystem.Dto;
@@ -17,9 +18,14 @@ namespace TaskSystem.Models.Services
         private const string CanceledOrCompletedTask = "У отмененного или выполненного задания нельзя изменить статус";
         private const string NotAllowedToChange = "Вам нельзя изменять статус задания";
         private const string OnlyAccept = "Вы можете только принять задание";
+        private const string SameStatus = "Нельзя ставить тот же самый статус";
+        private const string TaskNameIsTooLong = "Название задания слишком длинное, ограничение в 100 символов";
+        private const string TaskDescriptionIsTooLong = "Описание задания слишком длинное, ограничение в 300 символов";
+        private const string EmptyString = "Заполните название и/или описание темы";
+        private const string ThemeNotChoosed = "Выберите тему";
 
         private readonly ITaskRepository _taskRepository;
-
+        
         /// <summary>
         /// .ctor
         /// </summary>
@@ -98,6 +104,18 @@ namespace TaskSystem.Models.Services
             task.CreatorId = _manager._currentUserId;
             return ExecuteWithCatch(() =>
             {
+                if(IsThemeChoosed(task.ThemeId))
+                    return ServiceResponse.Warning(ThemeNotChoosed);
+
+                if (IsEmptyString(task))
+                    return ServiceResponse.Warning(EmptyString);
+
+                if (IsTaskNameTooLong(task.Name))
+                    return ServiceResponse.Warning(TaskNameIsTooLong);
+
+                if (IsTaskDescriptionTooLong(task.Description))
+                    return ServiceResponse.Warning(TaskDescriptionIsTooLong);
+
                 _taskRepository.AddNewTask(task.Name, task.Description, task.ThemeId, task.CreatorId, task.ExpireDate);
                 return ServiceResponse.Success();
             });
@@ -115,7 +133,7 @@ namespace TaskSystem.Models.Services
         {
             return ExecuteWithCatch(() =>
             {
-                if (MoneyIsNegative(versionDto.MoneyAward))
+                if (IsMoneyNegative(versionDto.MoneyAward))
                     return ServiceResponse.Warning(MoneyValueNegative);
 
                 var task = _taskRepository.GetLastVersionOfTask(versionDto.TaskId);
@@ -141,6 +159,10 @@ namespace TaskSystem.Models.Services
                         return ServiceResponse.Warning(NotAllowedToChange);
                     }
                 }
+
+                if (versionDto.Status != WorkTaskStatus.InWork)
+                    if (task.Status == versionDto.Status)
+                        return ServiceResponse.Warning(SameStatus);
 
                 _taskRepository.AddTaskVersion(versionDto.MoneyAward, versionDto.Status, versionDto.TaskId, _manager._currentUserId);
                 return ServiceResponse.Success();
@@ -178,7 +200,7 @@ namespace TaskSystem.Models.Services
         /// Метод проверки на отрицательное число введенных денег
         /// </summary>
         /// <param name="money">Сумма денег</param>
-        private bool MoneyIsNegative(decimal? money)
+        private bool IsMoneyNegative(decimal? money)
         {
             if (money.HasValue)
             {
@@ -187,6 +209,46 @@ namespace TaskSystem.Models.Services
                     _logger.LogWarning("Значение денег {0} отрицательно", money);
                     return true;
                 }
+            }
+            return false;
+        }
+
+        private bool IsTaskDescriptionTooLong(string description)
+        {
+            if (description.Length > 300)
+            {
+                _logger.LogWarning("Длина описания новой темы слишком большая ({0})", description.Length);
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsTaskNameTooLong(string name)
+        {
+            if (name.Length > 100)
+            {
+                _logger.LogWarning("Длина названия новой темы слишком большая ({0})", name.Length);
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsEmptyString(AddNewTaskDto task)
+        {
+            if (string.IsNullOrWhiteSpace(task.Name) || string.IsNullOrWhiteSpace(task.Description))
+            {
+                _logger.LogWarning("Попытка добавить задание с пустым описанием и/или названием");
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsThemeChoosed(int themeId)
+        {
+            if (themeId == 0)
+            {
+                _logger.LogWarning("Попытка добавить задание без выбранной темы");
+                return true;
             }
             return false;
         }

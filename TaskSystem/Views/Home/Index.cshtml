@@ -32,14 +32,15 @@
                     <div id="suggestsThemes" style="display: none;"></div>
                 </div>
 
-                <label for="taskDescription" class="control-label">Описание</label>
-                <textarea name="taskDescription" class="form-control" placeholder="Описание" required></textarea>
+                <label for="taskDescription" class="control-label" style="display: block;">Описание</label>
+                <textarea name="taskDescription" class="form-control" placeholder="Описание" required style="display: block;"></textarea>
 
-                <label for="taskExpireDateTime" class="control-label">Дата окончания</label>
-                <input name="taskExpireDateTime" class="form-control" type="datetime-local" required />
-                <span id="addTaskValidation"></span>
+                <label for="taskExpireDateTime" class="control-label" style="display: block;">Дата окончания</label>
+                <input name="taskExpireDateTime" class="form-control" type="datetime-local" required style="display: block;"/>
+                <input type="hidden" id="themeId" name="themeId" value=0>
                 <div class="form-group">
                     <button type="button" onclick="addTask.submit()" class="btn btn-primary">Добавить</button>
+                    <span id="addTaskValidation"></span>
                 </div>
             </form>
         </dialog>
@@ -51,7 +52,7 @@
             <form id="addThemeContent">
                 <label for="themeName" class="control-label">Название темы</label>
                 <input name="themeName" class="form-control" type="text" />
-                <span id="addThemeValidation"></span>
+                <p id="addThemeValidation" class="text-danger"></p>
                 <input type="button" value="Добавить" class="btn btn-primary" onclick="addTheme.submit()" />
             </form>
         </dialog>

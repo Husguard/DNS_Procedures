@@ -1,6 +1,6 @@
 ﻿/// Класс таблицы работников
 function EmployeeList() {
-    this.container = "mainTable"; /// указатель на место отрисовки таблицы работников
+    this.container = document.getElementById("mainTable"); /// указатель на место отрисовки таблицы работников
     this.template = "employeesTemplate"; /// название шаблона отрисовки таблицы
 
     /// Метод получения всех работников и проверки результата
@@ -13,7 +13,7 @@ function EmployeeList() {
     /// <json> - JSON объект данных
     this.render = async function (json) {
         const html = await Render(this.template, json);
-        Insert(html, "mainTable");
+        this.container.innerHTML = html;
     }
 
     /// Метод проверки результата - (стоит индивидуально проверять результат или через общий метод??)
@@ -25,11 +25,11 @@ function EmployeeList() {
                 break;
             }
             case 1: {
-                Insert(data.errorMessage, this.container);
+                this.container.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер недоступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }

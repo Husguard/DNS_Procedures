@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskSystem.Dto;
 using TaskSystem.Models.Dto;
-using TaskSystem.Models.Interfaces;
 using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services;
+using TaskSystem.Models.Services.Interfaces;
 
 namespace TaskSystem.Controllers
 {
@@ -79,5 +78,11 @@ namespace TaskSystem.Controllers
         /// <param name="taskId">Идентификатор задания</param>
         [HttpPost("AddTaskVersion")]
         public ServiceResponse AddTaskVersion(AddTaskVersionDto version) => _taskService.AddTaskVersion(version);
+
+        /// <summary>
+        /// Получение списка заданий, у которых текущий пользователь является исполнителем
+        /// </summary>
+    //    [HttpGet("GetMyTasks")]
+  //      public ServiceResponse<IEnumerable<WorkTaskDto>> GetMyTasks(int performerId) => _taskService.GetMyTasks();
     }
 }

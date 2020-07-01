@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using TaskSystem.Dto;
 using TaskSystem.Models.Dto;
 using TaskSystem.Models.Objects;
 using TaskSystem.Models.Services;
 
-namespace TaskSystem.Models.Interfaces
+namespace TaskSystem.Models.Services.Interfaces
 {
     /// <summary>
     /// Интерфейс сервиса взаимодействия с заданиями

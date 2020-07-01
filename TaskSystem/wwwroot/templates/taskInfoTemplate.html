@@ -7,13 +7,15 @@
 <div id="taskInfoContent">
     <div style="
     display: inline-block;
-    width: 42%;">
+    width: 42%;
+    float: left;">
         <p>Название: {{:taskName}}</p>
         <p>Тема: {{:theme.themeName}}</p>
     </div>
     <div style="
     display: inline-block;
-    width: 55%;">
+    width: 55%;
+    float: left;">
         <p>Дата создания: {{:createDate}}</p>
         <p>Обновлено: {{:createVersionDate}}</p>
         <p>Дата окончания: {{:expireDate}}</p>
@@ -35,7 +37,9 @@
     </div>
     <div id="taskActions">
         <div>
-            <button type="button" onclick=currentTask.historyObject.showHistory()>История версий</button>
+            <div>
+                <button type="button" style="float: right;" onclick=currentTask.historyObject.showHistory()>История версий</button>
+            </div>
             <dialog id="setMoneyAward">
                 <div id="moneyHeader">
                     <b>Награда за выполнение</b>
@@ -44,18 +48,18 @@
                 <div class="form-group">
                     <label for="moneyAward" class="control-label">Награда</label>
                     <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" placeholder="0"/>
-                    <p id="taskSetMoneyValidation"></p>
-                    <button type="button" name="statusId" value="2" onclick="{currentTask.statusObject.setStatus(2)}">Принять</button>
+                    <p id="taskSetMoneyValidation" class="text-danger"></p>
+                    <button class="accept" type="button" name="statusId" value="2" onclick="{currentTask.statusObject.setStatus(2)}">Принять</button>
                 </div>
             </dialog>
-            <button type="button" onclick="currentTask.statusObject.toggle()">В работу</button>
-            {{if performer}}
-            <button type="button" name="statusId" value="3" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(3);}">Приостановить</button>
-            <button type="button" name="statusId" value="4" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(4)}">Выполнить</button>
+            <button class="accept" type="button"  onclick="currentTask.statusObject.toggle()">В работу</button>
+            {{if performer && statusId == 2}}
+            <button class="pause" type="button" name="statusId" value="3" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(3);}">Приостановить</button>
+            <button class="complete" type="button" name="statusId" value="4" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(4);}">Выполнить</button>
             {{/if}}
-            <button type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(0); currentTask.statusObject.setStatus(5)}">Отменить</button>
+            <button class="cancel" type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(0); currentTask.statusObject.setStatus(5)}">Отменить</button>
         </div>
-        <span id="taskInfoValidation"></span>
+        <span id="taskInfoValidation" class="text-danger"></span>
         <dialog id="taskHistoryContainer">
         </dialog>
     </div>

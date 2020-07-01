@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TaskSystem.Dto;
+using TaskSystem.Models.Dto;
 
-namespace TaskSystem.Models.Services
+namespace TaskSystem.Models.Services.Interfaces
 {
     /// <summary>
     /// Интерфейс сервиса взаимодействия с темами

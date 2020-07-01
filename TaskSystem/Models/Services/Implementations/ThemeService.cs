@@ -1,26 +1,27 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using TaskSystem.Dto;
-using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Dto;
+using TaskSystem.Models.Repositories.Interfaces;
+using TaskSystem.Models.Services.Interfaces;
 
-namespace TaskSystem.Models.Services
+namespace TaskSystem.Models.Services.Implementations
 {
     /// <summary>
     /// Сервис проверки и выполнения запросов, связанных с темами
     /// </summary>
-    public class ThemeService : BaseService, IThemeService
+    public class ThemeService : IThemeService
     {
         private readonly IThemeRepository _themeRepository;
+        private readonly BaseService _baseService;
 
         /// <summary>
         /// .ctor
         /// </summary>
         /// <param name="themeRepository">Репозиторий тем</param>
-        /// <param name="logger">Инициализатор логгера</param>
-        public ThemeService(IThemeRepository themeRepository, ILoggerFactory logger, UserManager manager)
-            : base(logger, manager)
+        public ThemeService(IThemeRepository themeRepository, BaseService baseService)
         {
+            _baseService = baseService;
             _themeRepository = themeRepository;
         }
         /// <summary>
@@ -28,7 +29,7 @@ namespace TaskSystem.Models.Services
         /// </summary>
         public ServiceResponse<IEnumerable<ThemeDto>> GetAllThemes()
         {
-            return ExecuteWithCatch(() =>
+            return _baseService.ExecuteWithCatch(() =>
             {
                 var themes = _themeRepository.GetAllThemes();
 
@@ -43,7 +44,7 @@ namespace TaskSystem.Models.Services
         /// <param name="name">Название темы</param>
         public ServiceResponse<IEnumerable<ThemeDto>> GetThemesByName(string name)
         {
-            return ExecuteWithCatch(() =>
+            return _baseService.ExecuteWithCatch(() =>
             {
                 if (ThemeIsTooLong(name))
                     return ServiceResponse<IEnumerable<ThemeDto>>.Warning("Тема слишком длинная, ограничение в 100 символов");
@@ -63,8 +64,11 @@ namespace TaskSystem.Models.Services
         /// <param name="name">Название новой темы</param>
         public ServiceResponse AddTheme(string name)
         {
-            return ExecuteWithCatch(() =>
+            return _baseService.ExecuteWithCatch(() =>
             {
+                if(IsEmptyName(name))
+                    return ServiceResponse.Warning("Введите название темы");
+
                 if (ThemeIsTooLong(name))
                     return ServiceResponse.Warning("Тема слишком длинная, ограничение в 100 символов");
 
@@ -97,7 +101,7 @@ namespace TaskSystem.Models.Services
         /// <param name="name">Название темы</param>
         private bool ThemeIsNotExists(string name)
         {
-            return (_themeRepository.GetThemesByName(name).Any());
+            return (!_themeRepository.GetThemesByName(name).Any());
         }
 
         /// <summary>
@@ -107,6 +111,11 @@ namespace TaskSystem.Models.Services
         private bool ThemeIsTooLong(string name)
         {
             return (name.Length > 100);
+        }
+
+        private bool IsEmptyName(string name)
+        {
+            return string.IsNullOrWhiteSpace(name);
         }
     }
 }

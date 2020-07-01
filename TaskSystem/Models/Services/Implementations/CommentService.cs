@@ -2,19 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TaskSystem.Dto;
-using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Dto;
+using TaskSystem.Models.Repositories.Interfaces;
+using TaskSystem.Models.Services.Interfaces;
 
-namespace TaskSystem.Models.Services
+namespace TaskSystem.Models.Services.Implementations
 {
     /// <summary>
     /// Сервис проверки и выполнения запросов, связанных с комментариями к заданиям
     /// </summary>
-    public class CommentService : BaseService, ICommentService
+    public class CommentService : ICommentService
     {
         private readonly ICommentRepository _commentRepository;
-        protected readonly ITaskRepository _taskRepository;
-        protected readonly IEmployeeRepository _employeeRepository;
+        private readonly ITaskRepository _taskRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly BaseService _baseService;
 
         private const string WorkTaskNotFound = "Задание не было найдено";
         private const string EmployeeNotFound = "Работник не найден";
@@ -25,10 +27,9 @@ namespace TaskSystem.Models.Services
         /// <param name="commentRepository">Репозиторий комментариев</param>
         /// <param name="taskRepository">Репозиторий заданий</param>
         /// <param name="employeeRepository">Репозиторий работников</param>
-        /// <param name="logger">Инициализатор логгера</param>
-        public CommentService(ICommentRepository commentRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, ILoggerFactory logger, UserManager manager)
-            : base(logger, manager)
+        public CommentService(ICommentRepository commentRepository, ITaskRepository taskRepository, IEmployeeRepository employeeRepository, BaseService baseService)
         {
+            _baseService = baseService;
             _commentRepository = commentRepository;
             _taskRepository = taskRepository;
             _employeeRepository = employeeRepository;
@@ -40,7 +41,7 @@ namespace TaskSystem.Models.Services
         /// <param name="taskId">Идентификатор задания</param>
         public ServiceResponse<IEnumerable<CommentDto>> GetCommentsOfTask(int taskId)
         {
-            return ExecuteWithCatch(() =>
+            return _baseService.ExecuteWithCatch(() =>
             {
                 if (TaskIsNotExists(taskId))
                     return ServiceResponse<IEnumerable<CommentDto>>.Warning("Задание не было найдено");
@@ -57,7 +58,7 @@ namespace TaskSystem.Models.Services
         /// <param name="employeeId">Идентификатор работника</param>
         public ServiceResponse<IEnumerable<CommentDto>> GetCommentsOfEmployee(int employeeId)
         {
-            return ExecuteWithCatch(() =>
+            return _baseService.ExecuteWithCatch(() =>
             {
                 if (EmployeeIsNotExists(employeeId))
                     return ServiceResponse<IEnumerable<CommentDto>>.Warning(EmployeeNotFound);
@@ -74,7 +75,7 @@ namespace TaskSystem.Models.Services
         /// <param name="commentDto">Данные комментария</param>
         public ServiceResponse AddCommentToTask(int taskId, string message)
         {
-            return ExecuteWithCatch(() =>
+            return _baseService.ExecuteWithCatch(() =>
             {
                 if (CommentIsEmpty(message))
                     return ServiceResponse.Warning("Комментарий не должен быть пустым");
@@ -85,10 +86,10 @@ namespace TaskSystem.Models.Services
                 if (TaskIsNotExists(taskId))
                     return ServiceResponse.Warning(WorkTaskNotFound);
 
-                if (EmployeeIsNotExists(_manager.CurrentUserId))
+                if (EmployeeIsNotExists(_baseService.Manager.CurrentUserId))
                     return ServiceResponse.Warning(EmployeeNotFound);
 
-                _commentRepository.AddCommentToTask(message, taskId, _manager.CurrentUserId);
+                _commentRepository.AddCommentToTask(message, taskId, _baseService.Manager.CurrentUserId);
                 return ServiceResponse.Success();
             });
         }
@@ -108,7 +109,7 @@ namespace TaskSystem.Models.Services
         /// <param name="message">Комментарий</param>
         private bool CommentIsTooLong(string message)
         {
-            return (message.Length > 100);
+            return (message.Length > 300);
         }
 
         /// <summary>

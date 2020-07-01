@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Objects;
+using TaskSystem.Models.Repositories.Interfaces;
 
-namespace TaskSystem.Models.Objects
+namespace TaskSystem.Models.Repositories.Implementations
 {
     /// <summary>
     /// Репозиторий для получения и добавления комментариев

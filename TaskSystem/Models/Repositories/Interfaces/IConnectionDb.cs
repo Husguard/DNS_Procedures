@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace TaskSystem.Models.Interfaces
+namespace TaskSystem.Models.Repositories.Interfaces
 {
     /// <summary>
     /// Интерфейс чтения данных из базы данных

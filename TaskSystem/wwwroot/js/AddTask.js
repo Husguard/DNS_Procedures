@@ -1,7 +1,7 @@
 ﻿/// Класс окна добавления задания
 function AddTask() {
-	this.container = "addTask"; /// указатель на окно добавления задания
-	this.validation = "addTaskValidation";
+	this.container = document.getElementById("addTask");
+	this.validation = document.getElementById("addTaskValidation");
 
 	/// Указатель на форму добавления задания
 	this.form = document.getElementById("addTaskContent");
@@ -14,10 +14,10 @@ function AddTask() {
 	/// Метод добавления нового задания из данных формы
 	this.submit = async function (e) {
 		const taskName = this.form.elements["taskName"].value;
-		if (this.form.elements["themeId"] == null) return Insert("Выберите тему", this.validation);
+		if (this.form.elements["themeId"] == null) return this.validation.innerHTML = "Выберите тему";
 		const taskTheme = this.form.elements["themeId"].value;
 
-		if (this.form.elements["taskExpireDateTime"].value == "") return Insert("Выберите дату окончания", this.validation);
+		if (this.form.elements["taskExpireDateTime"].value == "") return this.validation.innerHTML = "Выберите дату окончания";
 		const taskDescription = this.form.elements["taskDescription"].value;
 		const taskExpireDateTime = this.form.elements["taskExpireDateTime"].value;
 		const data = await TaskRepository.AddNewTask(taskName, taskDescription, taskTheme, taskExpireDateTime);
@@ -28,11 +28,11 @@ function AddTask() {
 				break;
 			}
 			case 1: {
-				Insert(data.errorMessage, this.validation);
+				this.validation.innerHTML = data.errorMessage;
 				break;
 			}
 			case 2: {
-				alert("Сервер недоступен");
+				alert("Возникла критическая ошибка");
 				break;
 			}
 		}

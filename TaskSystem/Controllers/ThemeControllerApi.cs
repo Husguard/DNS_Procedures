@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using TaskSystem.Dto;
+using TaskSystem.Models.Dto;
 using TaskSystem.Models.Services;
+using TaskSystem.Models.Services.Interfaces;
 
 namespace TaskSystem.Controllers
 {

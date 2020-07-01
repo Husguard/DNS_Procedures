@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using TaskSystem.Models.Objects;
 
-namespace TaskSystem.Dto
+namespace TaskSystem.Models.Dto
 {
     /// <summary>
     /// Модель DTO для задания и его состояния

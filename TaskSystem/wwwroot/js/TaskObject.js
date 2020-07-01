@@ -4,11 +4,10 @@ let currentTask; /// объект выбранного задания
 function TaskObject(id) {
     this.id = id; /// идентификатор задания
     this.commentMessage = null;
-    this.commentValidation = "commentValidation";
+    this.commentValidation = document.getElementById("commentValidation");
     this.historyObject = new HistoryObject(this); /// объект окна истории версий задания
-    this.statusObject = new StatusObject(this); /// объект окна изменения статуса задания
-    this.container = "taskInfoContainer"; /// идентификатор контейнера для подробностей задания
-    this.commentSection = "commentSection"; /// идентификатор контейнера для комментариев
+    this.container = document.getElementById("taskInfoContainer"); /// идентификатор контейнера для подробностей задания
+    this.commentSection = document.getElementById("commentSection"); /// идентификатор контейнера для комментариев
     this.infoTemplate = "taskInfoTemplate"; /// название шаблона отрисовки подробностей задания
     this.commentTemplate = "taskCommentsTemplate"; /// название шаблона отрисовки комментариев
 
@@ -18,15 +17,16 @@ function TaskObject(id) {
         switch (data.status) {
             case 0: {
                 const html = await Render(this.commentTemplate, data);
-                Insert(html, this.commentSection);
+                this.commentSection.innerHTML = html;
+                this.commentValidation = document.getElementById("commentValidation");
                 break;
             };
             case 1: {
-                Insert(data.errorMessage, this.commentSection);
+                this.commentSection.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }
@@ -41,11 +41,11 @@ function TaskObject(id) {
                 break;
             };
             case 1: {
-                Insert(data.errorMessage, this.commentValidation);
+                this.commentValidation.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }
@@ -60,15 +60,17 @@ function TaskObject(id) {
         switch (data.status) {
             case 0: {
                 const html = await Render(this.infoTemplate, data.result);
-                Insert(html, this.container);
+                this.container.innerHTML = html;
+                this.commentSection = document.getElementById("commentSection"); /// идентификатор контейнера для комментариев
+                this.container = document.getElementById("taskInfoContainer"); /// идентификатор контейнера для подробностей задания
                 break;
             };
             case 1: {
-                Insert(data.errorMessage, this.container);
+                this.container.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер не доступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }
@@ -85,6 +87,7 @@ function TaskObject(id) {
 async function setCurrentTask(id) {
     currentTask = new TaskObject(id);
     await currentTask.render();
+    currentTask.statusObject = new StatusObject(currentTask); /// объект окна изменения статуса задания
     await currentTask.showComments();
     currentTask.toggle();
 }

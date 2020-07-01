@@ -10,5 +10,5 @@ CREATE PROCEDURE [dbo].[TaskProcedureAddTask]
 AS
 	INSERT INTO TaskTask(Name, Description, ThemeID, CreatorID, ExpireDate) 
 			VALUES(@Name, @Description, @ThemeID, @CreatorID, @ExpireDate)
-	 EXEC TaskProcedureAddTaskVersion NULL, 1, @@IDENTITY, NULL
+	 EXEC TaskProcedureAddTaskVersion 0, 1, @@IDENTITY, NULL
 GO

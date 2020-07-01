@@ -1,7 +1,7 @@
 ﻿/// Класс окна истории версий задания
 function HistoryObject(currentTask) {
     this.id = currentTask.id; /// Идентификатор задания
-    this.container = "taskHistoryContainer"; /// Идентификатор контейнера, хранящий историю задания
+    this.container = document.getElementById("taskHistoryContainer"); /// Идентификатор контейнера, хранящий историю задания
     this.template = "taskHistoryTemplate"; /// Название шаблона для истории задания
 
     /// Метод переключения видимости окна истории задания
@@ -15,15 +15,16 @@ function HistoryObject(currentTask) {
         switch (data.status) {
             case 0: {
                 const html = await Render(this.template, data.result);
-                Insert(html, this.container);
+                this.container = document.getElementById("taskHistoryContainer"); /// Идентификатор контейнера, хранящий историю задания
+                this.container.innerHTML = html;
                 break;
             };
             case 1: {
-                Insert(data.errorMessage, this.container);
+                this.container.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер недоступен");
+                alert("Возникла критическая ошибка");
                 break;
             };
         }

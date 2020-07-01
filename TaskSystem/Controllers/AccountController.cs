@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using TaskSystem.Dto;
-using TaskSystem.Models;
+using TaskSystem.Models.Dto;
 using TaskSystem.Models.Services;
-using TaskSystem.Models.Services.Implementations;
 using TaskSystem.Models.Services.Interfaces;
 
 namespace TaskSystem.Controllers

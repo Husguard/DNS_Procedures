@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TaskSystem.Models.Objects;
 
-namespace TaskSystem.Models.Interfaces
+namespace TaskSystem.Models.Repositories.Interfaces
 {
     /// <summary>
     /// Интерфейс получения и добавления тем

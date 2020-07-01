@@ -1,6 +1,4 @@
-﻿using TaskSystem.Dto;
-
-namespace TaskSystem.Models.Objects
+﻿namespace TaskSystem.Models.Objects
 {
     /// <summary>
     /// Модель работника

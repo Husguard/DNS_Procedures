@@ -1,96 +1,115 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+* {
+    box-sizing: border-box;
+    word-break: break-word;
+}
+
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
+
 textarea {
     resize: none;
+    width: 100%;
+    height: 140px;
 }
+
 .toolbar {
-    background: green;
     border: 1px solid;
     float: left;
     width: 29%;
 }
-.toolbar .toolbar-element{
-    display:block;
-}
+
+    .toolbar .toolbar-element {
+        padding: 18px;
+        width: 100%;
+        display: block;
+    }
+
 .add-section {
-    background: aqua;
     border: 1px solid;
     text-align: end;
 }
+.add-section button {
+    padding: 7px;
+}
+
 .comment-section {
     border: 1px solid;
 }
-.main-table{
-    float:left;
-    width:70%;
+
+.main-table {
+    float: left;
+    width: 70%;
 }
 
 input::-webkit-outer-spin-button,
@@ -102,29 +121,33 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
 table {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    text-align: left;
+    text-align: center;
     border-collapse: separate;
     border-spacing: 5px;
     background: #ECE9E0;
-    color: #656665;
     border: 16px solid #ECE9E0;
-    border-radius: 20px;
+    width: 100%;
+    font-size: 12px;
 }
 
-th {
-    font-size: 18px;
-    padding: 10px;
-}
+    table th {
+        padding: 10px;
+    }
 
-td {
-    background: #F5D7BF;
-    padding: 10px;
-}
+    table tr {
+        background: #F5D7BF;
+    }
+
+    table td {
+        padding: 10px;
+        word-break: break-word;
+    }
 
 #suggestsThemes {
-    position: fixed;
+    position: absolute;
     display: block;
     background-color: white;
     border: 1px solid #030605;
@@ -132,13 +155,44 @@ td {
     height: 40px;
     width: 200px;
     line-height: 20px;
-    margin: 0 38px;
 }
 
     #suggestsThemes a {
         color: #0366d6;
         display: block;
     }
-.text-danger{
-    color:red;
+
+.text-danger {
+    color: red;
+}
+
+#taskActions button {
+    border-radius: 11px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 17px 0;
+}
+
+#taskActions .accept {
+    background-color: #3ef911;
+    border: 1px solid #3ef911;
+}
+
+#taskActions .pause {
+    background-color: #f5e405;
+    border: 1px solid #f5e405;
+}
+
+#taskActions .cancel {
+    background-color: #f50505;
+    border: 1px solid #f50505;
+}
+
+#taskActions .complete {
+    background-color: #23ce70;
+    border: 1px solid #23ce70;
+}
+
+.rowTask:hover {
+    background: #e68538;
 }

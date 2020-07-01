@@ -14,7 +14,6 @@ namespace TaskSystem.Models.Dto
         public string Name { get; set; }
 
         [DataMember(Name = "description")]
-        [StringLength(300, ErrorMessage = "Описание не может быть длинее 300 символов")]
         public string Description { get; set; }
 
         [DataMember(Name = "themeId")]

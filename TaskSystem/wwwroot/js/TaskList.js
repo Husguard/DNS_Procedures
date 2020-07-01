@@ -1,6 +1,6 @@
 ﻿/// Класс таблицы списка заданий
 function TaskList() {
-    this.container = "mainTable"; /// указатель на место отрисовки таблицы заданий
+    this.container = document.getElementById("mainTable"); /// указатель на место отрисовки таблицы заданий
     this.template = "tasksTemplate"; /// название шаблона отрисовки таблицы заданий
     /// Метод получения последних версий всех заданий и их отрисовка
     this.getAll = async function () {
@@ -11,11 +11,11 @@ function TaskList() {
                 break;
             }
             case 1: {
-                Insert(data.errorMessage, this.container);
+                this.container.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер недоступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }
@@ -30,11 +30,11 @@ function TaskList() {
                 break;
             }
             case 1: {
-                Insert(data.errorMessage, this.container);
+                this.container.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер недоступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }
@@ -56,11 +56,11 @@ function TaskList() {
                 break;
             }
             case 1: {
-                Insert(data.errorMessage, this.container);
+                this.container.innerHTML = data.errorMessage;
                 break;
             };
             case 2: {
-                alert("Сервер недоступен");
+                alert("Возникла критическая ошибка");
                 break;
             }
         }
@@ -70,7 +70,7 @@ function TaskList() {
     /// <json> - JSON объект данных
     this.render = async function (json) {
         const html = await Render(this.template, json);
-        Insert(html, this.container);
+        this.container.innerHTML = html;
     }
 }
 const taskList = new TaskList();

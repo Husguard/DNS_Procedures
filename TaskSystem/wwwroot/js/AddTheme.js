@@ -1,6 +1,7 @@
 ﻿// Класс окна добавления новой темы
 function AddTheme() {
-	this.container = "addTheme"; /// указатель на окно добавление темы
+	this.container = document.getElementById("addTheme"); /// указатель на окно добавление темы
+	this.validation = document.getElementById("addThemeValidation");
 
 	/// Указатель на форму добавления новой темы
 	this.form = document.getElementById("addThemeContent");
@@ -21,11 +22,11 @@ function AddTheme() {
 				break;
 			}
 			case 1: {
-				Insert(data.errorMessage, "addThemeValidation");
+				this.validation.innerHTML = data.errorMessage;
 				break;
 			}
 			case 2: {
-				alert("Сервер недоступен");
+				alert("Возникла критическая ошибка");
 				break;
 			}
 		}

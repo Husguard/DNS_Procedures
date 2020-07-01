@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace TaskSystem.Dto
+namespace TaskSystem.Models.Dto
 {
     [DataContract]
     public class LoginEmployee
@@ -15,6 +15,7 @@ namespace TaskSystem.Dto
         /// </summary>
         [DataMember(Name = "employeeName")]
         public string Name { get; set; }
+
         /// <summary>
         /// Уникальный логин работника
         /// </summary>

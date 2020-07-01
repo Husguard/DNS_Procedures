@@ -1,4 +1,4 @@
-﻿@model TaskSystem.Dto.LoginEmployee
+﻿@model TaskSystem.Models.Dto.LoginEmployee
 
 <h2>Регистрация</h2>
 
@@ -8,12 +8,12 @@
         <div>
             <label asp-for="Name">Введите имя</label><br />
             <input type="text" asp-for="Name" />
-            <span asp-validation-for="Name"></span>
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div>
             <label asp-for="Login">Введите логин</label><br />
             <input type="text" asp-for="Login" />
-            <span asp-validation-for="Login"></span>
+            <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div>
             <input type="submit" value="Регистрация" />

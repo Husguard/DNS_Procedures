@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskSystem.Dto;
+using TaskSystem.Models.Dto;
 using TaskSystem.Models.Services;
 using TaskSystem.Models.Services.Interfaces;
 
@@ -29,13 +28,6 @@ namespace TaskSystem.Controllers
         /// </summary>
         [HttpGet("GetAllEmployees")]
         public ServiceResponse<IEnumerable<EmployeeDto>> GetAllEmployees() => _employeeService.GetAllEmployees();
-
-        /// <summary>
-        /// Регистрация нового работника
-        /// </summary>
-        /// <param name="employeeDto">Объект нового работника</param>
-        [HttpPost("RegisterNewEmployee")]
-        public ServiceResponse RegisterNewEmployee([FromBody] LoginEmployee employeeDto) => _employeeService.RegisterNewEmployee(employeeDto);
 
         /// <summary>
         /// Получение объекта работника, у которого введенный логин

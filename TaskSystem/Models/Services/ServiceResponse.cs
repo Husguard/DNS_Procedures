@@ -36,11 +36,11 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Метод создания объекта ответа со статусом "критическая ошибка"
         /// </summary>
-        public static ServiceResponse Fail(Exception ex)
+        public static ServiceResponse Critical(Exception ex)
         {
             return new ServiceResponse
             {
-                Status = ServiceStatus.Fail,
+                Status = ServiceStatus.Critical,
                 ErrorMessage = ex.Message
             };
         }
@@ -85,11 +85,11 @@ namespace TaskSystem.Models.Services
         /// <summary>
         /// Метод создания объекта ответа со статусом "критическая ошибка"
         /// </summary>
-        public static new ServiceResponse<T> Fail(Exception ex)
+        public static new ServiceResponse<T> Critical(Exception ex)
         {
             return new ServiceResponse<T>
             {
-                Status = ServiceStatus.Fail,
+                Status = ServiceStatus.Critical,
                 ErrorMessage = ex.Message
             };
         }

@@ -3,24 +3,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Data.SqlClient;
-using TaskSystem.Dto;
 
-namespace TaskSystem.Models.Services
+namespace TaskSystem.Models.Services.Implementations
 {
     /// <summary>
-    /// Абстрактный класс сервисов
+    /// Базовый класс сервисов
     /// </summary>
-    public abstract class BaseService
+    public class BaseService
     {
         /// <summary>
         /// Общий логгер для всех сервисов и идентификатор текущего пользователя
         /// </summary>
-        protected readonly ILogger<BaseService> _logger;
-        protected readonly UserManager _manager;
+        internal readonly ILogger<BaseService> _logger;
+        internal readonly UserManager Manager;
 
         public BaseService(ILoggerFactory logger, UserManager manager)
         {
-            _manager = manager;
+            Manager = manager;
             _logger = logger.CreateLogger<BaseService>();
         }
 
@@ -28,7 +27,7 @@ namespace TaskSystem.Models.Services
         /// Выполняет функцию, обворачивая ее в try-catch
         /// </summary>
         /// <param name="function">Функция</param>
-        protected ServiceResponse<T> ExecuteWithCatch<T>(Func<ServiceResponse<T>> function)
+        public ServiceResponse<T> ExecuteWithCatch<T>(Func<ServiceResponse<T>> function)
         {
             try
             {
@@ -37,7 +36,7 @@ namespace TaskSystem.Models.Services
             catch (SqlException ex)
             {
                 _logger.LogError(ex.Message);
-                return ServiceResponse<T>.Fail(ex);
+                return ServiceResponse<T>.Critical(ex);
             }
             catch (EmptyResultException ex)
             {
@@ -46,7 +45,7 @@ namespace TaskSystem.Models.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return ServiceResponse<T>.Fail(ex);
+                return ServiceResponse<T>.Critical(ex);
             }
         }
 
@@ -54,7 +53,7 @@ namespace TaskSystem.Models.Services
         /// Выполняет функцию, обворачивая ее в try-catch
         /// </summary>
         /// <param name="function">Функция</param>
-        protected ServiceResponse ExecuteWithCatch(Func<ServiceResponse> function)
+        public ServiceResponse ExecuteWithCatch(Func<ServiceResponse> function)
         {
             try
             {
@@ -63,7 +62,7 @@ namespace TaskSystem.Models.Services
             catch (SqlException ex)
             {
                 _logger.LogError(ex.Message);
-                return ServiceResponse.Fail(ex);
+                return ServiceResponse.Critical(ex);
             }
             catch (EmptyResultException ex)
             {
@@ -72,7 +71,7 @@ namespace TaskSystem.Models.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return ServiceResponse.Fail(ex);
+                return ServiceResponse.Critical(ex);
             }
         }
     }

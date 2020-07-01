@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using TaskSystem.Models.Interfaces;
 using Microsoft.Extensions.Options;
 using TaskSystem.Models.Options;
+using TaskSystem.Models.Repositories.Interfaces;
 
-namespace TaskSystem.Models
+namespace TaskSystem.Models.Repositories.Implementations
 {
     /// <summary>
     /// Класс подключения к БД

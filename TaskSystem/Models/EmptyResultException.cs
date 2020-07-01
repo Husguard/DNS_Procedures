@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskSystem.Models.Services
+namespace TaskSystem.Models
 {
     /// <summary>
     /// Исключение, возникающее при возвращении из БД пустого результата

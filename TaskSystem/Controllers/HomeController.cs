@@ -18,7 +18,6 @@ namespace TaskSystem.Controllers
         }
         public IActionResult Index()
         {
-            Console.WriteLine(User.Identity.Name);
             return View();
         }
 

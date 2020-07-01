@@ -1,0 +1,17 @@
+﻿body {
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+
+
+    margin-left:auto;
+}
+.father{
+    position:relative;
+}
+.son{
+    position:absolute;
+}
+/*длина выпадающего окна, кнопка выхода стилизованная, флекс заголовок, как размещать 4 блока?, layout навигация*/

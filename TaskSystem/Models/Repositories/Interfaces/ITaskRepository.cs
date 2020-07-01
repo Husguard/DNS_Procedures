@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TaskSystem.Models.Objects;
 
-namespace TaskSystem.Models.Interfaces
+namespace TaskSystem.Models.Repositories.Interfaces
 {
     public interface ITaskRepository
     {

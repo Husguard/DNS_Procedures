@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using TaskSystem.Dto;
-using TaskSystem.Models.Interfaces;
+using TaskSystem.Models.Dto;
+using TaskSystem.Models.Objects;
+using TaskSystem.Models.Repositories.Interfaces;
 
-namespace TaskSystem.Models.Objects.Repositories
+namespace TaskSystem.Models.Repositories.Implementations
 {
     /// <summary>
     /// Репозиторий для получения и добавления работников

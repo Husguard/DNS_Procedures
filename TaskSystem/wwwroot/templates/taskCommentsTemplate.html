@@ -8,7 +8,7 @@
     {{/for}}
 </div>
 <div id="addComment" class="form-group">
-    <input id="commentMessage" name="message" placeholder="Введите комментарий" onchange="currentTask.setCurrentComment(this.value)" />
+    <input id="commentMessage" name="message" placeholder="Введите комментарий" onchange="currentTask.setCurrentComment(this.value)" maxlength="300" />
     <button type="button" class="btn btn-primary" onclick="currentTask.saveComment()">Добавить</button>
-    <span id="commentValidation" style="float: right;"></span>
+    <span id="commentValidation" style="float: right;" class="text-danger"></span>
 </div>

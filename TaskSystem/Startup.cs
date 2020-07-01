@@ -3,17 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskSystem.Models;
-using TaskSystem.Models.Interfaces;
-using TaskSystem.Models.Objects;
-using TaskSystem.Models.Objects.Repositories;
 using TaskSystem.Models.Options;
 using TaskSystem.Models.Services;
 using TaskSystem.Models.Services.Implementations;
 using TaskSystem.Models.Services.Interfaces;
 using Microsoft.OpenApi.Models;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using TaskSystem.Models.Repositories.Interfaces;
+using TaskSystem.Models.Repositories.Implementations;
 
 namespace TaskSystem
 {
@@ -50,6 +47,7 @@ namespace TaskSystem
             services.AddScoped<IThemeService, ThemeService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddHttpContextAccessor();
+            services.AddScoped<BaseService>();
             services.AddScoped<UserManager>();
 
            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

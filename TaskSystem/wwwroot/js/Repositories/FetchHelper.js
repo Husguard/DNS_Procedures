@@ -27,7 +27,7 @@ async function FetchGet(url, data = null) {
         return await response.json();
     }
     catch (ex) {
-        alert(ex);
+        return CreateCriticalError(ex);
     }
 }
 
@@ -50,35 +50,24 @@ async function FetchPost(url, data = null) {
         return json;
     }
     catch (ex) {
-        alert(ex);
+        return CreateCriticalError(ex);
     }
 }
 
-/// Метод создания HTML верстки на основе шаблона и данных
-/// <templateName> - название шаблона
-/// <data> - JSON объект, хранящий данные
-async function Render(templateName, data) {
-    const response = await fetch(`/templates/${templateName}.html`); // +менеджер шаблонов
-    const template = await response.text();
-    const selectTemplate = window.jsrender.templates(template);
-    return selectTemplate.render(data, true);
-};
-
 /// Метод переключения видимости диалога
 /// <id> - идентификатор диалога
-function Toggle(id) {
-    const currentModal = document.getElementById(id);
+function Toggle(currentModal) {
     if (currentModal.hasAttribute('open')) {
         currentModal.close();
     }
     else {
-        currentModal.showModal()
+        currentModal.showModal();
     }
 };
-
-/// Метод добавления HTML верстки в выбранный контейнер
-/// <html> - HTML верстка, созданная методом Render
-/// <destination> - идентификатор контейнера
-function Insert(html, destination) {
-    document.getElementById(destination).innerHTML = html;
-};
+function CreateCriticalError(ex) {
+    return {
+        result: null,
+        status: 2,
+        errorMessage: ex.message
+    }
+}

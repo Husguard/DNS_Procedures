@@ -1,0 +1,33 @@
+﻿.navbar-nav {
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    margin-top: auto;
+}
+
+    .navbar-nav .nav-link {
+        padding-right: 0;
+        padding-left: 0;
+        text-decoration: none;
+        color:inherit;
+    }
+
+    .navbar-nav .nav-item {
+        background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1);
+        border: 1px solid #c6c6c6;
+
+        display: inline-block;
+        text-align: center;
+        border-radius: 2px;
+        line-height: 19px;
+        cursor: pointer;
+        margin-left: -1px;
+        padding: 4px 11px;
+        font-family: arial,sans-serif;
+    }
+.nav-container{
+    display:flex;
+}

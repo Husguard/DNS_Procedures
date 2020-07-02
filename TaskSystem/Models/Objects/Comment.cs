@@ -1,4 +1,6 @@
-﻿namespace TaskSystem.Models.Objects
+﻿using System;
+
+namespace TaskSystem.Models.Objects
 {
     /// <summary>
     /// Модель, описывающая комментарий
@@ -19,5 +21,10 @@
         /// Текст комментария
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        /// Дата создания комментария
+        /// </summary>
+        public DateTime CreateDate { get; set; }
     }
 }

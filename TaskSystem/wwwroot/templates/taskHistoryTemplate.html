@@ -1,11 +1,11 @@
-﻿<div id="taskHistoryHeader">
+﻿<div id="taskHistoryHeader" class="modal-header">
     <h2>
         История версий задания № {{:#data[0].taskId}}
-        <button type="button" onclick="currentTask.historyObject.toggle()">X</button>
     </h2>
+    <button type="button" class="close-button" onclick="currentTask.historyObject.toggle()">X</button>
 </div>
 <div id="taskHistoryContent">
-    <table>
+    <table class="history-table">
         <thead>
             <tr>
                 <th>
@@ -31,7 +31,7 @@
                 </td>
                 <td>
                     {{if moneyAward}} {{:moneyAward}}
-                    {{else}} Отсутствует  {{/if}}
+                    {{else}} Отсутствует {{/if}}
                 </td>
                 <td>
                     {{:statusName}}

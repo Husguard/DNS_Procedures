@@ -19,45 +19,46 @@
 
     </div>
     <dialog id="addTask">
-        <div id="addTaskHeader" class="modal-header">
-            <b>Добавить задание</b>
-            <button type="button" onclick="addTask.toggle()">X</button>
-        </div>
-        <form id="addTaskContent">
-            <div class="form-group">
-                <label for="taskName" class="control-label">Название</label>
-                <input name="taskName" class="form-control" type="text" required maxlength="100" />
+        <div>
+            <div id="addTaskHeader" class="modal-header">
+                <b>Добавить задание</b>
+                <button type="button" class="close-button" onclick="addTask.toggle()">X</button>
             </div>
-            <div class="form-group">
-                <label for="taskTheme" class="control-label">Тема</label>
+            <form id="addTaskContent">
                 <div>
-                    <input id="taskTheme" name="taskTheme" class="form-control" type="text" required oninput="ThemeRepository.ShowSuggests(this.value)" maxlength="100" />
-                    <div id="suggestsThemes" style="display: none;"></div>
+                    <a for="taskName">Название</a>
+                    <input name="taskName" type="text" required maxlength="100" />
                 </div>
-            </div>
+                <div>
+                    <a for="taskTheme">Тема</a>
+                    <div>
+                        <input id="taskTheme" name="taskTheme" type="text" required oninput="ThemeRepository.ShowSuggests(this.value)" maxlength="100" />
+                        <div id="suggestsThemes" style="display: none;"></div>
+                    </div>
+                </div>
+                <a for="taskDescription">Описание</a>
+                <textarea name="taskDescription" placeholder="Описание" required maxlength="500"></textarea>
 
-            <label for="taskDescription" class="control-label" style="display: block;">Описание</label>
-            <textarea name="taskDescription" class="form-control" placeholder="Описание" required style="display: block;" maxlength="500"></textarea>
-
-            <label for="taskExpireDateTime" class="control-label" style="display: block;">Дата окончания</label>
-            <input name="taskExpireDateTime" class="form-control" type="datetime-local" required style="display: block;" />
-            <input type="hidden" id="themeId" name="themeId" value=0>
-            <div class="form-group">
-                <button type="button" onclick="addTask.submit()" class="btn btn-primary">Добавить</button>
-                <span id="addTaskValidation" class="text-danger"></span>
-            </div>
-        </form>
+                <a for="taskExpireDateTime">Дата окончания</a>
+                <input name="taskExpireDateTime" type="datetime-local" required />
+                <input type="hidden" id="themeId" name="themeId" value=0>
+                <div>
+                    <button type="button" onclick="addTask.submit()">Добавить</button>
+                    <p id="addTaskValidation" class="text-danger"></p>
+                </div>
+            </form>
+        </div>
     </dialog>
     <dialog id="addTheme">
         <div class="modal-header">
             <b>Добавить тему</b>
-            <button type="button" onclick="addTheme.toggle()">X</button>
+            <button type="button" class="close-button" onclick="addTheme.toggle()">X</button>
         </div>
         <form id="addThemeContent">
-            <label for="themeName" class="control-label">Название темы</label>
-            <input name="themeName" class="form-control" type="text" maxlength="100" style="display: block;" />
-            <input type="button" value="Добавить" class="btn btn-primary" onclick="addTheme.submit()" />
-            <span id="addThemeValidation" class="text-danger"></span>
+            <label for="themeName">Название темы</label>
+            <input name="themeName" type="text" maxlength="100"/>
+            <input type="button" value="Добавить" onclick="addTheme.submit()" />
+            <p id="addThemeValidation" class="text-danger"></p>
         </form>
     </dialog>
     <dialog id="taskInfoContainer">

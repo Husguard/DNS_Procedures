@@ -4,9 +4,14 @@
 header {
     display: flex;
     justify-content: space-between;
-
-
     margin-left:auto;
+
+    padding: 0em 0em 0em 1em;
+    justify-content: space-between;
+    display: flex;
+}
+h1 {
+    text-align: center
 }
 .father{
     position:relative;
@@ -14,4 +19,24 @@ header {
 .son{
     position:absolute;
 }
-/*длина выпадающего окна, кнопка выхода стилизованная, флекс заголовок, как размещать 4 блока?, layout навигация*/
+/*длина выпадающего окна, кнопка выхода стилизованная, флекс заголовок, как размещать 4 блока? грид, layout навигация, плавное круглое не острое*/
+/*изменить шаблон инфы без перегрузок, комментарии в отдельное окно и textarea, кнопки без фона и при наведении, id убрать в таблице
+    добавление задания, название под ним окно
+*/
+
+dialog {
+    padding: 0;
+}
+content {
+    padding: 1em;
+}
+
+
+/*
+style="
+display: inline-block;
+width: 55%;
+float: left;"
+    */
+
+/*comment line-height: 1.4;*/

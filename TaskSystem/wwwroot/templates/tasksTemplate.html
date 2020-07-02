@@ -1,7 +1,6 @@
 ﻿<table class="table table-condensed col-md-6">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Название</th>
             <th>Тема</th>
             <th>Текущий статус</th>
@@ -12,15 +11,12 @@
         {{for result}}
         <tr class="rowTask" onclick={setCurrentTask({{: taskId }})}>
             <td>
-                {{:taskId}}
-            </td>
-            <td>
                 {{:taskName}}
             </td>
             <td>
                 {{:theme.themeName}}
             </td>
-            <td>
+            <td class="">
                 {{:statusName}}
             </td>
             <td>

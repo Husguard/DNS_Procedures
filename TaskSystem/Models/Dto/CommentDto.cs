@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using TaskSystem.Models.Objects;
 
 namespace TaskSystem.Models.Dto
@@ -33,6 +34,11 @@ namespace TaskSystem.Models.Dto
         [DataMember(Name = "message")]
         public string Message { get; set; }
 
+        /// <summary>
+        /// Дата создания комментария
+        /// </summary>
+        [DataMember(Name = "createDate")]
+        public DateTime CreateDate { get; set; }
 
         /// <summary>
         /// Конвертация модели бизнес-логики в модель данных
@@ -44,6 +50,7 @@ namespace TaskSystem.Models.Dto
             EmployeeId = comment.Employee.Id;
             EmployeeName = comment.Employee.Name;
             Message = comment.Message;
+            CreateDate = comment.CreateDate;
         }
 
         /// <summary>

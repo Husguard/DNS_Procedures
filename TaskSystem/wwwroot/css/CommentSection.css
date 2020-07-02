@@ -1,0 +1,20 @@
+﻿.commentHeader {
+    color: royalblue;
+}
+
+.rowComment {
+    border-top: 1px solid;
+    padding: 2px 0;
+}
+
+.comment-section {
+    border: 1px solid;
+}
+
+.add-comment {
+    display: flex;
+}
+.add-comment textarea {
+    height:auto;
+    width: 100%;
+}

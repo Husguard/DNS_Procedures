@@ -1,0 +1,20 @@
+﻿.toolbar {
+    float: left;
+    width: 14%;
+}
+
+    .toolbar .toolbar-element {
+        padding: 18px;
+        width: 100%;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+.add-section {
+    border: 1px solid;
+    text-align: end;
+}
+
+    .add-section button {
+        padding: 7px;
+    }

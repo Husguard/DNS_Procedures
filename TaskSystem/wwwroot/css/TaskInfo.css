@@ -1,0 +1,13 @@
+﻿.description {
+    border-bottom: 1px solid;
+}
+
+.property-name {
+    background-color: #f9f9f9;
+    font-weight:bold;
+    padding: 4px;
+}
+.property-value {
+    background-color: #ffffff;
+    padding: 4px;
+}

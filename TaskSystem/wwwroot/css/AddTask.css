@@ -1,0 +1,27 @@
+﻿#suggestsThemes {
+    position: absolute;
+    display: block;
+    background-color: white;
+    border: 1px solid #030605;
+    overflow: auto;
+    height: 40px;
+    width: 174px;
+    line-height: 20px;
+}
+
+    #suggestsThemes a {
+        color: #0366d6;
+        display: block;
+        margin-left: 3px;
+    }
+#addTaskContent {
+    display: grid;
+    width: min-content;
+    padding: 10px;
+}
+    #addTaskContent a {
+        font-weight: bold;
+    }
+    b {
+        padding: 10px;
+    }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using TaskSystem.Models.Objects;
@@ -74,7 +75,8 @@ namespace TaskSystem.Models.Repositories.Implementations
                     Id = (int)reader["EmployeeID"],
                     Name = (string)reader["Name"],
                 },
-                Message = (string)reader["Message"]
+                Message = (string)reader["Message"],
+                CreateDate = (DateTime)reader["CreateDate"]
             };
         }
     }

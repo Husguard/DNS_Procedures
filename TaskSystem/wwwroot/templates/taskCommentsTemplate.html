@@ -1,14 +1,22 @@
 ﻿<div id="taskComments" class="comments">
     {{for result}}
     <div class="rowComment">
-        <label>
-            {{:employeeName}} :: {{:message}}
-        </label>
+        <div class="commentHeader">
+            {{:employeeName}}
+        </div>
+        <div class="commentMessage">
+            {{:message}}
+        </div>
+        <div>
+            {{:createDate}}
+        </div>
     </div>
     {{/for}}
 </div>
-<div id="addComment" class="form-group">
-    <input id="commentMessage" name="message" placeholder="Введите комментарий" onchange="currentTask.setCurrentComment(this.value)" maxlength="300" />
-    <button type="button" class="btn btn-primary" onclick="currentTask.saveComment()">Добавить</button>
-    <span id="commentValidation" style="float: right;" class="text-danger"></span>
+<div id="addComment">
+    <div class="add-comment">
+        <textarea id="commentMessage" name="message" placeholder="Введите комментарий" onchange="currentTask.setCurrentComment(this.value)" maxlength="300"></textarea>
+        <button type="button" class="btn btn-primary" onclick="currentTask.saveComment()">></button>
+    </div>
+    <p id="commentValidation" class="text-danger"></p>
 </div>

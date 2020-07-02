@@ -5,16 +5,16 @@ for details on configuring this project to bundle and minify static web assets. 
     word-break: break-word;
 }
 
+dialog {
+    padding: 0;
+}
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-    color: #0366d6;
-}
 
 .btn-primary {
     color: #fff;
@@ -83,35 +83,6 @@ textarea {
     height: 140px;
 }
 
-.toolbar {
-    border: 1px solid;
-    float: left;
-    width: 29%;
-}
-
-    .toolbar .toolbar-element {
-        padding: 18px;
-        width: 100%;
-        display: block;
-    }
-
-.add-section {
-    border: 1px solid;
-    text-align: end;
-}
-.add-section button {
-    padding: 7px;
-}
-
-.comment-section {
-    border: 1px solid;
-}
-
-.main-table {
-    float: left;
-    width: 70%;
-}
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -122,77 +93,10 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-table {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    text-align: center;
-    border-collapse: separate;
-    border-spacing: 5px;
-    background: #ECE9E0;
-    border: 16px solid #ECE9E0;
-    width: 100%;
-    font-size: 12px;
-}
-
-    table th {
-        padding: 10px;
-    }
-
-    table tr {
-        background: #F5D7BF;
-    }
-
-    table td {
-        padding: 10px;
-        word-break: break-word;
-    }
-
-#suggestsThemes {
-    position: absolute;
-    display: block;
-    background-color: white;
-    border: 1px solid #030605;
-    overflow: auto;
-    height: 40px;
-    width: 200px;
-    line-height: 20px;
-}
-
-    #suggestsThemes a {
-        color: #0366d6;
-        display: block;
-    }
-
 .text-danger {
     color: red;
 }
 
-#taskActions button {
-    border-radius: 11px;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 17px 0;
-}
-
-#taskActions .accept {
-    background-color: #3ef911;
-    border: 1px solid #3ef911;
-}
-
-#taskActions .pause {
-    background-color: #f5e405;
-    border: 1px solid #f5e405;
-}
-
-#taskActions .cancel {
-    background-color: #f50505;
-    border: 1px solid #f50505;
-}
-
-#taskActions .complete {
-    background-color: #23ce70;
-    border: 1px solid #23ce70;
-}
-
-.rowTask:hover {
-    background: #e68538;
+.accept-text {
+    color: #4aaf51;
 }

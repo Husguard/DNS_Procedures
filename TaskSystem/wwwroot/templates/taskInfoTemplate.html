@@ -1,63 +1,57 @@
-﻿<div id="taskInfoHeader">
+﻿<div id="taskInfoHeader" class="modal-header">
     <h2>
-        Задание № {{:#data.taskId}}
-        <button type="button" onclick="currentTask.toggle()">X</button>
+        Задание № {{:#data.taskId}}.  {{:taskName}}
     </h2>
+    <button type="button" class="close-button" onclick="currentTask.toggle()">X</button>
 </div>
 <div id="taskInfoContent">
-    <div style="
-    display: inline-block;
-    width: 42%;
-    float: left;">
-        <p>Название: {{:taskName}}</p>
-        <p>Тема: {{:theme.themeName}}</p>
-    </div>
-    <div style="
-    display: inline-block;
-    width: 55%;
-    float: left;">
-        <p>Дата создания: {{:createDate}}</p>
-        <p>Обновлено: {{:createVersionDate}}</p>
-        <p>Дата окончания: {{:expireDate}}</p>
-    </div>
-    <div style="
-    display: inline-block;
-    width: 42%;">
-        <p>Создатель: {{:creator.employeeName}}</p>
-        <p>Текущий статус: {{:statusName}} </p>
-        {{if performer}}
-        <p>Исполнитель: {{:performer.employeeName}} </p>
-        <p>Награда: {{:moneyAward}}</p>
-        {{/if}}
-    </div>
-    <div style="
-    display: inline-block;
-    width: 55%;">
+    <h3>
+        Тема: {{:theme.themeName}}
+    </h3>
+    <div class="description">
         {{:description}}
+    </div>
+    <div>
+        <div class="property-name">Дата создания: </div>
+        <div class="property-value">{{:createDate}}</div>
+        <div class="property-name">Обновлено: </div>
+        <div class="property-value">{{:createVersionDate}}</div>
+        <div class="property-name">Дата окончания:</div>
+        <div class="property-value">{{:expireDate}}</div>
+        <div class="property-name">Создатель:</div>
+        <div class="property-value">{{:creator.employeeName}}</div>
+        <div class="property-name">Текущий статус:</div>
+        <div class="property-value">{{:statusName}}</div>
+        {{if performer}}
+        <div class="property-name">Исполнитель:</div>
+        <div class="property-value">{{:performer.employeeName}}</div>
+        <div class="property-name">Награда:</div>
+        <div class="property-value">{{:moneyAward}}</div>
+        {{/if}}
     </div>
     <div id="taskActions">
         <div>
-            <div>
-                <button type="button" style="float: right;" onclick=currentTask.historyObject.showHistory()>История версий</button>
+            <div class="history-container">
+                <button type="button" class="history action-button" onclick=currentTask.historyObject.showHistory()>История версий</button>
             </div>
             <dialog id="setMoneyAward">
-                <div id="moneyHeader">
+                <div id="moneyHeader" class="modal-header">
                     <b>Награда за выполнение</b>
-                    <button type="button" onclick="currentTask.statusObject.toggle()">X</button>
+                    <button type="button" class="close-button" onclick="currentTask.statusObject.toggle()">X</button>
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="moneyAward" class="control-label">Награда</label>
-                    <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" placeholder="0"/>
+                    <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" placeholder="0" />
+                    <button class="accept action-button" type="button" name="statusId" value="2" onclick="{ currentTask.statusObject.setStatus(2)}">Принять</button>
                     <p id="taskSetMoneyValidation" class="text-danger"></p>
-                    <button class="accept" type="button" name="statusId" value="2" onclick="{ currentTask.statusObject.setStatus(2)}">Принять</button>
                 </div>
             </dialog>
-            <button class="accept" type="button" onclick="currentTask.statusObject.toggle()">В работу</button>
+            <button class="accept action-button" type="button" onclick="currentTask.statusObject.toggle()">В работу</button>
             {{if performer && statusId == 2}}
-            <button class="pause" type="button" name="statusId" value="3" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(3);}">Приостановить</button>
-            <button class="complete" type="button" name="statusId" value="4" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(4);}">Выполнить</button>
+            <button class="pause action-button" type="button" name="statusId" value="3" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(3);}">Приостановить</button>
+            <button class="complete action-button" type="button" name="statusId" value="4" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(4);}">Выполнить</button>
             {{/if}}
-            <button class="cancel" type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(0); currentTask.statusObject.setStatus(5)}">Отменить</button>
+            <button class="cancel action-button" type="button" name="statusId" value="5" onclick="{ currentTask.statusObject.setNewMoneyAward(0); currentTask.statusObject.setStatus(5)}">Отменить</button>
         </div>
         <span id="taskInfoValidation" class="text-danger"></span>
         <dialog id="taskHistoryContainer">

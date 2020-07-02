@@ -1,0 +1,43 @@
+﻿#taskActions .action-button {
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    height: 40px;
+    margin: 0;
+    padding: 0 20px;
+    vertical-align: middle;
+    border: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 40px;
+}
+
+#taskActions .accept {
+    background-color: #4aaf51;
+    border: 0;
+}
+
+#taskActions .pause {
+    background-color: #ffb100;
+    border: 0;
+}
+
+#taskActions .cancel {
+    background-color: #fb3f3f;
+    border: 0;
+}
+
+#taskActions .complete {
+    background-color: #23ce70;
+    border: 0;
+}
+#taskActions .history-container {
+    float: right;
+    margin-left: 4px;
+}
+#taskActions .history {
+    background-color: #4c59ef;
+    border:0;
+}

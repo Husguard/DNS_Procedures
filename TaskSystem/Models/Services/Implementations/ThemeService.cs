@@ -46,6 +46,7 @@ namespace TaskSystem.Models.Services.Implementations
         {
             return _baseService.ExecuteWithCatch(() =>
             {
+
                 if (ThemeIsTooLong(name))
                     return ServiceResponse<IEnumerable<ThemeDto>>.Warning("Тема слишком длинная, ограничение в 100 символов");
 
@@ -110,7 +111,7 @@ namespace TaskSystem.Models.Services.Implementations
         /// <param name="name">Название темы</param>
         private bool ThemeIsTooLong(string name)
         {
-            return (name.Length > 100);
+          return (name.Length > 100);
         }
 
         private bool IsEmptyName(string name)

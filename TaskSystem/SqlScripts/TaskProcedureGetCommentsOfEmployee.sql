@@ -8,7 +8,8 @@ AS
 		tc.EmployeeID,
 		te.Name, 
 		tc.TaskID,
-		tc.Message
+		tc.Message,
+		tc.CreateDate
 	FROM TaskComment AS tc 
 	INNER JOIN TaskEmployee AS te ON te.ID = tc.EmployeeID
 	WHERE tc.EmployeeID = @EmployeeID

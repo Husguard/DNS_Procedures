@@ -19,6 +19,7 @@ function AddTheme() {
 			case 0: {
 				alert("Тема успешно добавлена");
 				this.toggle();
+				this.form.reset();
 				break;
 			}
 			case 1: {

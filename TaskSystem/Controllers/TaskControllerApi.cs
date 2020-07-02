@@ -78,11 +78,5 @@ namespace TaskSystem.Controllers
         /// <param name="taskId">Идентификатор задания</param>
         [HttpPost("AddTaskVersion")]
         public ServiceResponse AddTaskVersion(AddTaskVersionDto version) => _taskService.AddTaskVersion(version);
-
-        /// <summary>
-        /// Получение списка заданий, у которых текущий пользователь является исполнителем
-        /// </summary>
-    //    [HttpGet("GetMyTasks")]
-  //      public ServiceResponse<IEnumerable<WorkTaskDto>> GetMyTasks(int performerId) => _taskService.GetMyTasks();
     }
 }

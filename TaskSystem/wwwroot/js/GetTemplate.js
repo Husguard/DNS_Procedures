@@ -1,4 +1,4 @@
-﻿/// Метод создания HTML верстки на основе шаблона и данных
+﻿/// Метод получения шаблона по названию и созданию HTML верстки
 /// <templateName> - название шаблона
 /// <data> - JSON объект, хранящий данные
 async function Render(templateName, data) {
@@ -9,6 +9,9 @@ async function Render(templateName, data) {
     }
     return selectTemplate.render(data, true);
 };
+
+/// Метод получения отсутствующего шаблона
+/// <templateName> - название шаблона
 async function GetTemplate(templateName) {
     const response = await fetch(`/templates/${templateName}.html`);
     return await response.text();

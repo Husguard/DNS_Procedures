@@ -3,8 +3,8 @@ let currentTask; /// объект выбранного задания
 
 function TaskObject(id) {
     this.id = id; /// идентификатор задания
-    this.commentMessage = null;
-    this.commentValidation = document.getElementById("commentValidation");
+    this.commentMessage = null; /// введенный комментарий
+    this.commentValidation = document.getElementById("commentValidation"); /// указатель на элемент вывода ошибки для комментария
     this.historyObject = new HistoryObject(this); /// объект окна истории версий задания
     this.container = document.getElementById("taskInfoContainer"); /// идентификатор контейнера для подробностей задания
     this.commentSection = document.getElementById("commentSection"); /// идентификатор контейнера для комментариев
@@ -38,6 +38,7 @@ function TaskObject(id) {
         switch (data.status) {
             case 0: {
                 this.showComments();
+                this.commentMessage = null;
                 break;
             };
             case 1: {
@@ -50,6 +51,8 @@ function TaskObject(id) {
             }
         }
     };
+
+    /// Метод установки текущего введенного комментария
     this.setCurrentComment = function (message) {
         this.commentMessage = message;
     }

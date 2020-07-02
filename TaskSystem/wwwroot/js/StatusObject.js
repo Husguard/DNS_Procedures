@@ -3,12 +3,13 @@ function StatusObject(currentTask) {
     this.id = currentTask.id; /// идентификатор задания
     this.validation = "taskInfoValidation";
     this.container = document.getElementById("setMoneyAward"); /// идентификатор окна новой награды
+    this.moneyValidation = "taskSetMoneyValidation";
+    this.infoValidation = "taskInfoValidation";
     this.newAward = 0;
 
     /// Метод переключения видимости окна новой награды
     this.toggle = function () {
-        this.validation = (this.validation == "taskSetMoneyValidation") ? "taskInfoValidation" : "taskSetMoneyValidation";
-        // необходимо обновлять значение moneyAward при смене окна
+        this.setValidation();
         Toggle(this.container);
     };
     this.setNewMoneyAward = function (newMoneyAward) {
@@ -22,10 +23,7 @@ function StatusObject(currentTask) {
         const data = await TaskRepository.AddTaskVersion(this.newAward, statusId, this.id);
         switch (data.status) {
             case 0: {
-                this.container.close();
-                this.validation = (this.validation == "taskSetMoneyValidation") ? "taskInfoValidation" : "taskSetMoneyValidation";
-                await currentTask.render();
-                await currentTask.showComments();
+                await this.updateTask();
                 break;
             }
             case 1: {
@@ -37,5 +35,21 @@ function StatusObject(currentTask) {
                 break;
             }
         }
+    }
+
+    /// Метод обновления указателя на окно ошибки
+    this.setValidation = function () {
+        if (!this.container.hasAttribute('open')) this.validation = this.moneyValidation;
+        else this.validation = this.infoValidation;
+    }
+
+    /// Метод обновления окна задания после нового статуса
+    this.updateTask = async function () {
+        this.container.close();
+        this.newAward = 0;
+        await currentTask.render();
+        await currentTask.showComments();
+        this.container = document.getElementById("setMoneyAward"); /// обновление ссылки после рендера
+        this.setValidation();
     }
 }

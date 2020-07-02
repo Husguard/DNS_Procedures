@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using TaskSystem.Models;
 using TaskSystem.Models.Dto;
 using TaskSystem.Models.Services;
 using TaskSystem.Models.Services.Interfaces;
@@ -20,10 +21,11 @@ namespace TaskSystem.Controllers
         /// <summary>
         /// Сервис взаимодействия с работниками
         /// </summary>
-        private IEmployeeService _employeeService;
-        public AccountController(IEmployeeService context)
+        private readonly AccountManager _accountManager;
+
+        public AccountController(AccountManager accountManager)
         {
-            _employeeService = context;
+            _accountManager = accountManager;
         }
 
         /// <summary>
@@ -45,17 +47,12 @@ namespace TaskSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                ServiceResponse<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
-                if (user.Result != null)
-                {
-                    await Authenticate(user.Result);
-
-                    return RedirectToAction("Index", "Home");
-                }
-                ModelState.AddModelError("Login", "Пользователя с таким логином не существует");
+                if (await _accountManager.TryLogin(model)) return RedirectToAction("Index", "Home");
+                else ModelState.AddModelError("Login", "Пользователя с таким логином не существует");
             }
             return View(model);
         }
+
         /// <summary>
         /// Метод получения представления для регистрации работника
         /// </summary>
@@ -75,33 +72,10 @@ namespace TaskSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                ServiceResponse<EmployeeDto> user = _employeeService.GetEmployeeByLogin(model.Login);
-                if (user.Result == null)
-                {
-                    _employeeService.RegisterNewEmployee(model);
-                    ServiceResponse<EmployeeDto> newUser = _employeeService.GetEmployeeByLogin(model.Login);
-
-                    await Authenticate(newUser.Result);
-
-                    return RedirectToAction("Index", "Home");
-                }
+                if (await _accountManager.TryRegister(model)) return RedirectToAction("Index", "Home");
                 else ModelState.AddModelError("Login", "Пользователь с таким логином уже существует");
             }
             return View(model);
-        }
-
-        /// <summary>
-        /// Метод аутентификации работника
-        /// </summary>
-        /// <param name="employee">Данные работника</param>
-        private async Task Authenticate(EmployeeDto employee)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
-            };
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie");
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         /// <summary>
@@ -109,7 +83,7 @@ namespace TaskSystem.Controllers
         /// </summary>
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await _accountManager.Logout();
             return RedirectToAction("Login", "Account");
         }
     }

@@ -25,6 +25,7 @@ function AddTask() {
 			case 0: {
 				alert("Задание успешно добавлено");
 				this.toggle();
+				this.form.reset();
 				break;
 			}
 			case 1: {

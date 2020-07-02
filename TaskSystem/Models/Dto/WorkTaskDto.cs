@@ -82,7 +82,6 @@ namespace TaskSystem.Models.Dto
         /// Дата завершения задания
         /// </summary>
         [DataMember(Name = "expireDate")]
-        [DisplayFormat(DataFormatString = "{0:g}")]
         public DateTime ExpireDate { get; set; }
 
         /// <summary>

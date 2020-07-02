@@ -187,16 +187,29 @@ namespace TaskSystem.Models.Services.Implementations
             return (money < 0);
         }
 
+        /// <summary>
+        /// Метод проверки длины описания нового задания
+        /// </summary>
+        /// <param name="description">Описаниие нового задания</param>
         private bool IsTaskDescriptionTooLong(string description)
         {
             return (description.Length > 500);
         }
 
+
+        /// <summary>
+        /// Метод проверки длины названия нового задания
+        /// </summary>
+        /// <param name="name">Название нового задания</param>
         private bool IsTaskNameTooLong(string name)
         {
             return (name.Length > 100);
         }
 
+        /// <summary>
+        /// Метод проверки наличия введенных названия и описания
+        /// </summary>
+        /// <param name="task"></param>
         private bool IsEmptyNameOrDescription(AddNewTaskDto task)
         {
             return (string.IsNullOrWhiteSpace(task.Name) || string.IsNullOrWhiteSpace(task.Description));

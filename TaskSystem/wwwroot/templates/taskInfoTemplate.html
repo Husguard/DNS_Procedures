@@ -49,10 +49,10 @@
                     <label for="moneyAward" class="control-label">Награда</label>
                     <input id="moneyAward" name="moneyAward" class="form-control" type="number" onchange="currentTask.statusObject.setNewMoneyAward(this.value)" placeholder="0"/>
                     <p id="taskSetMoneyValidation" class="text-danger"></p>
-                    <button class="accept" type="button" name="statusId" value="2" onclick="{currentTask.statusObject.setStatus(2)}">Принять</button>
+                    <button class="accept" type="button" name="statusId" value="2" onclick="{ currentTask.statusObject.setStatus(2)}">Принять</button>
                 </div>
             </dialog>
-            <button class="accept" type="button"  onclick="currentTask.statusObject.toggle()">В работу</button>
+            <button class="accept" type="button" onclick="currentTask.statusObject.toggle()">В работу</button>
             {{if performer && statusId == 2}}
             <button class="pause" type="button" name="statusId" value="3" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(3);}">Приостановить</button>
             <button class="complete" type="button" name="statusId" value="4" onclick="{ currentTask.statusObject.setNewMoneyAward({{:moneyAward}}); currentTask.statusObject.setStatus(4);}">Выполнить</button>

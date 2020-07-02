@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TaskSystem.Models.Repositories.Interfaces;
 using TaskSystem.Models.Repositories.Implementations;
+using TaskSystem.Models;
 
 namespace TaskSystem
 {
@@ -49,6 +50,7 @@ namespace TaskSystem
             services.AddHttpContextAccessor();
             services.AddScoped<BaseService>();
             services.AddScoped<UserManager>();
+            services.AddScoped<AccountManager>();
 
            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options => //CookieAuthenticationOptions

@@ -39,9 +39,6 @@ namespace TaskSystem.Controllers
         /// </summary>
         /// <param name="commentDto">Данные комментария</param>
         [HttpPost("AddCommentToTask")]
-        public ServiceResponse AddCommentToTask(CommentDto commentDto)
-        {
-            return _commentService.AddCommentToTask(commentDto.TaskId, commentDto.Message);
-        }
+        public ServiceResponse AddCommentToTask(CommentDto commentDto) => _commentService.AddCommentToTask(commentDto.TaskId, commentDto.Message);
     }
 }

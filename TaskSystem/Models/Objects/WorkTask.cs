@@ -71,10 +71,5 @@ namespace TaskSystem.Models.Objects
         /// Дата создания версии
         /// </summary>
         public DateTime CreateVersionDate { get; set; }
-
-        /// <summary>
-        /// Пустой конструктор для создания объекта в потоке БД
-        /// </summary>
-        public WorkTask() {}
     }
 }

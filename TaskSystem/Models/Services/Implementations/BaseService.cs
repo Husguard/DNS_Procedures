@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Data.SqlClient;
 
 namespace TaskSystem.Models.Services.Implementations
 {
@@ -33,11 +30,6 @@ namespace TaskSystem.Models.Services.Implementations
             {
                 return function();
             }
-            catch (SqlException ex)
-            {
-                _logger.LogError(ex.Message);
-                return ServiceResponse<T>.Critical(ex);
-            }
             catch (EmptyResultException ex)
             {
                 return ServiceResponse<T>.Warning(ex.Message);
@@ -58,11 +50,6 @@ namespace TaskSystem.Models.Services.Implementations
             try
             {
                 return function();
-            }
-            catch (SqlException ex)
-            {
-                _logger.LogError(ex.Message);
-                return ServiceResponse.Critical(ex);
             }
             catch (EmptyResultException ex)
             {

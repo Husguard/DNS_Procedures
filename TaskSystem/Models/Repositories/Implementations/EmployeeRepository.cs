@@ -79,7 +79,6 @@ namespace TaskSystem.Models.Repositories.Implementations
             {
                 Id = (int)reader["ID"],
                 Name = (string)reader["Name"],
-                Login = (string)reader["Login"]
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskSystem.Models.Dto;
 using TaskSystem.Models.Services;
@@ -7,6 +8,7 @@ using TaskSystem.Models.Services.Interfaces;
 namespace TaskSystem.Controllers
 {
     [ApiController]
+    [Authorize]
     public class CommentControllerApi : ControllerBase
     {
         private readonly ICommentService _commentService;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskSystem.Models.Dto;
 using TaskSystem.Models.Services;
@@ -6,6 +7,7 @@ using TaskSystem.Models.Services.Interfaces;
 
 namespace TaskSystem.Controllers
 {
+    [Authorize]
     [ApiController]
     public class ThemeControllerApi : ControllerBase
     {

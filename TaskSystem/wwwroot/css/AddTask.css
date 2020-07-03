@@ -25,3 +25,7 @@
     b {
         padding: 10px;
     }
+#addTaskContent input {
+    height: 30px;
+    border-radius: 5px;
+}

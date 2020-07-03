@@ -9,6 +9,7 @@ using TaskSystem.Models.Services.Interfaces;
 namespace TaskSystem.Controllers
 {
     [ApiController]
+    [Authorize]
     public class TaskControllerApi : ControllerBase
     {
         private readonly ITaskService _taskService;
